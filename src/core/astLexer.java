@@ -1,4 +1,4 @@
-// $ANTLR 3.5.1 D:\\JAVA\\first\\src\\core\\first.g 2014-04-18 17:08:49
+// $ANTLR 3.5.1 ast.g 2014-04-18 07:54:57
 
 package core;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @SuppressWarnings("all")
-public class firstLexer extends Lexer {
+public class astLexer extends Lexer {
 	public static final int EOF=-1;
 	public static final int T__64=64;
 	public static final int T__65=65;
@@ -134,22 +134,22 @@ public class firstLexer extends Lexer {
 		return new Lexer[] {};
 	}
 
-	public firstLexer() {} 
-	public firstLexer(CharStream input) {
+	public astLexer() {} 
+	public astLexer(CharStream input) {
 		this(input, new RecognizerSharedState());
 	}
-	public firstLexer(CharStream input, RecognizerSharedState state) {
+	public astLexer(CharStream input, RecognizerSharedState state) {
 		super(input,state);
 	}
-	@Override public String getGrammarFileName() { return "D:\\JAVA\\first\\src\\core\\first.g"; }
+	@Override public String getGrammarFileName() { return "ast.g"; }
 
 	// $ANTLR start "T__64"
 	public final void mT__64() throws RecognitionException {
 		try {
 			int _type = T__64;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:6:7: ( '!' )
-			// D:\\JAVA\\first\\src\\core\\first.g:6:9: '!'
+			// ast.g:6:7: ( '!' )
+			// ast.g:6:9: '!'
 			{
 			match('!'); 
 			}
@@ -168,8 +168,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__65;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:7:7: ( '!=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:7:9: '!='
+			// ast.g:7:7: ( '!=' )
+			// ast.g:7:9: '!='
 			{
 			match("!="); 
 
@@ -189,8 +189,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__66;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:8:7: ( '%' )
-			// D:\\JAVA\\first\\src\\core\\first.g:8:9: '%'
+			// ast.g:8:7: ( '%' )
+			// ast.g:8:9: '%'
 			{
 			match('%'); 
 			}
@@ -209,8 +209,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__67;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:9:7: ( '%=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:9:9: '%='
+			// ast.g:9:7: ( '%=' )
+			// ast.g:9:9: '%='
 			{
 			match("%="); 
 
@@ -230,8 +230,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__68;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:10:7: ( '&&' )
-			// D:\\JAVA\\first\\src\\core\\first.g:10:9: '&&'
+			// ast.g:10:7: ( '&&' )
+			// ast.g:10:9: '&&'
 			{
 			match("&&"); 
 
@@ -251,8 +251,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__69;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:11:7: ( '&' )
-			// D:\\JAVA\\first\\src\\core\\first.g:11:9: '&'
+			// ast.g:11:7: ( '&' )
+			// ast.g:11:9: '&'
 			{
 			match('&'); 
 			}
@@ -271,8 +271,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__70;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:12:7: ( '&=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:12:9: '&='
+			// ast.g:12:7: ( '&=' )
+			// ast.g:12:9: '&='
 			{
 			match("&="); 
 
@@ -292,8 +292,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__71;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:13:7: ( '(' )
-			// D:\\JAVA\\first\\src\\core\\first.g:13:9: '('
+			// ast.g:13:7: ( '(' )
+			// ast.g:13:9: '('
 			{
 			match('('); 
 			}
@@ -312,8 +312,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__72;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:14:7: ( ')' )
-			// D:\\JAVA\\first\\src\\core\\first.g:14:9: ')'
+			// ast.g:14:7: ( ')' )
+			// ast.g:14:9: ')'
 			{
 			match(')'); 
 			}
@@ -332,8 +332,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__73;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:15:7: ( '*' )
-			// D:\\JAVA\\first\\src\\core\\first.g:15:9: '*'
+			// ast.g:15:7: ( '*' )
+			// ast.g:15:9: '*'
 			{
 			match('*'); 
 			}
@@ -352,8 +352,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__74;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:16:7: ( '*=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:16:9: '*='
+			// ast.g:16:7: ( '*=' )
+			// ast.g:16:9: '*='
 			{
 			match("*="); 
 
@@ -373,8 +373,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__75;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:17:7: ( '+' )
-			// D:\\JAVA\\first\\src\\core\\first.g:17:9: '+'
+			// ast.g:17:7: ( '+' )
+			// ast.g:17:9: '+'
 			{
 			match('+'); 
 			}
@@ -393,8 +393,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__76;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:18:7: ( '++' )
-			// D:\\JAVA\\first\\src\\core\\first.g:18:9: '++'
+			// ast.g:18:7: ( '++' )
+			// ast.g:18:9: '++'
 			{
 			match("++"); 
 
@@ -414,8 +414,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__77;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:19:7: ( '+=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:19:9: '+='
+			// ast.g:19:7: ( '+=' )
+			// ast.g:19:9: '+='
 			{
 			match("+="); 
 
@@ -435,8 +435,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__78;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:20:7: ( ',' )
-			// D:\\JAVA\\first\\src\\core\\first.g:20:9: ','
+			// ast.g:20:7: ( ',' )
+			// ast.g:20:9: ','
 			{
 			match(','); 
 			}
@@ -455,8 +455,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__79;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:21:7: ( '-' )
-			// D:\\JAVA\\first\\src\\core\\first.g:21:9: '-'
+			// ast.g:21:7: ( '-' )
+			// ast.g:21:9: '-'
 			{
 			match('-'); 
 			}
@@ -475,8 +475,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__80;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:22:7: ( '--' )
-			// D:\\JAVA\\first\\src\\core\\first.g:22:9: '--'
+			// ast.g:22:7: ( '--' )
+			// ast.g:22:9: '--'
 			{
 			match("--"); 
 
@@ -496,8 +496,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__81;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:23:7: ( '-=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:23:9: '-='
+			// ast.g:23:7: ( '-=' )
+			// ast.g:23:9: '-='
 			{
 			match("-="); 
 
@@ -517,8 +517,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__82;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:24:7: ( '->' )
-			// D:\\JAVA\\first\\src\\core\\first.g:24:9: '->'
+			// ast.g:24:7: ( '->' )
+			// ast.g:24:9: '->'
 			{
 			match("->"); 
 
@@ -538,8 +538,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__83;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:25:7: ( '.' )
-			// D:\\JAVA\\first\\src\\core\\first.g:25:9: '.'
+			// ast.g:25:7: ( '.' )
+			// ast.g:25:9: '.'
 			{
 			match('.'); 
 			}
@@ -558,8 +558,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__84;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:26:7: ( '/' )
-			// D:\\JAVA\\first\\src\\core\\first.g:26:9: '/'
+			// ast.g:26:7: ( '/' )
+			// ast.g:26:9: '/'
 			{
 			match('/'); 
 			}
@@ -578,8 +578,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__85;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:27:7: ( '/=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:27:9: '/='
+			// ast.g:27:7: ( '/=' )
+			// ast.g:27:9: '/='
 			{
 			match("/="); 
 
@@ -599,8 +599,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__86;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:28:7: ( ';' )
-			// D:\\JAVA\\first\\src\\core\\first.g:28:9: ';'
+			// ast.g:28:7: ( ';' )
+			// ast.g:28:9: ';'
 			{
 			match(';'); 
 			}
@@ -619,8 +619,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__87;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:29:7: ( '<' )
-			// D:\\JAVA\\first\\src\\core\\first.g:29:9: '<'
+			// ast.g:29:7: ( '<' )
+			// ast.g:29:9: '<'
 			{
 			match('<'); 
 			}
@@ -639,8 +639,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__88;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:30:7: ( '<<' )
-			// D:\\JAVA\\first\\src\\core\\first.g:30:9: '<<'
+			// ast.g:30:7: ( '<<' )
+			// ast.g:30:9: '<<'
 			{
 			match("<<"); 
 
@@ -660,8 +660,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__89;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:31:7: ( '<<=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:31:9: '<<='
+			// ast.g:31:7: ( '<<=' )
+			// ast.g:31:9: '<<='
 			{
 			match("<<="); 
 
@@ -681,8 +681,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__90;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:32:7: ( '<=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:32:9: '<='
+			// ast.g:32:7: ( '<=' )
+			// ast.g:32:9: '<='
 			{
 			match("<="); 
 
@@ -702,8 +702,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__91;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:33:7: ( '=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:33:9: '='
+			// ast.g:33:7: ( '=' )
+			// ast.g:33:9: '='
 			{
 			match('='); 
 			}
@@ -722,8 +722,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__92;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:34:7: ( '==' )
-			// D:\\JAVA\\first\\src\\core\\first.g:34:9: '=='
+			// ast.g:34:7: ( '==' )
+			// ast.g:34:9: '=='
 			{
 			match("=="); 
 
@@ -743,8 +743,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__93;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:35:7: ( '>' )
-			// D:\\JAVA\\first\\src\\core\\first.g:35:9: '>'
+			// ast.g:35:7: ( '>' )
+			// ast.g:35:9: '>'
 			{
 			match('>'); 
 			}
@@ -763,8 +763,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__94;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:36:7: ( '>=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:36:9: '>='
+			// ast.g:36:7: ( '>=' )
+			// ast.g:36:9: '>='
 			{
 			match(">="); 
 
@@ -784,8 +784,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__95;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:37:7: ( '>>' )
-			// D:\\JAVA\\first\\src\\core\\first.g:37:9: '>>'
+			// ast.g:37:7: ( '>>' )
+			// ast.g:37:9: '>>'
 			{
 			match(">>"); 
 
@@ -805,8 +805,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__96;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:38:7: ( '>>=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:38:9: '>>='
+			// ast.g:38:7: ( '>>=' )
+			// ast.g:38:9: '>>='
 			{
 			match(">>="); 
 
@@ -826,8 +826,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__97;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:39:7: ( '[' )
-			// D:\\JAVA\\first\\src\\core\\first.g:39:9: '['
+			// ast.g:39:7: ( '[' )
+			// ast.g:39:9: '['
 			{
 			match('['); 
 			}
@@ -846,8 +846,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__98;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:40:7: ( ']' )
-			// D:\\JAVA\\first\\src\\core\\first.g:40:9: ']'
+			// ast.g:40:7: ( ']' )
+			// ast.g:40:9: ']'
 			{
 			match(']'); 
 			}
@@ -866,8 +866,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__99;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:41:7: ( '^' )
-			// D:\\JAVA\\first\\src\\core\\first.g:41:9: '^'
+			// ast.g:41:7: ( '^' )
+			// ast.g:41:9: '^'
 			{
 			match('^'); 
 			}
@@ -886,8 +886,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__100;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:42:8: ( '^=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:42:10: '^='
+			// ast.g:42:8: ( '^=' )
+			// ast.g:42:10: '^='
 			{
 			match("^="); 
 
@@ -907,8 +907,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__101;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:43:8: ( 'break' )
-			// D:\\JAVA\\first\\src\\core\\first.g:43:10: 'break'
+			// ast.g:43:8: ( 'break' )
+			// ast.g:43:10: 'break'
 			{
 			match("break"); 
 
@@ -928,8 +928,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__102;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:44:8: ( 'char' )
-			// D:\\JAVA\\first\\src\\core\\first.g:44:10: 'char'
+			// ast.g:44:8: ( 'char' )
+			// ast.g:44:10: 'char'
 			{
 			match("char"); 
 
@@ -949,8 +949,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__103;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:45:8: ( 'continue' )
-			// D:\\JAVA\\first\\src\\core\\first.g:45:10: 'continue'
+			// ast.g:45:8: ( 'continue' )
+			// ast.g:45:10: 'continue'
 			{
 			match("continue"); 
 
@@ -970,8 +970,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__104;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:46:8: ( 'else' )
-			// D:\\JAVA\\first\\src\\core\\first.g:46:10: 'else'
+			// ast.g:46:8: ( 'else' )
+			// ast.g:46:10: 'else'
 			{
 			match("else"); 
 
@@ -991,8 +991,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__105;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:47:8: ( 'for' )
-			// D:\\JAVA\\first\\src\\core\\first.g:47:10: 'for'
+			// ast.g:47:8: ( 'for' )
+			// ast.g:47:10: 'for'
 			{
 			match("for"); 
 
@@ -1012,8 +1012,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__106;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:48:8: ( 'if' )
-			// D:\\JAVA\\first\\src\\core\\first.g:48:10: 'if'
+			// ast.g:48:8: ( 'if' )
+			// ast.g:48:10: 'if'
 			{
 			match("if"); 
 
@@ -1033,8 +1033,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__107;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:49:8: ( 'int' )
-			// D:\\JAVA\\first\\src\\core\\first.g:49:10: 'int'
+			// ast.g:49:8: ( 'int' )
+			// ast.g:49:10: 'int'
 			{
 			match("int"); 
 
@@ -1054,8 +1054,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__108;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:50:8: ( 'return' )
-			// D:\\JAVA\\first\\src\\core\\first.g:50:10: 'return'
+			// ast.g:50:8: ( 'return' )
+			// ast.g:50:10: 'return'
 			{
 			match("return"); 
 
@@ -1075,8 +1075,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__109;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:51:8: ( 'sizeof' )
-			// D:\\JAVA\\first\\src\\core\\first.g:51:10: 'sizeof'
+			// ast.g:51:8: ( 'sizeof' )
+			// ast.g:51:10: 'sizeof'
 			{
 			match("sizeof"); 
 
@@ -1096,8 +1096,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__110;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:52:8: ( 'struct' )
-			// D:\\JAVA\\first\\src\\core\\first.g:52:10: 'struct'
+			// ast.g:52:8: ( 'struct' )
+			// ast.g:52:10: 'struct'
 			{
 			match("struct"); 
 
@@ -1117,8 +1117,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__111;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:53:8: ( 'union' )
-			// D:\\JAVA\\first\\src\\core\\first.g:53:10: 'union'
+			// ast.g:53:8: ( 'union' )
+			// ast.g:53:10: 'union'
 			{
 			match("union"); 
 
@@ -1138,8 +1138,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__112;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:54:8: ( 'void' )
-			// D:\\JAVA\\first\\src\\core\\first.g:54:10: 'void'
+			// ast.g:54:8: ( 'void' )
+			// ast.g:54:10: 'void'
 			{
 			match("void"); 
 
@@ -1159,8 +1159,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__113;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:55:8: ( 'while' )
-			// D:\\JAVA\\first\\src\\core\\first.g:55:10: 'while'
+			// ast.g:55:8: ( 'while' )
+			// ast.g:55:10: 'while'
 			{
 			match("while"); 
 
@@ -1180,8 +1180,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__114;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:56:8: ( '{' )
-			// D:\\JAVA\\first\\src\\core\\first.g:56:10: '{'
+			// ast.g:56:8: ( '{' )
+			// ast.g:56:10: '{'
 			{
 			match('{'); 
 			}
@@ -1200,8 +1200,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__115;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:57:8: ( '|' )
-			// D:\\JAVA\\first\\src\\core\\first.g:57:10: '|'
+			// ast.g:57:8: ( '|' )
+			// ast.g:57:10: '|'
 			{
 			match('|'); 
 			}
@@ -1220,8 +1220,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__116;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:58:8: ( '|=' )
-			// D:\\JAVA\\first\\src\\core\\first.g:58:10: '|='
+			// ast.g:58:8: ( '|=' )
+			// ast.g:58:10: '|='
 			{
 			match("|="); 
 
@@ -1241,8 +1241,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__117;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:59:8: ( '||' )
-			// D:\\JAVA\\first\\src\\core\\first.g:59:10: '||'
+			// ast.g:59:8: ( '||' )
+			// ast.g:59:10: '||'
 			{
 			match("||"); 
 
@@ -1262,8 +1262,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__118;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:60:8: ( '}' )
-			// D:\\JAVA\\first\\src\\core\\first.g:60:10: '}'
+			// ast.g:60:8: ( '}' )
+			// ast.g:60:10: '}'
 			{
 			match('}'); 
 			}
@@ -1282,8 +1282,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = T__119;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:61:8: ( '~' )
-			// D:\\JAVA\\first\\src\\core\\first.g:61:10: '~'
+			// ast.g:61:8: ( '~' )
+			// ast.g:61:10: '~'
 			{
 			match('~'); 
 			}
@@ -1302,7 +1302,7 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Dec;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:240:5: ( '0' | ( '1' .. '9' ) ( '0' .. '9' )* )
+			// ast.g:240:5: ( '0' | ( '1' .. '9' ) ( '0' .. '9' )* )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='0') ) {
@@ -1320,13 +1320,13 @@ public class firstLexer extends Lexer {
 
 			switch (alt2) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:241:2: '0'
+					// ast.g:241:2: '0'
 					{
 					match('0'); 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\first.g:241:6: ( '1' .. '9' ) ( '0' .. '9' )*
+					// ast.g:241:6: ( '1' .. '9' ) ( '0' .. '9' )*
 					{
 					if ( (input.LA(1) >= '1' && input.LA(1) <= '9') ) {
 						input.consume();
@@ -1336,7 +1336,7 @@ public class firstLexer extends Lexer {
 						recover(mse);
 						throw mse;
 					}
-					// D:\\JAVA\\first\\src\\core\\first.g:241:16: ( '0' .. '9' )*
+					// ast.g:241:16: ( '0' .. '9' )*
 					loop1:
 					while (true) {
 						int alt1=2;
@@ -1347,7 +1347,7 @@ public class firstLexer extends Lexer {
 
 						switch (alt1) {
 						case 1 :
-							// D:\\JAVA\\first\\src\\core\\first.g:
+							// ast.g:
 							{
 							if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
 								input.consume();
@@ -1383,10 +1383,10 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Hex;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:244:5: ( ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )+ )
-			// D:\\JAVA\\first\\src\\core\\first.g:245:2: ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )+
+			// ast.g:244:5: ( ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )+ )
+			// ast.g:245:2: ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )+
 			{
-			// D:\\JAVA\\first\\src\\core\\first.g:245:2: ( '0x' | '0X' )
+			// ast.g:245:2: ( '0x' | '0X' )
 			int alt3=2;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='0') ) {
@@ -1420,14 +1420,14 @@ public class firstLexer extends Lexer {
 
 			switch (alt3) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:245:3: '0x'
+					// ast.g:245:3: '0x'
 					{
 					match("0x"); 
 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\first.g:245:8: '0X'
+					// ast.g:245:8: '0X'
 					{
 					match("0X"); 
 
@@ -1436,7 +1436,7 @@ public class firstLexer extends Lexer {
 
 			}
 
-			// D:\\JAVA\\first\\src\\core\\first.g:245:13: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )+
+			// ast.g:245:13: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )+
 			int cnt4=0;
 			loop4:
 			while (true) {
@@ -1448,7 +1448,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt4) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:
+					// ast.g:
 					{
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'F')||(input.LA(1) >= 'a' && input.LA(1) <= 'f') ) {
 						input.consume();
@@ -1485,11 +1485,11 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Oct;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:247:5: ( '0' ( '0' .. '7' )+ )
-			// D:\\JAVA\\first\\src\\core\\first.g:248:2: '0' ( '0' .. '7' )+
+			// ast.g:247:5: ( '0' ( '0' .. '7' )+ )
+			// ast.g:248:2: '0' ( '0' .. '7' )+
 			{
 			match('0'); 
-			// D:\\JAVA\\first\\src\\core\\first.g:248:5: ( '0' .. '7' )+
+			// ast.g:248:5: ( '0' .. '7' )+
 			int cnt5=0;
 			loop5:
 			while (true) {
@@ -1501,7 +1501,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt5) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:
+					// ast.g:
 					{
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '7') ) {
 						input.consume();
@@ -1538,8 +1538,8 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Nice_identifier;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:258:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' | '0' .. '9' )* )
-			// D:\\JAVA\\first\\src\\core\\first.g:258:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' | '0' .. '9' )*
+			// ast.g:258:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' | '0' .. '9' )* )
+			// ast.g:258:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' | '0' .. '9' )*
 			{
 			if ( input.LA(1)=='$'||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 				input.consume();
@@ -1549,7 +1549,7 @@ public class firstLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// D:\\JAVA\\first\\src\\core\\first.g:258:32: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' | '0' .. '9' )*
+			// ast.g:258:32: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '$' | '0' .. '9' )*
 			loop6:
 			while (true) {
 				int alt6=2;
@@ -1560,7 +1560,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt6) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:
+					// ast.g:
 					{
 					if ( input.LA(1)=='$'||(input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 						input.consume();
@@ -1594,11 +1594,11 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Nice_character_constant;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:273:2: ( '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\'' )
-			// D:\\JAVA\\first\\src\\core\\first.g:275:2: '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\''
+			// ast.g:273:2: ( '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\'' )
+			// ast.g:275:2: '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\''
 			{
 			match('\''); 
-			// D:\\JAVA\\first\\src\\core\\first.g:275:6: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) )
+			// ast.g:275:6: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) )
 			int alt7=2;
 			int LA7_0 = input.LA(1);
 			if ( (LA7_0=='\\') ) {
@@ -1616,10 +1616,10 @@ public class firstLexer extends Lexer {
 
 			switch (alt7) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:275:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+					// ast.g:275:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
 					{
-					// D:\\JAVA\\first\\src\\core\\first.g:275:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-					// D:\\JAVA\\first\\src\\core\\first.g:275:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+					// ast.g:275:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+					// ast.g:275:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
 					{
 					match('\\'); 
 					if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1635,7 +1635,7 @@ public class firstLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\first.g:275:54: ~ ( '\\'' | '\\\\' )
+					// ast.g:275:54: ~ ( '\\'' | '\\\\' )
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -1667,7 +1667,7 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Nice_string;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:283:2: ( '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"' | '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\'' | '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\'' )
+			// ast.g:283:2: ( '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"' | '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\'' | '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\'' )
 			int alt10=3;
 			int LA10_0 = input.LA(1);
 			if ( (LA10_0=='\"') ) {
@@ -1743,10 +1743,10 @@ public class firstLexer extends Lexer {
 
 			switch (alt10) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:283:6: '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"'
+					// ast.g:283:6: '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"'
 					{
 					match('\"'); 
-					// D:\\JAVA\\first\\src\\core\\first.g:283:11: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )*
+					// ast.g:283:11: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )*
 					loop8:
 					while (true) {
 						int alt8=3;
@@ -1760,10 +1760,10 @@ public class firstLexer extends Lexer {
 
 						switch (alt8) {
 						case 1 :
-							// D:\\JAVA\\first\\src\\core\\first.g:283:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+							// ast.g:283:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
 							{
-							// D:\\JAVA\\first\\src\\core\\first.g:283:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-							// D:\\JAVA\\first\\src\\core\\first.g:283:14: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+							// ast.g:283:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+							// ast.g:283:14: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
 							{
 							match('\\'); 
 							if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1779,7 +1779,7 @@ public class firstLexer extends Lexer {
 							}
 							break;
 						case 2 :
-							// D:\\JAVA\\first\\src\\core\\first.g:283:59: ~ ( '\\\\' | '\\\"' )
+							// ast.g:283:59: ~ ( '\\\\' | '\\\"' )
 							{
 							if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 								input.consume();
@@ -1801,7 +1801,7 @@ public class firstLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\first.g:284:3: '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\''
+					// ast.g:284:3: '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\''
 					{
 					match('\''); 
 					match('\\'); 
@@ -1833,11 +1833,11 @@ public class firstLexer extends Lexer {
 					}
 					break;
 				case 3 :
-					// D:\\JAVA\\first\\src\\core\\first.g:285:2: '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\''
+					// ast.g:285:2: '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\''
 					{
 					match('\''); 
 					match('\\'); 
-					// D:\\JAVA\\first\\src\\core\\first.g:285:12: ( '0x' | '0X' )
+					// ast.g:285:12: ( '0x' | '0X' )
 					int alt9=2;
 					int LA9_0 = input.LA(1);
 					if ( (LA9_0=='0') ) {
@@ -1871,14 +1871,14 @@ public class firstLexer extends Lexer {
 
 					switch (alt9) {
 						case 1 :
-							// D:\\JAVA\\first\\src\\core\\first.g:285:13: '0x'
+							// ast.g:285:13: '0x'
 							{
 							match("0x"); 
 
 							}
 							break;
 						case 2 :
-							// D:\\JAVA\\first\\src\\core\\first.g:285:20: '0X'
+							// ast.g:285:20: '0X'
 							{
 							match("0X"); 
 
@@ -1922,12 +1922,12 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:289:6: ( '/*' ( . )* '*/' )
-			// D:\\JAVA\\first\\src\\core\\first.g:289:10: '/*' ( . )* '*/'
+			// ast.g:289:6: ( '/*' ( . )* '*/' )
+			// ast.g:289:10: '/*' ( . )* '*/'
 			{
 			match("/*"); 
 
-			// D:\\JAVA\\first\\src\\core\\first.g:289:15: ( . )*
+			// ast.g:289:15: ( . )*
 			loop11:
 			while (true) {
 				int alt11=2;
@@ -1948,7 +1948,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt11) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:289:15: .
+					// ast.g:289:15: .
 					{
 					matchAny(); 
 					}
@@ -1978,12 +1978,12 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = LINE_COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:293:2: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
-			// D:\\JAVA\\first\\src\\core\\first.g:293:6: '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
+			// ast.g:293:2: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
+			// ast.g:293:6: '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
 			{
 			match("//"); 
 
-			// D:\\JAVA\\first\\src\\core\\first.g:293:11: (~ ( '\\n' | '\\r' ) )*
+			// ast.g:293:11: (~ ( '\\n' | '\\r' ) )*
 			loop12:
 			while (true) {
 				int alt12=2;
@@ -1994,7 +1994,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt12) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:
+					// ast.g:
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -2012,7 +2012,7 @@ public class firstLexer extends Lexer {
 				}
 			}
 
-			// D:\\JAVA\\first\\src\\core\\first.g:293:29: ( '\\n' | '\\r' | '\\r\\n' )
+			// ast.g:293:29: ( '\\n' | '\\r' | '\\r\\n' )
 			int alt13=3;
 			int LA13_0 = input.LA(1);
 			if ( (LA13_0=='\n') ) {
@@ -2038,19 +2038,19 @@ public class firstLexer extends Lexer {
 
 			switch (alt13) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:293:30: '\\n'
+					// ast.g:293:30: '\\n'
 					{
 					match('\n'); 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\first.g:293:37: '\\r'
+					// ast.g:293:37: '\\r'
 					{
 					match('\r'); 
 					}
 					break;
 				case 3 :
-					// D:\\JAVA\\first\\src\\core\\first.g:293:44: '\\r\\n'
+					// ast.g:293:44: '\\r\\n'
 					{
 					match("\r\n"); 
 
@@ -2076,11 +2076,11 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = Header;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:297:2: ( '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
-			// D:\\JAVA\\first\\src\\core\\first.g:297:6: '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
+			// ast.g:297:2: ( '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
+			// ast.g:297:6: '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
 			{
 			match('#'); 
-			// D:\\JAVA\\first\\src\\core\\first.g:297:10: (~ ( '\\n' | '\\r' ) )*
+			// ast.g:297:10: (~ ( '\\n' | '\\r' ) )*
 			loop14:
 			while (true) {
 				int alt14=2;
@@ -2091,7 +2091,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt14) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:
+					// ast.g:
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -2109,7 +2109,7 @@ public class firstLexer extends Lexer {
 				}
 			}
 
-			// D:\\JAVA\\first\\src\\core\\first.g:297:28: ( '\\n' | '\\r' | '\\r\\n' )
+			// ast.g:297:28: ( '\\n' | '\\r' | '\\r\\n' )
 			int alt15=3;
 			int LA15_0 = input.LA(1);
 			if ( (LA15_0=='\n') ) {
@@ -2135,19 +2135,19 @@ public class firstLexer extends Lexer {
 
 			switch (alt15) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:297:29: '\\n'
+					// ast.g:297:29: '\\n'
 					{
 					match('\n'); 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\first.g:297:36: '\\r'
+					// ast.g:297:36: '\\r'
 					{
 					match('\r'); 
 					}
 					break;
 				case 3 :
-					// D:\\JAVA\\first\\src\\core\\first.g:297:43: '\\r\\n'
+					// ast.g:297:43: '\\r\\n'
 					{
 					match("\r\n"); 
 
@@ -2173,10 +2173,10 @@ public class firstLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\first.g:301:4: ( ( ' ' | '\\t' | '\\n' | '\\r' )+ )
-			// D:\\JAVA\\first\\src\\core\\first.g:301:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
+			// ast.g:301:4: ( ( ' ' | '\\t' | '\\n' | '\\r' )+ )
+			// ast.g:301:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
 			{
-			// D:\\JAVA\\first\\src\\core\\first.g:301:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
+			// ast.g:301:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
 			int cnt16=0;
 			loop16:
 			while (true) {
@@ -2188,7 +2188,7 @@ public class firstLexer extends Lexer {
 
 				switch (alt16) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\first.g:
+					// ast.g:
 					{
 					if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
 						input.consume();
@@ -2223,467 +2223,467 @@ public class firstLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// D:\\JAVA\\first\\src\\core\\first.g:1:8: ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | Dec | Hex | Oct | Nice_identifier | Nice_character_constant | Nice_string | COMMENT | LINE_COMMENT | Header | WS )
+		// ast.g:1:8: ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | Dec | Hex | Oct | Nice_identifier | Nice_character_constant | Nice_string | COMMENT | LINE_COMMENT | Header | WS )
 		int alt17=66;
 		alt17 = dfa17.predict(input);
 		switch (alt17) {
 			case 1 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:10: T__64
+				// ast.g:1:10: T__64
 				{
 				mT__64(); 
 
 				}
 				break;
 			case 2 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:16: T__65
+				// ast.g:1:16: T__65
 				{
 				mT__65(); 
 
 				}
 				break;
 			case 3 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:22: T__66
+				// ast.g:1:22: T__66
 				{
 				mT__66(); 
 
 				}
 				break;
 			case 4 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:28: T__67
+				// ast.g:1:28: T__67
 				{
 				mT__67(); 
 
 				}
 				break;
 			case 5 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:34: T__68
+				// ast.g:1:34: T__68
 				{
 				mT__68(); 
 
 				}
 				break;
 			case 6 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:40: T__69
+				// ast.g:1:40: T__69
 				{
 				mT__69(); 
 
 				}
 				break;
 			case 7 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:46: T__70
+				// ast.g:1:46: T__70
 				{
 				mT__70(); 
 
 				}
 				break;
 			case 8 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:52: T__71
+				// ast.g:1:52: T__71
 				{
 				mT__71(); 
 
 				}
 				break;
 			case 9 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:58: T__72
+				// ast.g:1:58: T__72
 				{
 				mT__72(); 
 
 				}
 				break;
 			case 10 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:64: T__73
+				// ast.g:1:64: T__73
 				{
 				mT__73(); 
 
 				}
 				break;
 			case 11 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:70: T__74
+				// ast.g:1:70: T__74
 				{
 				mT__74(); 
 
 				}
 				break;
 			case 12 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:76: T__75
+				// ast.g:1:76: T__75
 				{
 				mT__75(); 
 
 				}
 				break;
 			case 13 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:82: T__76
+				// ast.g:1:82: T__76
 				{
 				mT__76(); 
 
 				}
 				break;
 			case 14 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:88: T__77
+				// ast.g:1:88: T__77
 				{
 				mT__77(); 
 
 				}
 				break;
 			case 15 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:94: T__78
+				// ast.g:1:94: T__78
 				{
 				mT__78(); 
 
 				}
 				break;
 			case 16 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:100: T__79
+				// ast.g:1:100: T__79
 				{
 				mT__79(); 
 
 				}
 				break;
 			case 17 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:106: T__80
+				// ast.g:1:106: T__80
 				{
 				mT__80(); 
 
 				}
 				break;
 			case 18 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:112: T__81
+				// ast.g:1:112: T__81
 				{
 				mT__81(); 
 
 				}
 				break;
 			case 19 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:118: T__82
+				// ast.g:1:118: T__82
 				{
 				mT__82(); 
 
 				}
 				break;
 			case 20 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:124: T__83
+				// ast.g:1:124: T__83
 				{
 				mT__83(); 
 
 				}
 				break;
 			case 21 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:130: T__84
+				// ast.g:1:130: T__84
 				{
 				mT__84(); 
 
 				}
 				break;
 			case 22 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:136: T__85
+				// ast.g:1:136: T__85
 				{
 				mT__85(); 
 
 				}
 				break;
 			case 23 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:142: T__86
+				// ast.g:1:142: T__86
 				{
 				mT__86(); 
 
 				}
 				break;
 			case 24 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:148: T__87
+				// ast.g:1:148: T__87
 				{
 				mT__87(); 
 
 				}
 				break;
 			case 25 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:154: T__88
+				// ast.g:1:154: T__88
 				{
 				mT__88(); 
 
 				}
 				break;
 			case 26 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:160: T__89
+				// ast.g:1:160: T__89
 				{
 				mT__89(); 
 
 				}
 				break;
 			case 27 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:166: T__90
+				// ast.g:1:166: T__90
 				{
 				mT__90(); 
 
 				}
 				break;
 			case 28 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:172: T__91
+				// ast.g:1:172: T__91
 				{
 				mT__91(); 
 
 				}
 				break;
 			case 29 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:178: T__92
+				// ast.g:1:178: T__92
 				{
 				mT__92(); 
 
 				}
 				break;
 			case 30 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:184: T__93
+				// ast.g:1:184: T__93
 				{
 				mT__93(); 
 
 				}
 				break;
 			case 31 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:190: T__94
+				// ast.g:1:190: T__94
 				{
 				mT__94(); 
 
 				}
 				break;
 			case 32 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:196: T__95
+				// ast.g:1:196: T__95
 				{
 				mT__95(); 
 
 				}
 				break;
 			case 33 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:202: T__96
+				// ast.g:1:202: T__96
 				{
 				mT__96(); 
 
 				}
 				break;
 			case 34 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:208: T__97
+				// ast.g:1:208: T__97
 				{
 				mT__97(); 
 
 				}
 				break;
 			case 35 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:214: T__98
+				// ast.g:1:214: T__98
 				{
 				mT__98(); 
 
 				}
 				break;
 			case 36 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:220: T__99
+				// ast.g:1:220: T__99
 				{
 				mT__99(); 
 
 				}
 				break;
 			case 37 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:226: T__100
+				// ast.g:1:226: T__100
 				{
 				mT__100(); 
 
 				}
 				break;
 			case 38 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:233: T__101
+				// ast.g:1:233: T__101
 				{
 				mT__101(); 
 
 				}
 				break;
 			case 39 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:240: T__102
+				// ast.g:1:240: T__102
 				{
 				mT__102(); 
 
 				}
 				break;
 			case 40 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:247: T__103
+				// ast.g:1:247: T__103
 				{
 				mT__103(); 
 
 				}
 				break;
 			case 41 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:254: T__104
+				// ast.g:1:254: T__104
 				{
 				mT__104(); 
 
 				}
 				break;
 			case 42 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:261: T__105
+				// ast.g:1:261: T__105
 				{
 				mT__105(); 
 
 				}
 				break;
 			case 43 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:268: T__106
+				// ast.g:1:268: T__106
 				{
 				mT__106(); 
 
 				}
 				break;
 			case 44 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:275: T__107
+				// ast.g:1:275: T__107
 				{
 				mT__107(); 
 
 				}
 				break;
 			case 45 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:282: T__108
+				// ast.g:1:282: T__108
 				{
 				mT__108(); 
 
 				}
 				break;
 			case 46 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:289: T__109
+				// ast.g:1:289: T__109
 				{
 				mT__109(); 
 
 				}
 				break;
 			case 47 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:296: T__110
+				// ast.g:1:296: T__110
 				{
 				mT__110(); 
 
 				}
 				break;
 			case 48 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:303: T__111
+				// ast.g:1:303: T__111
 				{
 				mT__111(); 
 
 				}
 				break;
 			case 49 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:310: T__112
+				// ast.g:1:310: T__112
 				{
 				mT__112(); 
 
 				}
 				break;
 			case 50 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:317: T__113
+				// ast.g:1:317: T__113
 				{
 				mT__113(); 
 
 				}
 				break;
 			case 51 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:324: T__114
+				// ast.g:1:324: T__114
 				{
 				mT__114(); 
 
 				}
 				break;
 			case 52 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:331: T__115
+				// ast.g:1:331: T__115
 				{
 				mT__115(); 
 
 				}
 				break;
 			case 53 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:338: T__116
+				// ast.g:1:338: T__116
 				{
 				mT__116(); 
 
 				}
 				break;
 			case 54 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:345: T__117
+				// ast.g:1:345: T__117
 				{
 				mT__117(); 
 
 				}
 				break;
 			case 55 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:352: T__118
+				// ast.g:1:352: T__118
 				{
 				mT__118(); 
 
 				}
 				break;
 			case 56 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:359: T__119
+				// ast.g:1:359: T__119
 				{
 				mT__119(); 
 
 				}
 				break;
 			case 57 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:366: Dec
+				// ast.g:1:366: Dec
 				{
 				mDec(); 
 
 				}
 				break;
 			case 58 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:370: Hex
+				// ast.g:1:370: Hex
 				{
 				mHex(); 
 
 				}
 				break;
 			case 59 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:374: Oct
+				// ast.g:1:374: Oct
 				{
 				mOct(); 
 
 				}
 				break;
 			case 60 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:378: Nice_identifier
+				// ast.g:1:378: Nice_identifier
 				{
 				mNice_identifier(); 
 
 				}
 				break;
 			case 61 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:394: Nice_character_constant
+				// ast.g:1:394: Nice_character_constant
 				{
 				mNice_character_constant(); 
 
 				}
 				break;
 			case 62 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:418: Nice_string
+				// ast.g:1:418: Nice_string
 				{
 				mNice_string(); 
 
 				}
 				break;
 			case 63 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:430: COMMENT
+				// ast.g:1:430: COMMENT
 				{
 				mCOMMENT(); 
 
 				}
 				break;
 			case 64 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:438: LINE_COMMENT
+				// ast.g:1:438: LINE_COMMENT
 				{
 				mLINE_COMMENT(); 
 
 				}
 				break;
 			case 65 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:451: Header
+				// ast.g:1:451: Header
 				{
 				mHeader(); 
 
 				}
 				break;
 			case 66 :
-				// D:\\JAVA\\first\\src\\core\\first.g:1:458: WS
+				// ast.g:1:458: WS
 				{
 				mWS(); 
 

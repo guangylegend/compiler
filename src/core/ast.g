@@ -1,4 +1,4 @@
-grammar first;
+grammar ast;
 
 
 

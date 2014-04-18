@@ -1,5 +1,5 @@
 all: 
-	java -jar ../../lib/antlr-3.5-complete.jar first.g
+	java -jar ../../lib/antlr-3.5.1-complete.jar first.g
 
 clean:
-	rm -f firstParser.java firstELexer.java first.tokens
+	rm -f firstParser.java firstLexer.java first.tokens

@@ -2,7 +2,6 @@ package classDef;
 
 import java.util.Vector;
 
-import core.env;
 import core.first;
 import classes.type;
 
@@ -13,8 +12,7 @@ public class parameters extends root
 	{
 		Vector<type> r = new Vector<type>();
 		
-		env newe = new env();
-		first.e.add(newe);
+		first.beginscope(0);
 		
 		for(int i=0;i<child.size();i++)
 		{

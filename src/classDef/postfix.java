@@ -3,6 +3,7 @@ package classDef;
 import java.util.Vector;
 
 import classes.Tint;
+import classes.name;
 import classes.array;
 import classes.function;
 import classes.pointer;
@@ -35,7 +36,7 @@ public class postfix extends root
 			type tmp = ((returnrecord)son.record).rtype;
 			if(tmp==null)
 			{
-				tmp = find((String)((returnrecord)son.record).value);
+				tmp = find((String)((returnrecord)son.record).value,0);
 				if(tmp == null)throw new Exception();
 			}
 			if (checkconvert(tmp,new Tint())!=0)
@@ -143,13 +144,10 @@ public class postfix extends root
 				//return r;
 			}
 			pointer p = (pointer)t;
-			if (!(p.elementType instanceof struct))
-			{	
-				throw new Exception();
-				//r.value = "wrong";
-				//return r;
-			};
-			struct s = (struct)p.elementType;
+			type k = p.elementType;
+			if(k.typename.equals("name"))k = find(((name)k).str,1);
+			if(k==null)throw new Exception();
+			struct s = (struct)k;
 			for (int i = 0; i < s.vs.size(); ++i)
 			{
 				if (name.equals(s.vs.get(i)))

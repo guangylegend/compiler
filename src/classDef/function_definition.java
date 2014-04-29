@@ -2,9 +2,7 @@ package classDef;
 
 import java.util.Vector;
 
-import core.env;
 import core.first;
-import core.symbol;
 import classes.function;
 import classes.type;
 
@@ -41,15 +39,14 @@ public class function_definition extends root
 			argumentType = (Vector<type>)son.record;
 			scope = 1;
 		}
-		if (first.e.get(first.e.size()-1-scope).functable.get(symbol.symbol(functionName))!=null) throw new Exception();
+		if (first.getfunc(functionName,first.F.size()-1-scope)!=null) throw new Exception();
 		type t = new function(returnType, argumentType, functionName);
-		first.e.get(first.e.size()-1-scope).functable.put(symbol.symbol(functionName), t);
+		first.putfunc(functionName, t,first.F.size()-1-scope);
 		
 		//scope?
 		if(child.size()==3)
 		{
-			env newe = new env();
-			first.e.add(newe);
+			first.beginscope(0);
 		}
 		
 		
@@ -61,7 +58,7 @@ public class function_definition extends root
 		
 		first.func = null;
 		
-		first.e.remove(first.e.size()-1);
+		first.endscope(0);
 		
 		return 0;
 	}

@@ -1,6 +1,7 @@
 package classDef;
 
 import classes.Tvoid;
+import classes.name;
 import classes.pointer;
 import classes.type;
 
@@ -25,9 +26,10 @@ public class postfix_expression extends root
 		if(!(((String)((returnrecord)record).value).equals("printf") || ((String)((returnrecord)record).value).equals("malloc")))
 		{
 			//System.out.println((String)((returnrecord)record).value);
+			
 			if(t.typename.equals("name"))
-			{
-				t = find((String)((returnrecord)record).value,1);
+			{System.out.println(((name)t).str);
+				t = find(((name)t).str,1);
 			}
 			if(t==null)throw new Exception();
 			for(int i=1;i<child.size();i++)

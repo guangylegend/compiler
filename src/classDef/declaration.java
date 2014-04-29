@@ -61,8 +61,8 @@ public class declaration extends root
 			
 			for(int i=0;i<vv.size();i++)
 			{
-				if(first.e.lastElement().functable.get(symbol.symbol(vv.get(i).str))!=null)throw new Exception();
-				else first.e.lastElement().functable.put(symbol.symbol(vv.get(i).str),vv.get(i).typ);
+				if(first.getfunc(vv.get(i).str)!=null)throw new Exception();
+				else first.putfunc(vv.get(i).str,vv.get(i).typ);
 
 			}
 			if(child.get(1).checkinit()!=0)

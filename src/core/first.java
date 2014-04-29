@@ -16,10 +16,81 @@ import org.antlr.runtime.tree.BaseTree;
 
 
 public class first{   
-	public static Vector<env> e = new Vector<env>();
+	public static Vector<table> F = new Vector<table>();
+	public static Vector<table> S = new Vector<table>();
 	public static int loop = 0;
 	public static int noname = 0;
 	public static function func = null;
+	
+	public static type getstruct(String s)
+	{
+		return (type) S.lastElement().get(symbol.symbol(s));
+	}
+	
+	public static type getfunc(String s)
+	{
+		return (type) F.lastElement().get(symbol.symbol(s));
+	}
+	
+	public static type getstruct(String s,int i)
+	{
+		return (type) S.get(i).get(symbol.symbol(s));
+	}
+	
+	public static type getfunc(String s,int i)
+	{
+		return (type) F.get(i).get(symbol.symbol(s));
+	}
+	
+	public static void putstruct(String s,type t)
+	{
+		S.lastElement().put(symbol.symbol(s),t);
+	}
+	
+	public static void putfunc(String s,type t)
+	{
+		F.lastElement().put(symbol.symbol(s),t);
+	}
+	
+	public static void putstruct(String s,type t,int i)
+	{
+		S.get(i).put(symbol.symbol(s),t);
+	}
+	
+	public static void putfunc(String s,type t,int i)
+	{
+		F.get(i).put(symbol.symbol(s),t);
+	}
+	
+	public static void beginscope(int i)
+	{
+		if(i==0)
+		{
+			table t1 = new table();
+			table t2 = new table();
+			S.add(t1);
+			F.add(t2);
+		}
+		else// for namespace
+		{
+			table t1 = new table();
+			F.add(t1);
+		}
+		
+	}
+	
+	public static void endscope(int i)
+	{
+		if(i==0)
+		{
+			S.remove(S.size()-1);
+			F.remove(F.size()-1);
+		}
+		else// for namespace
+		{
+			F.remove(F.size()-1);
+		}
+	}
 	
 	public static List<File> getFiles(String path){
 	    File root = new File(path);
@@ -42,7 +113,8 @@ public class first{
 	{
 		try
 		{
-			e = new Vector<env>();
+			F = new Vector<table>();
+			S = new Vector<table>();
 			loop = 0;
 			noname = 0;
 			func = null; 
@@ -158,18 +230,7 @@ public class first{
 		    	
 		    	
 		    }
-		    
-		    /*
-		    string ss = new string();
-		    ss.record = new Tint();
-		    e.add(new env());
-		    e.lastElement().functable.put(symbol.symbol("s"), (type)ss.record);
-		    if(e.lastElement().functable.get(symbol.symbol("s")) instanceof Tint)
-		    {
-		    	System.out.println("hahahahahaha");
-		    }
-		    */
-		    
+
 		    return(rt.check());
 		    
 		    
@@ -180,6 +241,14 @@ public class first{
 	
 public static void main(String[] args)throws Exception   
 {    
-	System.exit( work(new File(args[0])));
+	/*String s = "D:\\compiler2014-testcases\\Normal";
+    List<File> files = getFiles(s);
+    for(File f : files){
+    	System.out.println(f.getName());
+    	System.out.println(work(f));
+    }*/
+
+	//System.out.println(work(new File("D:\\compiler2014-testcases\\CompileError\\func1-5100379071-puyouer.c")));
+	System.exit(work(new File(args[0])));
 }
 }

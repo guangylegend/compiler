@@ -3,9 +3,7 @@ package classDef;
 
 import java.util.Vector;
 
-import core.env;
 import core.first;
-import core.symbol;
 import classes.*;
 public class type_specifier extends root
 {
@@ -49,8 +47,9 @@ public class type_specifier extends root
 				else
 					s += "Legend_" + String.valueOf(first.noname++);
 				
-				env newe = new env();
-				first.e.add(newe);
+				//System.out.println(first.S.size());
+				
+				first.beginscope(1);
 				
 				//inverse...
 				Vector<type> vt = new Vector<type>();
@@ -61,24 +60,26 @@ public class type_specifier extends root
 					type t = ((returnrecord)child.get(i).record).rtype;
 					if(child.get(i+1).check()!=0)throw new Exception();
 					Vector<String> v = (Vector<String>)child.get(i+1).record;
-					for(int j=0;j<v.size();j++)if(first.e.lastElement().functable.get(symbol.symbol(v.get(j)))!=null)throw new Exception();
+					for(int j=0;j<v.size();j++)if(first.getfunc(v.get(j))!=null)throw new Exception();
 					Vector<pair> p = (Vector<pair>)child.get(i+1).check(t);
 					for(int j=0;j<p.size();j++)
 					{
 						vt.add(p.get(j).typ);
 						vs.add(p.get(j).str);
-						first.e.lastElement().functable.put(symbol.symbol(p.get(j).str),p.get(j).typ);
+						first.putfunc(p.get(j).str,p.get(j).typ);
 					}
 									
 				}
 				
-				first.e.remove(first.e.size()-1);
+				first.endscope(1);
 				
-				type tmp = (type)first.e.lastElement().structtable.get(symbol.symbol(s));
+				type tmp = first.getstruct(s);
 				if (tmp != null)throw new Exception();
 				type struct = new struct(s, vt, vs);
 				
-				first.e.lastElement().structtable.put(symbol.symbol(s), struct);
+				//System.out.println("%%%");
+				//System.out.println(s);
+				first.putstruct(s, struct);
 
 				r.rtype = struct;
 				record = r;
@@ -89,9 +90,9 @@ public class type_specifier extends root
 		{
 				if (child.get(1).check()!=0) throw new Exception();
 				String s = (String)((returnrecord)child.get(1).record).value;
-				type struct = find(s);
+				type struct = find(s,1);
 				
-				
+				//System.out.println(first.S.size());
 				if (struct == null)struct = new name(s);
 				
 				

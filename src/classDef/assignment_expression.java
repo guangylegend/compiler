@@ -34,7 +34,7 @@ public class assignment_expression extends root
 			if (((String)child.get(1).record).equals("="))
 			{
 				//System.out.println(t.typename);
-				if (checkconvert( t,((returnrecord)child.get(2).record).rtype)!=0)
+				if (checkconvert(((returnrecord)child.get(2).record).rtype,t)!=0)
 				{
 					throw new Exception();
 					//return 1;

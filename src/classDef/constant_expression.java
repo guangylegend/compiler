@@ -12,6 +12,7 @@ public class constant_expression extends root
 			//return 1;
 		}
 		record = child.get(0).record;
+		code = child.get(0).code;
 		return 0;
 	}
 }

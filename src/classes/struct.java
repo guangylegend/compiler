@@ -2,14 +2,18 @@ package classes;
 
 import java.util.Vector;
 
+import classDef.value;
+
 public final class struct extends record 
 {
-	public struct(String n,Vector<type> t,Vector<String> s)
+	public struct(String n,Vector<value> t,Vector<String> s)
 	{
 		name = n;
 		vt = t;
 		vs = s;
 		typename = "struct";
+		size = 0;
+		for(int i=0;i<t.size();i++)size+=(t.get(i).typ.size);
 	}
 	public struct(String n)
 	{

@@ -7,6 +7,7 @@ public class primary_expression extends root
 	{
 		if(child.get(0).check()!=0)throw new Exception();
 		record = child.get(0).record;
+		code = child.get(0).code;
 		
 		return 0;
 	}

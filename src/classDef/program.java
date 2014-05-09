@@ -1,4 +1,6 @@
 package classDef;
+import java.util.Vector;
+
 import core.*;
 
 public class program extends root
@@ -8,12 +10,20 @@ public class program extends root
 	{
 		first.beginscope(0);
 	
+		first.Off.push(0);
 		
 		for(int i=0;i<child.size();i++)
 		{
 			if(child.get(i).check()!=0)throw new Exception();
 		}
-		first.endscope(0);
+		Vector<quad> r = new Vector<quad>();
+		for(int i=0;i<child.size();i++)
+		{			
+			r.addAll(child.get(i).code);
+		}
+		code = r;
+		first.Off.pop();
+		//first.endscope(0);     //for search
 		return 0;
 		
 	}

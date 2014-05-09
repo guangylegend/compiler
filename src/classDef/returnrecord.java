@@ -1,5 +1,6 @@
 package classDef;
 
+
 import classes.type;
 
 public final class returnrecord
@@ -9,5 +10,5 @@ public final class returnrecord
 	public boolean constant;
 	public type rtype;
 	public Object value;
-	
+	public location loc;
 }

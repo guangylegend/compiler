@@ -10,6 +10,7 @@ public class plain_declarator extends root
 	{
 		child.lastElement().check();
 		record = child.lastElement().record;
+		code = child.lastElement().code;
 		return 0;
 	}
 	
@@ -17,8 +18,10 @@ public class plain_declarator extends root
 	{
 		for(int i=0;i<child.size()-1;i++)
 		{
-			t = new pointer(t);
+			t = new pointer(t,null);
+			t.size = 4;	
 		}
-		return new pair((String)((returnrecord)record).value,t);
+		return new pair((String)((returnrecord)record).value,new value(t,((returnrecord)child.lastElement().record).loc));
+		
 	}
 }

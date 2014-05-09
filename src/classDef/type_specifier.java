@@ -50,9 +50,10 @@ public class type_specifier extends root
 				//System.out.println(first.S.size());
 				
 				first.beginscope(1);
+				first.Off.push(0);
 				
 				//inverse...
-				Vector<type> vt = new Vector<type>();
+				Vector<value> vt = new Vector<value>();
 				Vector<String> vs = new Vector<String>();
 				for(int i=1+(child.size()-1)%2;i<child.size();i+=2)
 				{
@@ -64,22 +65,30 @@ public class type_specifier extends root
 					Vector<pair> p = (Vector<pair>)child.get(i+1).check(t);
 					for(int j=0;j<p.size();j++)
 					{
-						vt.add(p.get(j).typ);
+						value val = p.get(j).val;
+						val.loc.offset = first.Off.lastElement();
+						first.Off.setElementAt(first.Off.lastElement()+val.typ.size, first.Off.size()-1);
+						vt.add(val);
 						vs.add(p.get(j).str);
-						first.putfunc(p.get(j).str,p.get(j).typ);
+						first.putfunc(p.get(j).str,p.get(j).val);
 					}
 									
 				}
 				
+
 				first.endscope(1);
 				
-				type tmp = first.getstruct(s);
+				type tmp = first.getstruct(s).typ;
 				if (tmp != null)throw new Exception();
 				type struct = new struct(s, vt, vs);
 				
 				//System.out.println("%%%");
 				//System.out.println(s);
-				first.putstruct(s, struct);
+				first.Off.pop();
+			
+				first.putstruct(s, new value(struct,new location()));
+				
+				
 
 				r.rtype = struct;
 				record = r;
@@ -90,7 +99,7 @@ public class type_specifier extends root
 		{
 				if (child.get(1).check()!=0) throw new Exception();
 				String s = (String)((returnrecord)child.get(1).record).value;
-				type struct = find(s,1);
+				type struct = find(s,1).typ;
 				
 				//System.out.println(first.S.size());
 				if (struct == null)struct = new name(s);

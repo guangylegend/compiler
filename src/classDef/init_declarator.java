@@ -1,8 +1,8 @@
 package classDef;
 
-
-
 import classes.type;
+
+
 
 public class init_declarator extends root
 {
@@ -28,8 +28,11 @@ public class init_declarator extends root
 		if(child.size()>1)
 		{
 			if(child.get(1).check()!=0)return 1;
-			record = new pair((String)((returnrecord)child.get(0).record).value,(type)child.get(1).record);
+			record = child.get(1).record;
 		}
+		else record = null;
+		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
+
 		return 0;
 	}
 }

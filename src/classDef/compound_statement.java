@@ -2,6 +2,8 @@ package classDef;
 
 import core.first;
 
+//import core.first;
+
 public class compound_statement extends root
 {
 	public compound_statement(){}
@@ -16,6 +18,7 @@ public class compound_statement extends root
 				//return 1;
 			}
 		}
+		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
 		first.endscope(0);
 		return 0;
 		

@@ -6,6 +6,7 @@ public final class name extends type
 	{
 		str = s;
 		typename = "name";
+		size = 4;
 	}
 	public String str;
 }

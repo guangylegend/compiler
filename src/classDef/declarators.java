@@ -19,6 +19,7 @@ public class declarators extends root
 			}
 			s.add((String)((returnrecord)child.get(i).record).value);
 		}
+		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
 		record = s;
 		return 0;
 	}

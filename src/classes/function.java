@@ -2,15 +2,18 @@ package classes;
 
 import java.util.Vector;
 
+import classDef.value;
+
 public final class function extends type { 
-	public function(type t,Vector<type> a,String n)
+	public function(type t,Vector<value> a,String n)
 	{
 		returnType = t;
-		argumentType = a;
+		argument = a;
 		name = n;
 		typename = "function";
+		size = 0;
 	};
-	public Vector<type> argumentType; 
+	public Vector<value> argument; 
 	public type returnType; 
 	public String name;
 } 

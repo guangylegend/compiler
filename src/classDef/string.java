@@ -12,7 +12,7 @@ public class string extends root
 		r.constant = true;
 		r.value = child.get(0).record;
 		r.lvalue = false;
-		r.rtype = new pointer(new Tchar());
+		r.rtype = new pointer(new Tchar(),null);
 		record = r;
 		
 		//System.out.println(r.value);

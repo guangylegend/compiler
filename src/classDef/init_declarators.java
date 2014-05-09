@@ -30,12 +30,13 @@ public class init_declarators extends root
 		{
 			if(child.get(i).checkinit()!=0)throw new Exception();
 		}
-		Vector<pair> v = new Vector<pair>();
+		Vector<Object> v = new Vector<Object>();
 		for(int i=0;i<child.size();i++)
 		{
-			v.add((pair)child.get(i).record);
+			v.add(child.get(i).record);
 		}
 		record = v;
+		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
 		
 		return 0;
 	}

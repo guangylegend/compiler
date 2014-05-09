@@ -5,5 +5,6 @@ public final class Tvoid extends type
 	public Tvoid()
 	{
 		typename = "void";
+		size = 0;
 	};
 }

@@ -7,6 +7,7 @@ options{
 	output = AST ;
 	ASTLabelType = CommonTree ;
 	backtrack = true;
+	memoize = true;
 } 
 
 tokens {  
@@ -139,25 +140,25 @@ assignment_expression:
                       | logical_or_expression -> ^(LEGEND_assignment_expression logical_or_expression)
                       ;catch[RecognitionException e] {throw e;}
  
- assignment_operator: '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=';
+assignment_operator: '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=';
  
- constant_expression :
+constant_expression :
 	a1=logical_or_expression  ->  ^(LEGEND_constant_expression $a1)  ;
 	
 logical_or_expression :
-	logical_and_expression ('||' logical_and_expression)*  ->  ^(LEGEND_logical_or_expression logical_and_expression+);
+	logical_and_expression ('||' logical_and_expression)*  ->  ^(LEGEND_logical_or_expression logical_and_expression ('||' logical_and_expression)*);
 	
 logical_and_expression :
-	inclusive_or_expression ('&&' inclusive_or_expression)*  ->  ^(LEGEND_logical_and_expression inclusive_or_expression+)  ;
+	inclusive_or_expression ('&&' inclusive_or_expression)*  ->  ^(LEGEND_logical_and_expression inclusive_or_expression ('&&' inclusive_or_expression)*)  ;
  
 inclusive_or_expression :
-	exclusive_or_expression ('|' exclusive_or_expression)*  ->  ^(LEGEND_inclusive_or_expression exclusive_or_expression+)  ;
+	exclusive_or_expression ('|' exclusive_or_expression)*  ->  ^(LEGEND_inclusive_or_expression exclusive_or_expression ('|' exclusive_or_expression)*)  ;
  
 exclusive_or_expression :
-	and_expression ('^' and_expression)*  ->  ^(LEGEND_exclusive_or_expression and_expression+)  ;
+	and_expression ('^' and_expression)*  ->  ^(LEGEND_exclusive_or_expression and_expression ('^' and_expression)*)  ;
  
 and_expression :
-	equality_expression ('&' equality_expression)*  ->  ^(LEGEND_and_expression equality_expression+)  ;
+	equality_expression ('&' equality_expression)*  ->  ^(LEGEND_and_expression equality_expression ('&' equality_expression)*)  ;
  
 equality_expression :
 	relational_expression (equality_operator relational_expression)*  ->  ^(LEGEND_equality_expression relational_expression (equality_operator relational_expression)*) ;

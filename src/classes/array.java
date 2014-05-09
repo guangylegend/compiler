@@ -1,12 +1,15 @@
 package classes;
 
+import classDef.location;
+
 public class array extends pointer
 {
-	public array(type t,int n)
+	public array(type t,int n,location l)
 	{
-		super(t);
+		super(t,l);
 		capacity = n;
 		typename = "array";
+		size = n*t.size;
 	}
-	int capacity;
+	public int capacity;
 }

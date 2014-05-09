@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.Vector;
 
 import org.antlr.runtime.*;  
@@ -18,48 +19,56 @@ import org.antlr.runtime.tree.BaseTree;
 public class first{   
 	public static Vector<table> F = new Vector<table>();
 	public static Vector<table> S = new Vector<table>();
+	public static Stack<Integer> Off = new Stack<Integer>();
+	public static int Register = 0;
 	public static int loop = 0;
+	public static int Label = 0;
+	public static Stack<Integer> lline = new Stack<Integer>();
+	public static Stack<Integer> lend = new Stack<Integer>();
 	public static int noname = 0;
 	public static function func = null;
 	
-	public static type getstruct(String s)
+	public static int GP = 10000000;
+	public static int SP = 0;
+	
+	public static value getstruct(String s)
 	{
-		return (type) S.lastElement().get(symbol.symbol(s));
+		return (value) S.lastElement().get(symbol.symbol(s));
 	}
 	
-	public static type getfunc(String s)
+	public static value getfunc(String s)
 	{
-		return (type) F.lastElement().get(symbol.symbol(s));
+		return (value) F.lastElement().get(symbol.symbol(s));
 	}
 	
-	public static type getstruct(String s,int i)
+	public static value getstruct(String s,int i)
 	{
-		return (type) S.get(i).get(symbol.symbol(s));
+		return (value) S.get(i).get(symbol.symbol(s));
 	}
 	
-	public static type getfunc(String s,int i)
+	public static value getfunc(String s,int i)
 	{
-		return (type) F.get(i).get(symbol.symbol(s));
+		return (value) F.get(i).get(symbol.symbol(s));
 	}
 	
-	public static void putstruct(String s,type t)
+	public static void putstruct(String s,value v)
 	{
-		S.lastElement().put(symbol.symbol(s),t);
+		S.lastElement().put(symbol.symbol(s),v);
 	}
 	
-	public static void putfunc(String s,type t)
+	public static void putfunc(String s,value v)
 	{
-		F.lastElement().put(symbol.symbol(s),t);
+		F.lastElement().put(symbol.symbol(s),v);
 	}
 	
-	public static void putstruct(String s,type t,int i)
+	public static void putstruct(String s,value v,int i)
 	{
-		S.get(i).put(symbol.symbol(s),t);
+		S.get(i).put(symbol.symbol(s),v);
 	}
 	
-	public static void putfunc(String s,type t,int i)
+	public static void putfunc(String s,value v,int i)
 	{
-		F.get(i).put(symbol.symbol(s),t);
+		F.get(i).put(symbol.symbol(s),v);
 	}
 	
 	public static void beginscope(int i)
@@ -231,10 +240,211 @@ public class first{
 		    	
 		    }
 
-		    return(rt.check());
+		    int ans = rt.check();
+
+		    for(int i=0;i<rt.code.size();i++)
+		    {
+		    	quad q = rt.code.get(i);
+		    	
+		    	
+		    	if(q.operator.equals("func"))
+		    	{
+		    		System.out.println("-------func_start--------");
+		    		System.out.print(q.arg3.contain);
+		    	}
+		    	else if(q.operator.equals("funcend"))
+		    	{
+		    		System.out.println("--------func_end---------");
+		    	}
+		    	else if(q.operator.equals("storereturn"))
+		    	{
+		    		System.out.print("store");
+		    		System.out.print("\t");
+		    		
+		    		if(q.arg1 == null)
+			    		System.out.print("");
+			    	else if(q.arg1.type.equals("const"))
+			    		System.out.print(q.arg1.contain);
+			    	else if(q.arg1.type.equals("memory"))
+			    	{
+			    		System.out.print(q.arg1.offset);
+			    		if(q.arg1.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+			    	else if(q.arg1.type.equals("register"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(q.arg1.number);
+			    	}
+			    	else if(q.arg1.type.equals("dynamic"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(((location)q.arg1.contain).number);
+			    		if(q.arg1.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+		    		
+		    		System.out.print("\t");
+		    		System.out.print("\t");
+		    		int size = getfunc((String)q.arg3.contain).typ.size;
+		    		size -= ((function)getfunc((String)q.arg3.contain).typ).returnType.size;
+		    		System.out.print(size);
+		    		System.out.print("($sp)");
+		    		
+		    	}
+		    	else if(q.operator.equals("return"))
+		    	{
+		    		if(q.arg3.contain.equals("main"))continue;
+		    		int size = getfunc((String)q.arg3.contain).typ.size;
+		    		size -= ((function)getfunc((String)q.arg3.contain).typ).returnType.size;
+		    		System.out.print("addiu");
+		    		System.out.print("\t");
+		    		System.out.print("$sp");
+		    		System.out.print("\t");
+		    		System.out.print(size);
+		    		System.out.print("\t");
+		    		System.out.print("$sp");
+		    		System.out.println();
+		    		System.out.print("jr");
+		    		System.out.print("\t");
+		    		System.out.print("$ra");
+		    	}
+		    	else if(q.operator.equals("label"))
+		    	{
+		    		System.out.print("L");
+		    		System.out.print(q.arg3.contain);
+		    		System.out.print(":");
+		    	}
+		    	else if(q.operator.equals("jal"))
+		    	{
+		    		System.out.print("jal");
+		    		System.out.print("\t");
+		    		System.out.print("L");
+		    		System.out.print(q.arg3.contain);
+		    	}
+		    	else if(q.operator.equals("beqz"))
+		    	{
+		    		System.out.print("beqz");
+		    		System.out.print("\t");
+		    		if(q.arg1 == null)
+			    		System.out.print("");
+			    	else if(q.arg1.type.equals("const"))
+			    		System.out.print(q.arg1.contain);
+			    	else if(q.arg1.type.equals("memory"))
+			    	{
+			    		System.out.print(q.arg1.offset);
+			    		if(q.arg1.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+			    	else if(q.arg1.type.equals("register"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(q.arg1.number);
+			    	}
+		    		System.out.print("\t");
+		    		System.out.print("\t");
+		    		System.out.print("L");
+		    		System.out.print(q.arg3.contain);
+		    	}
+		    	else if(q.operator.equals("loc"))
+		    	{
+		    		int size = getfunc((String)q.arg3.contain).typ.size;
+		    		System.out.print("addiu");
+		    		System.out.print("\t");
+		    		System.out.print("$sp");
+		    		System.out.print("\t");
+		    		System.out.print("-");
+		    		System.out.print(size);
+		    		System.out.print("\t");
+		    		System.out.print("$sp");
+		    	}
+		    	else
+		    	{
+		    		System.out.print(q.operator);
+			    	System.out.print("\t");
+		    		if(q.arg1 == null)
+			    		System.out.print("");
+			    	else if(q.arg1.type.equals("const"))
+			    		System.out.print(q.arg1.contain);
+			    	else if(q.arg1.type.equals("memory"))
+			    	{
+			    		System.out.print(q.arg1.offset);
+			    		if(q.arg1.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+			    	else if(q.arg1.type.equals("register"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(q.arg1.number);
+			    	}
+			    	else if(q.arg1.type.equals("dynamic"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(((location)q.arg1.contain).number);
+			    		if(q.arg1.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+		    		System.out.print("\t");
+			    	
+			    	if(q.arg2 == null)
+			    		System.out.print("");
+			    	else if(q.arg2.type.equals("const"))
+			    		System.out.print(q.arg2.contain);
+			    	else if(q.arg2.type.equals("memory"))
+			    	{
+			    		System.out.print(q.arg2.offset);
+			    		if(q.arg2.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+			    	else if(q.arg2.type.equals("register"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(q.arg2.number);
+			    	}
+			    	else if(q.arg2.type.equals("dynamic"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(((location)q.arg2.contain).number);
+			    		if(q.arg2.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+			    	System.out.print("\t");
+
+			    	if(q.arg3 == null)
+			    		System.out.print("");
+			    	else if(q.arg3.type.equals("const"))
+			    		System.out.print(q.arg3.contain);
+			    	else if(q.arg3.type.equals("memory"))
+			    	{
+			    		System.out.print(q.arg3.offset);
+			    		if(q.arg3.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+			    	else if(q.arg3.type.equals("register"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(q.arg3.number);
+			    	}
+			    	else if(q.arg3.type.equals("dynamic"))
+			    	{
+			    		System.out.print("$t");
+			    		System.out.print(((location)q.arg3.contain).number);
+			    		if(q.arg3.global)System.out.print("($gp)");
+			    		else System.out.print("($sp)");
+			    	}
+		    	}
+		    	
+		    	System.out.println();
+		    }
 		    
 		    
-		}catch(Exception a) {
+		    
+		    
+		    
+		    return ans;
+		    
+		    
+		}catch(RecognitionException a) {
 			return(1);
 		}
 	}
@@ -247,8 +457,7 @@ public static void main(String[] args)throws Exception
     	System.out.println(f.getName());
     	System.out.println(work(f));
     }*/
-
-	//System.out.println(work(new File("D:\\compiler2014-testcases\\CompileError\\func1-5100379071-puyouer.c")));
-	System.exit(work(new File(args[0])));
+	System.out.println(work(new File("D:\\compiler2014-testcases\\Normal\\struct5-5110379024-wuhang.c")));
+	//System.exit(work(new File(args[0])));
 }
 }

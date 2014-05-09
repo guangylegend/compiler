@@ -1,14 +1,13 @@
 package classDef;
 
-import classes.type;
 
 public class pair
 {
 	String str;
-	type typ;
-	public pair(String s,type t)
+	value val;
+	public pair(String s,value v)
 	{
 		str = s;
-		typ = t;
+		val = v;
 	}
 }

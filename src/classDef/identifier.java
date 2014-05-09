@@ -10,7 +10,8 @@ public class identifier extends root
 		r.constant = false;
 		r.value = child.get(0).record;
 		r.lvalue = true;
-		r.rtype = find((String)r.value,0);
+		r.rtype = find((String)r.value,0).typ;
+		r.loc = find((String)r.value,0).loc;
 
 		/*if(r.rtype!=null)
 		{

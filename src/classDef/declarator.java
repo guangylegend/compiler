@@ -22,10 +22,12 @@ public class declarator extends root
 				
 				for (int i = child.size() - 1; i > 0; i--)
 				{
+					if(!((returnrecord)child.get(i).record).constant)throw new Exception();	
 					if(checkconvert(((returnrecord)child.get(i).record).rtype,new Tint())!=0)throw new Exception();			
 				}
 			}
 		}
+		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
 		record = child.get(0).record;
 		return 0;
 	}
@@ -38,30 +40,23 @@ public class declarator extends root
 		}
 		else if (child.get(1) instanceof parameters)
 		{
-/*			son = (root)vec.get(1);
-			if (son.checkSon() == WA) return WA;
-			
-			if (vec.size() == 2) return AC;
-			
-			son = (root)vec.get(2);
-			if (son.checkSon() == WA) return WA;*/
-			
 
 			//System.out.println("declarator miss");
 		}
 		else
 		{
-			//System.out.println("declarator");
-			type typ = ((pair)child.get(0).check(t)).typ;
+			value val = ((pair)child.get(0).check(t)).val;
 			String str = ((pair)child.get(0).check(t)).str;
 			
-			for (int i = child.size() - 1; i > 0; i--)  //index......................
+			for (int i = child.size() - 1; i > 0; i--)
 			{
-				typ = new array(typ,20);
+				int index = (int)((returnrecord)child.get(i).record).value;
+				val.typ = new array(val.typ,index,null);
 			}
-			return new pair(str,typ);
+			
+			return new pair(str,val);
 		}
-		return 0; //T T
+		return 0;
 	}
 	
 }

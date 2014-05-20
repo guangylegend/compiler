@@ -6,10 +6,8 @@ import classDef.*;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -164,7 +162,7 @@ public class first{
 	    	    	}
 	    	    }
 
-		    	if(stringcnt%2==0)
+		    	if(stringcnt%2==0 || todo)
 		    	{	
 		    		for (int ii =0;ii<res[i].length();ii++)
 	    			{
@@ -441,6 +439,7 @@ public class first{
 		    		else if(q.operator.equals("mallocli"))continue;
 		    		else if(q.operator.equals("malloc"))continue;
 		    		else if(q.operator.equals("syscall"))continue;
+		    		else if(q.operator.equals("do"))continue;
 		    		else if(q.operator.equals("malloclal"))
 		    		{
 		    			Vector<Integer> su = new Vector<Integer>();
@@ -493,6 +492,30 @@ public class first{
 		    		{
 		    			lab.add((int) q.arg3.contain);
 		    			continue;
+		    		}
+		    		else if(q.operator.equals("store"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg1!=null && q.arg1.number!=0)
+			    		{
+			    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    			use.lastElement().add(q.arg1.number);
+			    		}
+			    		if(q.arg3!=null && q.arg3.number!=0)
+			    		{
+			    			if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    			use.lastElement().add(q.arg3.number);
+			    		}
+			    		continue;
 		    		}
 		    		else if(q.operator.equals("beqz"))
 		    		{
@@ -556,7 +579,7 @@ public class first{
 		    	}
 		    }
 		    
-		    succ.lastElement().clear();
+		    if(succ.size()>0)succ.lastElement().clear();
 			for(int k=0;k<rt.code.size();k++)
 		    {
 		    	quad qq = rt.code.get(k);
@@ -827,7 +850,7 @@ public class first{
 		    	else if(q.operator.equals("do"))
 		    	{
 		    		output+=("la"+"\t"+"$a0"+"\t"+"Legend_1"+"\n");
-		    		output+=("li"+"\t"+"$a1"+"\t"+"10");
+		    		output+=("li"+"\t"+"$a1"+"\t"+"10"+"\n");
 		    		output+=("li"+"\t"+"$a2"+"\t"+"34"+"\n");
 		    		output+=("la"+"\t"+"$a3"+"\t"+"Legend_1"+"\n");
 		    		output+=("li"+"\t"+"$s1"+"\t"+"34"+"\n");
@@ -1165,9 +1188,24 @@ public class first{
 		    	}
 		    	else if(q.operator.equals("storereturn"))
 		    	{
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		}
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
 		    		output+=("sw");
 		    		output+=("\t");
-		    		if(q.arg1 != null)output+=(q.arg1.toString() + "\t");
+		    		if(q.arg1 != null)
+		    		{
+		    			if(flag1)output+=("$tmp15" + "\t");
+		    			else output+=(q.arg1.toString() + "\t");
+		    		}
 		    		output+=(q.arg3.offset);
 		    		output+=("($v1)");
 		    	}
@@ -1191,9 +1229,19 @@ public class first{
 		    	else if(q.operator.equals("lal"))
 		    	{
 		    		boolean flag1 = false;
-		    		if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		} 
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
 		    		{
 		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		else if(q.arg1!=null && q.arg1.type.equals("return"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($v1)"+"\n");
 		    			flag1 = true;
 		    		}
 		    		output+=("lw");
@@ -1269,9 +1317,19 @@ public class first{
 		    	else if(q.operator.equals("sal"))
 		    	{
 		    		boolean flag1 = false;
-		    		if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		} 
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
 		    		{
 		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		else if(q.arg1!=null && q.arg1.type.equals("return"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($v1)"+"\n");
 		    			flag1 = true;
 		    		}
 		    		output+=("sw");
@@ -1286,6 +1344,7 @@ public class first{
 			    		output+=(q.arg1.number);
 		    		}  		
 		    		output+=("\t");
+		    		//TODO arg3?
 		    		if(tab[q.arg3.number]==1000)
 		    		{
 		    			output+=(q.arg3.offset);
@@ -1389,6 +1448,33 @@ public class first{
 		    		if(q.arg3.global)output+=(q.arg3.offset + "($s0)");
 		    		else output+=(q.arg3.offset + "($sp)");
 		    	}
+		    	else if(q.operator.equals("store"))
+		    	{
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		} 
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		else if(q.arg1!=null && q.arg1.type.equals("return"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($v1)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		output+=("sw" + "\t");
+		    		if(q.arg1!=null)
+			    	{
+			    		if(flag1)output+=("$tmp15"+"\t");
+			    		else output+=(q.arg1.toString()+"\t");
+			    	}
+		    		if(q.arg3.global)output+=(q.arg3.offset + "($s0)");
+		    		else output+=(q.arg3.offset + "($sp)");
+		    	}
 		    	else
 		    	{		
 		    		boolean flag1 = false;
@@ -1417,6 +1503,11 @@ public class first{
 		    				output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($sp)"+"\n");
 			    			flag2 = true;
 		    			}
+			    		else if(q.arg2!=null && q.arg2.type.equals("return"))
+			    		{
+			    			output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($v1)"+"\n");
+			    			flag2 = true;
+			    		}
 			    		if(q.arg3!=null && q.arg3.global && q.arg3.type.equals("memory") && !q.operator.equals("load"))
 			    		{
 			    			output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($s0)"+"\n");
@@ -1509,7 +1600,7 @@ public class first{
 		    
 		    return output;
 		        
-		}catch(Exception a) {
+		}catch(RecognitionException a) {
 			return "";
 			//return(1);
 		}

@@ -6,7 +6,10 @@ import classDef.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -864,7 +867,7 @@ public class first{
 		    FileReader fr = new FileReader(first.class.getResource("/print.txt").getFile());  
 		    int ch = 0;    
 		    while((ch = fr.read())!=-1 ){    
-		        output+=( (char)ch );    
+		        System.out.print( (char)ch );    
 		    }  
 		    
 		    

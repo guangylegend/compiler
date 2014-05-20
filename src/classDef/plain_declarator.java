@@ -18,7 +18,7 @@ public class plain_declarator extends root
 	{
 		for(int i=0;i<child.size()-1;i++)
 		{
-			t = new pointer(t,null);
+			t = new pointer(t);
 			t.size = 4;	
 		}
 		return new pair((String)((returnrecord)record).value,new value(t,((returnrecord)child.lastElement().record).loc));

@@ -51,7 +51,7 @@ public class declarator extends root
 			for (int i = child.size() - 1; i > 0; i--)
 			{
 				int index = (int)((returnrecord)child.get(i).record).value;
-				val.typ = new array(val.typ,index,null);
+				val.typ = new array(val.typ,index);
 			}
 			
 			return new pair(str,val);

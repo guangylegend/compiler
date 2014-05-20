@@ -20,43 +20,57 @@ public class plain_declaration extends root
 			value t = vv.val;
 			String s = vv.str;
 
-				/*if(t.typ instanceof struct || t.typ instanceof union)
-				{
-					if(first.getstruct(s) == null)
-					{
-						t.loc.offset = first.Off.lastElement();
-						if(first.func==null)t.loc.global = true;
-						else t.loc.global = false;
-						first.putstruct(s,t);
-						first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
-					}
-					else throw new Exception();
-				}*/
+				
 					if(first.getfunc(s) == null)
 					{
-						if(t.typ instanceof struct || t.typ instanceof union || t.typ instanceof array)
+						if(first.infinity)
 						{
-							if(t.loc==null)t.loc = new location();
-							t.loc.offset = first.Off.lastElement();
-							t.loc.type = "memory";
-							t.loc.global = false;
-							first.putfunc(s,t);
-							first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
+							if(t.typ instanceof struct || t.typ instanceof union)
+							{
+								t.loc = new location();
+								t.loc.offset = first.Off.lastElement();
+								t.loc.type = "memory";
+								t.loc.global = false;
+								first.putfunc(s,t);
+								first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
+							}
+							else
+							{
+								location l = new temp();
+								l.global = false;
+								l.offset = first.Off.lastElement();
+								t.loc = l;
+								code.add(new quad("load",l,null,new location(first.Off.lastElement(),"memory",0,false,false)));
+								if(t.typ instanceof array) first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								else first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
+								first.putfunc(s,t);
+								
+							}
 						}
 						else
 						{
-							location l = new location();
-							l.global = false;
-							l.type = "memory";
-							l.offset = first.Off.lastElement();
-							t.loc = new temp();	
-							t.loc.offset = first.Off.lastElement();
-							t.loc.global = false;
-							//unknown size?
-							first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
-							first.putfunc(s,t);
-							code.add(new quad("load",l,null,t.loc));
+							if(t.typ instanceof struct || t.typ instanceof union)
+							{
+								t.loc = new location();
+								t.loc.offset = first.Off.lastElement();
+								t.loc.type = "memory";
+								t.loc.global = false;
+								first.putfunc(s,t);
+								first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
+							}
+							else
+							{
+								location l = new location();
+								l.global = false;
+								l.type = "memory";
+								l.offset = first.Off.lastElement();
+								t.loc = new location(l);
+								if(t.typ instanceof array) first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								else first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
+								first.putfunc(s,t);
+							}
 						}
+						
 						
 					}
 					else throw new Exception();

@@ -1,6 +1,5 @@
 package classDef;
 
-import classes.pointer;
 
 public class cast_expression extends root
 {
@@ -34,7 +33,6 @@ public class cast_expression extends root
 			}
 			returnrecord r = (returnrecord)child.get(1).record;
 			r.rtype = ((returnrecord)child.get(0).record).rtype;
-			if(((returnrecord)child.get(1).record).rtype instanceof pointer)((pointer)(((returnrecord)child.get(0).record).rtype)).loc = ((pointer)(((returnrecord)child.get(1).record).rtype)).loc;
 			record = r;
 			code = child.get(1).code;
 			

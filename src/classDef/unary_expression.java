@@ -30,30 +30,27 @@ public class unary_expression extends root
 				code.addAll(child.get(1).code);
 				
 				
-				if(((returnrecord)child.get(1).record).rtype instanceof pointer)
+				if(((returnrecord)child.get(1).record).rtype.equals("pointer") )
 				{
-					pointer p = (pointer)((returnrecord)child.get(1).record).rtype;
-					if(p.loc.type.equals("dynamic"))
+					if(first.infinity)
 					{
-						if(((String)son.record).equals("++"))
-						{
-							location l = new location(0,"const",0,false);
-							l.contain = p.elementType.size;
-							code.add(new quad("+",l,null,p.loc));
-						}
-						else
-						{
-							location l = new location(0,"const",0,false);
-							l.contain = p.elementType.size;
-							code.add(new quad("-",l,null,p.loc));
-						}
+						pointer p = (pointer)((returnrecord)child.get(1).record).rtype;
+						location l = new location(0,"const",0,false,false);
+						l.contain = p.size;
+						if(((String)son.record).equals("++"))code.add(new quad("+",((returnrecord)record).loc,((returnrecord)record).loc,l));
+						else code.add(new quad("-",((returnrecord)record).loc,((returnrecord)record).loc,l));
 					}
 					else
 					{
-						if(((String)son.record).equals("++")) p.loc.offset+=p.elementType.size; 
-						else p.loc.offset-=p.elementType.size; 
+						pointer p = (pointer)((returnrecord)child.get(1).record).rtype;
+						location l = new location(0,"const",0,false,false);
+						l.contain = p.size;
+						code.add(new quad("load",new temp(1),null,((returnrecord)record).loc));
+						if(((String)son.record).equals("++"))code.add(new quad("+",new temp(1),new temp(1),l));
+						else code.add(new quad("-",new temp(1),new temp(1),l));
+						code.add(new quad("store",new temp(1),null,((returnrecord)record).loc));
 					}
-					if(((returnrecord)child.get(1).record).value!=null)restore(((String)((returnrecord)child.get(1).record).value),p);
+					
 				}
 				else
 				{
@@ -61,10 +58,55 @@ public class unary_expression extends root
 					{
 						throw new Exception();
 					}
-					location l = new location(0,"const",0,false);
-					l.contain = 1;
-					if(((String)son.record).equals("++"))code.add(new quad("+",l,null,((returnrecord)record).loc));
-					else code.add(new quad("-",l,null,((returnrecord)record).loc));
+					
+					if(((returnrecord)record).loc.address)
+					{
+						if(first.infinity)
+						{
+							location l = new location(0,"const",0,false,false);
+							l.contain = 1;
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							code.add(new quad("lal",tmp,null,((returnrecord)record).loc));
+							if(((String)son.record).equals("++"))code.add(new quad("+",tmp,tmp,l));
+							else code.add(new quad("-",tmp,tmp,l));
+							code.add(new quad("sal",tmp,null,((returnrecord)record).loc));
+						}
+						else
+						{
+							location l = new location(0,"const",0,false,false);
+							l.contain = 1;
+							code.add(new quad("load",new temp(1),null,((returnrecord)record).loc));
+							code.add(new quad("lal",new temp(2),null,new temp(1)));
+							if(((String)son.record).equals("++"))code.add(new quad("+",new temp(2),new temp(2),l));
+							else code.add(new quad("-",new temp(2),new temp(2),l));
+							code.add(new quad("sal",new temp(2),null,new temp(1)));
+						}
+						
+					}
+					else
+					{
+						if(first.infinity)
+						{
+							location l = new location(0,"const",0,false,false);
+							l.contain = 1;
+							if(((String)son.record).equals("++"))code.add(new quad("+",((returnrecord)record).loc,((returnrecord)record).loc,l));
+							else code.add(new quad("-",((returnrecord)record).loc,((returnrecord)record).loc,l));
+						}
+						else
+						{
+							location l = new location(0,"const",0,false,false);
+							l.contain = 1;
+							code.add(new quad("load",new temp(1),null,((returnrecord)record).loc));
+							if(((String)son.record).equals("++"))code.add(new quad("+",new temp(1),new temp(1),l));
+							else code.add(new quad("-",new temp(1),new temp(1),l));
+							code.add(new quad("store",new temp(1),null,((returnrecord)record).loc));
+						}
+						
+					}
+					
 				}
 				
 				
@@ -96,27 +138,55 @@ public class unary_expression extends root
 					if(!r.lvalue)throw new Exception();
 					if(r.rtype instanceof pointer)
 					{
-						location l = new location(((pointer)(r.rtype)).loc);
-						r.loc = l;
 						r.rtype = ((pointer)(r.rtype)).elementType;
-						r.rtype.addr = true;
+						//location l = new temp();
+						//l.offset = first.Off.lastElement();
+						//first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);						
+						//code.add(new quad("la",l,null,r.loc));
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+						if(r.loc.address)
+						{
+							code.add(new quad("lal",tmp,null,r.loc));
+							r.loc = tmp;
+						}
+						else r.loc = new location(r.loc);
+						r.loc.address = true;
 					}
 					else throw new Exception();
 					
-					
-					
-					//can't define null pointer...
-					int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
 				}
 				else if(((String)son.record).equals("&"))
 				{
 					if(r.constant)throw new Exception();
 					if(!r.lvalue)throw new Exception();
-					r.rtype = new pointer(r.rtype,r.loc);
-					r.lvalue = false;
-					r.constant = true;
-					if(r.loc.global)r.value = first.GP + r.loc.offset;
-					else r.value = first.SP + r.loc.offset;
+					if(first.infinity)
+					{
+						r.rtype = new Tint();
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+						if(!r.loc.global)code.add(new quad("spill",null,null,new location(r.loc)));
+						code.add(new quad("la",tmp,null,new location(r.loc)));
+						r.loc = tmp;
+						r.lvalue = false;
+					}
+					else
+					{
+						location l = new location(first.Off.lastElement(),"memory",0,false,false);
+						r.rtype = new Tint();
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);	
+						location tmp = new location(r.loc);
+						code.add(new quad("la",new temp(1),null,tmp));
+						code.add(new quad("sw",new temp(1),null,l));
+						r.loc = new location(l);
+						r.lvalue = false;
+					}
+					
+					
 				}
 				else
 				{
@@ -133,11 +203,61 @@ public class unary_expression extends root
 					}
 					else
 					{
-						location ll = new temp();
-						location l = new location(0,"const",0,false);
-						l.contain = 0;
-						code.add(new quad((String)son.record,r.loc,l,ll));
-						r.loc = ll;
+						if(first.infinity)
+						{
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							if(r.loc.address)
+							{
+								r.loc.address = false;
+								code.add(new quad("lal",tmp,null,r.loc));
+							}
+							if(son.record.equals("~"))
+							{
+								code.add(new quad("not",tmp,null,r.loc));
+							}
+							else if(((String)son.record).equals("-"))
+							{
+								code.add(new quad("neg",tmp,null,r.loc));
+							}
+							else if(((String)son.record).equals("!"))
+							{
+								location l = new location(0,"const",0,false,false);
+								l.contain = 0;
+								code.add(new quad("seq",tmp,r.loc,l));
+							}
+							r.loc = tmp;
+						}
+						else
+						{
+							location ll = new location(first.Off.lastElement(),"memory",0,false,false);
+							first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
+							code.add(new quad("load",new temp(1),null,r.loc));
+							if(r.loc.address)
+							{
+								r.loc.address = false;
+								code.add(new quad("lal",new temp(1),null,new temp(1)));
+							}
+							if(son.record.equals("~"))
+							{
+								code.add(new quad("not",new temp(1),null,new temp(1)));
+							}
+							else if(((String)son.record).equals("-"))
+							{
+								code.add(new quad("neg",new temp(1),null,new temp(1)));
+							}
+							else if(((String)son.record).equals("!"))
+							{
+								location l = new location(0,"const",0,false,false);
+								l.contain = 0;
+								code.add(new quad("seq",new temp(1),new temp(1),l));
+							}
+							code.add(new quad("store",new temp(1),null,ll));
+							r.loc = ll;
+						}
+						
 					}
 					
 					

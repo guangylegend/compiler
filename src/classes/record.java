@@ -9,5 +9,6 @@ public abstract class record extends type {
 	public Vector<value> vt;
 	public Vector<String> vs;
 	public String name;
+	public boolean isunion;
 	
 } 

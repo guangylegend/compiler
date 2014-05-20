@@ -13,7 +13,12 @@ public final class struct extends record
 		vs = s;
 		typename = "struct";
 		size = 0;
-		for(int i=0;i<t.size();i++)size+=(t.get(i).typ.size);
+		isunion = false;
+		for(int i=0;i<t.size();i++)
+		{
+			size+=(t.get(i).typ.size);
+			if(t.get(i).typ.typename.equals("array"))size+=4;
+		}
 	}
 	public struct(String n)
 	{

@@ -19,7 +19,7 @@ public class program extends root
 		Vector<quad> r = new Vector<quad>();
 		for(int i=0;i<child.size();i++)
 		{			
-			r.addAll(child.get(i).code);
+			if(child.get(i).code!=null)r.addAll(child.get(i).code);
 		}
 		code = r;
 		first.Off.pop();

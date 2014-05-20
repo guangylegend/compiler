@@ -34,7 +34,7 @@ public class type_specifier extends root
 		}
 		else if(child.size()>2)
 		{
-			//union?...=struct
+			//union?...mark it
 			
 				String s = "";
 				root son = child.get(1);
@@ -55,6 +55,7 @@ public class type_specifier extends root
 				//inverse...
 				Vector<value> vt = new Vector<value>();
 				Vector<String> vs = new Vector<String>();
+				
 				for(int i=1+(child.size()-1)%2;i<child.size();i+=2)
 				{
 					if(child.get(i).check()!=0)throw new Exception();
@@ -66,8 +67,18 @@ public class type_specifier extends root
 					for(int j=0;j<p.size();j++)
 					{
 						value val = p.get(j).val;
-						val.loc.offset = first.Off.lastElement();
-						first.Off.setElementAt(first.Off.lastElement()+val.typ.size, first.Off.size()-1);
+						val.loc = new location();
+						if(val.typ.typename.equals("array"))
+						{
+							val.loc.offset = first.Off.lastElement()+val.typ.size;
+							first.Off.setElementAt(first.Off.lastElement()+val.typ.size+4, first.Off.size()-1);
+						}
+						else
+						{
+							val.loc.offset = first.Off.lastElement();
+							first.Off.setElementAt(first.Off.lastElement()+val.typ.size, first.Off.size()-1);
+						}
+						
 						vt.add(val);
 						vs.add(p.get(j).str);
 						first.putfunc(p.get(j).str,p.get(j).val);
@@ -77,10 +88,10 @@ public class type_specifier extends root
 				
 
 				first.endscope(1);
-				
-				type tmp = first.getstruct(s).typ;
-				if (tmp != null)throw new Exception();
+			
+				if (first.getstruct(s) != null)throw new Exception();
 				type struct = new struct(s, vt, vs);
+				if(child.get(0).record.equals("union"))((struct)struct).isunion = true;
 				
 				//System.out.println("%%%");
 				//System.out.println(s);

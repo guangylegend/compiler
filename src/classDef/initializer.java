@@ -48,13 +48,10 @@ public class initializer extends root
 					{
 						v.add(((nconst)child.get(i).record).value);
 					}
-					else
-					{
-						v.add(((value)child.get(i).record).loc);
-					}
+					else throw new Exception();
 				}
 			}
-			record = new nconst(new array(a,n,null),v);//set content...
+			record = new nconst(new array(a,n),v);//set content...
 		}
 		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
 		return 0;

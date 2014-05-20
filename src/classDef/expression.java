@@ -8,7 +8,7 @@ public class expression extends root
 		for(int i=0;i<child.size();i++)
 		{
 			if(child.get(i).check()!=0)throw new Exception();
-			if(i==0)record = child.get(i).record;			
+			if(i==child.size()-1)record = child.get(i).record;			
 		}
 		for(int i=0;i<child.size();i++)code.addAll(child.get(i).code);
 		return 0;

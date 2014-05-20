@@ -2,7 +2,6 @@ package classDef;
 import java.util.Vector;
 
 import core.first;
-import classes.Tchar;
 import classes.Tint;
 import classes.pointer;
 import classes.struct;
@@ -40,65 +39,145 @@ public class assignment_expression extends root
 			if (((String)child.get(1).record).equals("="))
 			{
 				//System.out.println(t.typename);
-				if (checkconvert(((returnrecord)child.get(2).record).rtype,t)!=0)
-				{
-					throw new Exception();
-					//return 1;
-				}
+				if (checkconvert(((returnrecord)child.get(2).record).rtype,t)!=0)throw new Exception();
+
 				if(((returnrecord)child.get(2).record).constant)
 				{
-					if(t instanceof pointer)
+					location l = new location(0,"const",0,false,false);
+					l.contain = ((returnrecord)child.get(2).record).value;
+					if(first.infinity)
 					{
-						if(((pointer)t).loc==null)((pointer)t).loc = new location();
-						((pointer)t).loc.type = "memory";
-						if(((int)((returnrecord)child.get(2).record).value)>first.GP)
+						if(r.loc.address)
 						{
-							((pointer)t).loc.global = true;
-							((pointer)t).loc.offset = ((int)((returnrecord)child.get(2).record).value)-first.GP;
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							v.add(new quad("li",tmp,null,l));
+							v.add(new quad("sal",tmp,null,r.loc));
 						}
-						else
-						{
-							((pointer)t).loc.global = false;
-							((pointer)t).loc.offset = ((int)((returnrecord)child.get(2).record).value)-first.SP;
-						}
-						if(((returnrecord)son.record).value!=null)restore((String)((returnrecord)son.record).value,t);
+						else v.add(new quad("li",r.loc,null,l));
 					}
 					else
 					{
-						location l = new location(0,"const",0,false);
-						l.contain = ((returnrecord)child.get(2).record).value;
-						if(t.addr)v.add(new quad("store",l,null,((returnrecord)son.record).loc));
-						else v.add(new quad("load",l,null,((returnrecord)son.record).loc));
+						location tmp = new temp(1);
+						
+						v.add(new quad("li",tmp,null,l));
+						if(r.loc.address)
+						{
+							location tmp2 = new temp(2);
+							v.add(new quad("load",tmp2,null,r.loc));
+							v.add(new quad("sal",tmp,null,tmp2));
+						}
+						else v.add(new quad("store",tmp,null,r.loc));
 					}
+					
 					
 				}
 				else
 				{
 					if(t instanceof struct)
 					{
-						location ll = new location(0,"const",0,false);
-						ll.contain = ((returnrecord)child.get(2).record).rtype.size;
-						if(t.addr)v.add(new quad("store",((returnrecord)child.get(2).record).loc,ll,((returnrecord)son.record).loc));
-						else v.add(new quad("load",((returnrecord)child.get(2).record).loc,ll,((returnrecord)son.record).loc));
-					}
-					else if(t instanceof pointer)
-					{
-						if(((pointer)t).loc==null)((pointer)t).loc = new location();
-						if(((returnrecord)child.get(2).record).rtype instanceof pointer)
+						
+						//-------------------------------------------//
+						if(first.infinity)
 						{
-							((pointer)t).loc = ((pointer)((returnrecord)child.get(2).record).rtype).loc;
+							int k = t.size;
+							for(int j=0;j<k/4;j++)
+							{
+								location t1 = new location(((returnrecord)child.get(2).record).loc.offset+j*4,"memory",0,false,false);
+								if(first.func==null)t1.global = true;
+								else t1.global = false;
+								location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
+								if(first.func==null)t2.global = true;
+								else t2.global = false;
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								v.add(new quad("load",tmp,null,t1));
+								v.add(new quad("store",tmp,null,t2));
+							}
 						}
-						if(((returnrecord)child.get(2).record).rtype instanceof Tint || ((returnrecord)child.get(2).record).rtype instanceof Tchar)
+						else
 						{
-							//address unknown...
-							int a;
+							int k = t.size;
+							for(int j=0;j<k/4;j++)
+							{
+								location t1 = new location(((returnrecord)child.get(2).record).loc.offset+j*4,"memory",0,false,false);
+								if(first.func==null)t1.global = true;
+								else t1.global = false;
+								location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
+								if(first.func==null)t2.global = true;
+								else t2.global = false;
+								location tmp = new temp(1);
+								v.add(new quad("load",tmp,null,t1));
+								v.add(new quad("store",tmp,null,t2));
+							}
 						}
-						if(((returnrecord)son.record).value!=null)restore((String)((returnrecord)son.record).value,t);
+						
+						//-------------------------------------------//
+						
+						//save struct
 					}
 					else 
 					{
-						if(t.addr)v.add(new quad("store",((returnrecord)child.get(2).record).loc,null,((returnrecord)son.record).loc));
-						else v.add(new quad("load",((returnrecord)child.get(2).record).loc,null,((returnrecord)son.record).loc));
+							//-------------------------------------------//
+						if(first.infinity)
+						{
+							if(((returnrecord)child.get(2).record).loc.address && r.loc.address)
+							{
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								v.add(new quad("lal",tmp,null,((returnrecord)child.get(2).record).loc));
+								v.add(new quad("sal",tmp,null,r.loc));
+								
+							}
+							else if(((returnrecord)child.get(2).record).loc.address)
+							{
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								v.add(new quad("lal",tmp,null,((returnrecord)child.get(2).record).loc));
+								v.add(new quad("move",r.loc,null,tmp));
+							}
+							else if(r.loc.address)
+							{
+								v.add(new quad("sal",((returnrecord)child.get(2).record).loc,null,r.loc));
+							}
+							else v.add(new quad("move",r.loc,null,((returnrecord)child.get(2).record).loc));
+						}
+						else
+						{
+							location tmp = new temp(1);
+							location tmp2 = new temp(2);
+							v.add(new quad("load",tmp,null,((returnrecord)child.get(2).record).loc));
+							if(((returnrecord)child.get(2).record).loc.address && r.loc.address)
+							{
+								v.add(new quad("lal",tmp,null,tmp));
+								v.add(new quad("load",tmp2,null,r.loc));
+								v.add(new quad("sal",tmp,null,tmp2));
+								
+							}
+							else if(((returnrecord)child.get(2).record).loc.address)
+							{
+								v.add(new quad("lal",tmp2,null,tmp));
+								v.add(new quad("store",tmp2,null,r.loc));
+							}
+							else if(r.loc.address)
+							{
+								v.add(new quad("load",tmp2,null,r.loc));
+								v.add(new quad("sal",tmp,null,tmp2));
+							}
+							else v.add(new quad("store",tmp,null,r.loc));
+						}
+							
+							
+							//-------------------------------------------//
+						
 					}
 				}
 				
@@ -107,94 +186,136 @@ public class assignment_expression extends root
 					
 			else
 			{
-				if (checkconvert(((returnrecord)child.get(2).record).rtype,new Tint())!=0) 
+				if (checkconvert(((returnrecord)child.get(2).record).rtype,new Tint())!=0) throw new Exception();
+
+				if(t instanceof pointer && !(((String)child.get(1).record).equals("+=") || ((String)child.get(1).record).equals("-=")))throw new Exception();
+
+				if (checkconvert(t,new Tint())!=0) 
 				{
 					throw new Exception();
-					//return 1;
 				}
-				if(t instanceof pointer && (((String)child.get(1).record).equals("+=") || ((String)child.get(1).record).equals("-=")))
+				if(((returnrecord)child.get(2).record).constant)
 				{
-					if(((pointer)t).loc.type.equals("dynamic"))
+					if(first.infinity)
 					{
-						if(((returnrecord)child.get(2).record).constant)
+						if(((returnrecord)son.record).rtype.equals("pointer"))
 						{
-							if(((String)child.get(1).record).equals("+="))
-							{
-								location ll = new location(0,"const",0,false);
-								ll.contain = ((returnrecord)child.get(2).record).constant;
-								v.add(new quad("+",ll,null,((pointer)t).loc));
-							}
-							else
-							{
-								location ll = new location(0,"const",0,false);
-								ll.contain = ((returnrecord)child.get(2).record).constant;
-								v.add(new quad("-",ll,null,((pointer)t).loc));
-							}
+							location l = new location(0,"const",0,false,false);
+							l.contain = (int)((returnrecord)child.get(2).record).value*((pointer)((returnrecord)son.record).rtype).elementType.size;
+							v.add(new quad(((String)child.get(1).record),((returnrecord)son.record).loc,((returnrecord)son.record).loc,l));
 						}
 						else
 						{
-							if(((String)child.get(1).record).equals("+="))
-							{
-								v.add(new quad("+",((returnrecord)child.get(2).record).loc,null,((pointer)t).loc));
-							}
-							else
-							{
-								v.add(new quad("-",((returnrecord)child.get(2).record).loc,null,((pointer)t).loc));
-							}
+							location l = new location(0,"const",0,false,false);
+							l.contain = ((returnrecord)child.get(2).record).value;
+							v.add(new quad(((String)child.get(1).record),((returnrecord)son.record).loc,((returnrecord)son.record).loc,l));
 						}
 					}
 					else
 					{
-						if(((returnrecord)child.get(2).record).constant)
+						if(((returnrecord)son.record).rtype.equals("pointer"))
 						{
-							if(((String)child.get(1).record).equals("+="))
-							{
-								((pointer)t).loc.offset+=(int)((returnrecord)child.get(2).record).value;
-							}
-							else ((pointer)t).loc.offset-=(int)((returnrecord)child.get(2).record).value;
-							 
+							location l = new location(0,"const",0,false,false);
+							l.contain = (int)((returnrecord)child.get(2).record).value*((pointer)((returnrecord)son.record).rtype).elementType.size;
+							location tmp = new temp(1);
+							v.add(new quad("load",tmp,null,((returnrecord)son.record).loc));
+							v.add(new quad(((String)child.get(1).record),tmp,tmp,l));
+							v.add(new quad("store",tmp,null,((returnrecord)son.record).loc));
 						}
 						else
 						{
-							if(((String)child.get(1).record).equals("+="))
-							{
-								location ll = new location(0,"const",0,false);
-								ll.contain = ((pointer)t).loc.offset;
-								location l = new temp();
-								v.add(new quad("+",ll,((returnrecord)child.get(2).record).loc,l));
-								((pointer)t).loc.contain = l;
-								((pointer)t).loc.type = "dynamic";
-							}
-							else
-							{
-								location ll = new location(0,"const",0,false);
-								ll.contain = ((pointer)t).loc.offset;
-								location l = new temp();
-								v.add(new quad("-",ll,((returnrecord)child.get(2).record).loc,l));
-								((pointer)t).loc.contain = l;
-								((pointer)t).loc.type = "dynamic";
-							}
+							location l = new location(0,"const",0,false,false);
+							l.contain = ((returnrecord)child.get(2).record).value;
+							location tmp = new temp(1);
+							v.add(new quad("load",tmp,null,((returnrecord)son.record).loc));
+							v.add(new quad(((String)child.get(1).record),tmp,tmp,l));
+							v.add(new quad("store",tmp,null,((returnrecord)son.record).loc));
 						}
 					}
+
+					
 					
 				}
 				else
 				{
-					if (checkconvert(t,new Tint())!=0) 
+					if(first.infinity)
 					{
-						throw new Exception();
-						//return 1;
-					}
-					if(((returnrecord)child.get(2).record).constant)
-					{
-						location l = new location(0,"const",0,false);
-						l.contain = ((returnrecord)child.get(2).record).value;
-						v.add(new quad(((String)child.get(1).record),l,null,((returnrecord)son.record).loc));
+						if(((returnrecord)child.get(2).record).loc.address && r.loc.address)
+						{
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							location tmp2 = new temp();
+							tmp2.offset = first.Off.lastElement();
+							tmp2.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							v.add(new quad("lal",tmp2,null,r.loc));
+							v.add(new quad("lal",tmp,null,((returnrecord)child.get(2).record).loc));
+							v.add(new quad(((String)child.get(1).record),tmp2,tmp2,tmp));
+							v.add(new quad("sal",tmp2,null,r.loc));
+							
+						}
+						else if(((returnrecord)child.get(2).record).loc.address)
+						{
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							v.add(new quad("lal",tmp,null,((returnrecord)child.get(2).record).loc));
+							v.add(new quad(((String)child.get(1).record),r.loc,r.loc,tmp));
+						}
+						else if(r.loc.address)
+						{
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							v.add(new quad("lal",tmp,null,r.loc));
+							v.add(new quad(((String)child.get(1).record),tmp,tmp,((returnrecord)child.get(2).record).loc));
+							v.add(new quad("sal",tmp,null,r.loc));
+						}
+						else
+						{
+							v.add(new quad(((String)child.get(1).record),r.loc,r.loc,((returnrecord)child.get(2).record).loc));
+						}
 					}
 					else
 					{
-						v.add(new quad(((String)child.get(1).record),((returnrecord)child.get(2).record).loc,null,((returnrecord)son.record).loc));
+						location tmp = new temp(1);
+						v.add(new quad("load",tmp,null,r.loc));
+						location tmp2 = new temp(2);
+						location tmp3 = new temp(3);
+						v.add(new quad("load",tmp2,null,((returnrecord)child.get(2).record).loc));
+						if(((returnrecord)child.get(2).record).loc.address && r.loc.address)
+						{
+							v.add(new quad("lal",tmp3,null,tmp));
+							v.add(new quad("lal",tmp2,null,tmp2));
+							v.add(new quad(((String)child.get(1).record),tmp3,tmp3,tmp2));
+							v.add(new quad("sal",tmp3,null,tmp));
+							
+						}
+						else if(((returnrecord)child.get(2).record).loc.address)
+						{
+							v.add(new quad("lal",tmp3,null,tmp2));
+							v.add(new quad(((String)child.get(1).record),tmp,tmp,tmp3));
+							v.add(new quad("store",tmp,null,r.loc));
+						}
+						else if(r.loc.address)
+						{
+							v.add(new quad("lal",tmp3,null,tmp));
+							v.add(new quad(((String)child.get(1).record),tmp3,tmp3,tmp2));
+							v.add(new quad("sal",tmp3,null,tmp));
+						}
+						else
+						{
+							v.add(new quad(((String)child.get(1).record),tmp,tmp,tmp2));
+							v.add(new quad("store",tmp,null,r.loc));
+						}
 					}
+
+					
+					
 				}
 				
 			}

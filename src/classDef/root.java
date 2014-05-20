@@ -47,7 +47,7 @@ public class root
 			if(find(((name)b).str,1)==null)throw new Exception();
 			else b = find(((name)b).str,1).typ;
 		}
-		if(a.typename.equals("array"))return 1;
+		else if(a.typename.equals("array") && (b.typename.equals("int") || b.typename.equals("char")))return 0;
 		else if(a.typename.equals("pointer") && ((pointer)a).elementType.typename.equals("void"))return 0;
 		else if(a.typename.equals("pointer") && b.typename.equals("pointer"))return 0;
 		else if(a.typename.equals("pointer") && b.typename.equals("array"))return checkconvert(((pointer)a).elementType,((array)b).elementType);
@@ -155,22 +155,7 @@ public class root
 		}
 		return v;
 	}
-	
-	public static void restore(String s,type t)
-	{
-		for(int i=first.F.size()-1;i>=0;i--)
-		{
-			if(first.getfunc(s,i)!=null)
-			{
-				value v = new value();
-				v.typ = t;
-				v.loc = ((value) first.getfunc(s,i)).loc;
-				first.putfunc(s,v,i);
-				break;
-			}
-			
-		}
-	}
+
 	
 	public int checkinit() throws Exception
 	{

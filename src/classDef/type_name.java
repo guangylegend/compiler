@@ -13,7 +13,7 @@ public class type_name extends root
 		type t = r.rtype;
 		for(int i=1;i<child.size();i++)
 		{
-			t = new pointer(t,null);
+			t = new pointer(t);
 		}
 		r.rtype = t;
 		record = r;

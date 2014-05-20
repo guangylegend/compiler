@@ -55,33 +55,97 @@ public class postfix extends root
 				r.rtype = ((pointer)v.typ).elementType;
 			}
 			else throw new Exception();
-
-			r.loc = v.loc;
-			location l = new location(0,"const",0,false);
-			l.contain = r.rtype.size;
-			location nl = new temp();
-			nl.offset = r.loc.offset;
-			nl.global = r.loc.global;
-			code.add(new quad("*",l,((returnrecord)son.record).loc,nl));
-			if(r.loc.type.equals("dynamic"))
+			
+			
+			if(first.infinity)
 			{
-				code.add(new quad("+",(location)r.loc.contain,null,nl));
+				
+				location tmp1 = new temp();
+				tmp1.offset = first.Off.lastElement();
+				tmp1.global = false;
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+				
+				location tmp2 = new temp();
+				tmp2.offset = first.Off.lastElement();
+				tmp2.global = false;
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+				
+				location l = new location(0,"const",0,false,false);
+				l.contain = r.rtype.size;
+				
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);						
+				
+				if(((returnrecord)son.record).constant)
+				{
+					location cons = new location(0,"const",0,false,false);
+					cons.contain = ((returnrecord)son.record).value;
+					code.add(new quad("li",tmp1,null,cons));
+				}
+				else
+				{
+					if(((returnrecord)son.record).loc.address)code.add(new quad("lal",tmp1,null,((returnrecord)son.record).loc));
+					else code.add(new quad("move",tmp1,null,((returnrecord)son.record).loc));
+				}
+
+				code.add(new quad("*",tmp1,tmp1,l));
+				
+				if(v.loc.address)
+				{
+					code.add(new quad("lal",tmp2,null,v.loc));
+					code.add(new quad("+",tmp2,tmp1,tmp2));
+				}
+				else code.add(new quad("+",tmp2,tmp1,v.loc));
+					
+				r.loc = tmp2;
+				if(!(r.rtype instanceof pointer))r.loc.address = true;
+				else r.loc.address = false;
+				if(v.typ.typename.equals("pointer") && r.rtype.typename.equals("pointer"))r.loc.address = true;
+				if(v.typ.typename.equals("array") && r.rtype.typename.equals("pointer"))r.loc.address = true;
+				
+				return r;
 			}
 			else
 			{
-				l = new location(0,"const",0,false);
-				if(r.loc.offset!=0)
+				location tmp1 = new temp(1);
+				location tmp2 = new temp(2);
+				
+				location p = new location(first.Off.lastElement(),"memory",0,false,false);
+				
+				location l = new location(0,"const",0,false,false);
+				l.contain = r.rtype.size;
+				
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);						
+				
+				if(((returnrecord)son.record).constant)
 				{
-					l.contain = r.loc.offset;
-					code.add(new quad("+",l,null,nl));
+					location cons = new location(0,"const",0,false,false);
+					cons.contain = ((returnrecord)son.record).value;
+					code.add(new quad("li",tmp1,null,cons));
+				}
+				else
+				{
+					code.add(new quad("load",tmp1,null,((returnrecord)son.record).loc));
+					if(((returnrecord)son.record).loc.address)code.add(new quad("lal",tmp1,null,tmp1));
 				}
 				
+				
+				code.add(new quad("*",tmp1,tmp1,l));
+				
+				code.add(new quad("load",tmp2,null,v.loc));
+				if(v.loc.address)code.add(new quad("lal",tmp2,null,tmp2));
+				
+				code.add(new quad("+",tmp2,tmp1,tmp2));
+
+				code.add(new quad("store",tmp2,null,p));
+				r.loc = p;
+				if(!(r.rtype instanceof pointer))r.loc.address = true;
+				else r.loc.address = false;
+				if(v.typ.typename.equals("pointer") && r.rtype.typename.equals("pointer"))r.loc.address = true;
+				if(v.typ.typename.equals("array") && r.rtype.typename.equals("pointer"))r.loc.address = true;
+				
+				return r;
 			}
 			
-			r.loc.contain = nl;
-			r.loc.type = "dynamic";        //WTF...
-			if(r.rtype instanceof pointer)((pointer)r.rtype).loc = r.loc;
-			return r;
 				
 		}
 		else if (((String)son.record).equals("FUCK"))
@@ -96,28 +160,201 @@ public class postfix extends root
 				
 				
 				function f = (function)v.typ;
-				if(f.argument.size()!=((Vector<type>)son.record).size())throw new Exception();
+				if(f.argument.size()!=((Vector<Object>)son.record).size())throw new Exception();
 				
-				location l = new location(0,"const",0,false);
+				location l = new location(0,"const",0,false,false);
 				l.contain = f.name;
+				int off = 0;
+				location p = new location(first.Off.lastElement(),"memory",0,false,false);
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+				code.add(new quad("storera",null,null,p));
 				code.add(new quad("loc",null,null,l));
 				
-				int off = f.returnType.size;
+				
 				for(int i=0;i<f.argument.size();i++)
 				{
-					if(!checkequal(((Vector<value>)son.record).get(i).typ,f.argument.get(i).typ))
+					if(((Vector<Object>)son.record).get(i) instanceof nconst)
 					{
-						throw new Exception();
+						if(!checkequal(((nconst)((Vector<Object>)son.record).get(i)).typ,f.argument.get(i).typ))
+						{
+							throw new Exception();
+						}
+						
+						if(first.infinity)
+						{
+							location tmp = new location(0,"const",0,false,false);
+							tmp.contain = ((nconst)((Vector<Object>)son.record).get(i)).value;
+							location ll = new location(off,"memory",0,false,false);
+							location tmp1 = new temp();
+							tmp1.offset = first.Off.lastElement();
+							tmp1.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							if(tmp.contain instanceof String)code.add(new quad("la",tmp1,null,tmp));
+							else code.add(new quad("li",tmp1,null,tmp));
+							code.add(new quad("store",tmp1,null,ll));
+							off+=((nconst)((Vector<Object>)son.record).get(i)).typ.size;
+						}
+						else
+						{
+							location tmp = new location(0,"const",0,false,false);
+							tmp.contain = ((nconst)((Vector<Object>)son.record).get(i)).value;
+							location ll = new location(off,"memory",0,false,false);
+							if(tmp.contain instanceof String)code.add(new quad("la",new temp(1),null,tmp));
+							else code.add(new quad("li",new temp(1),null,tmp));
+							code.add(new quad("store",new temp(1),null,ll));
+							off+=((nconst)((Vector<Object>)son.record).get(i)).typ.size;
+						}
+						
 					}
-					location ll = new location(off,"memory",0,false);
-					code.add(new quad("store",((Vector<value>)son.record).get(i).loc,null,ll));
-					off+=((Vector<value>)son.record).get(i).typ.size;
+					else
+					{
+						if(!checkequal(((value)((Vector<Object>)son.record).get(i)).typ,f.argument.get(i).typ))
+						{
+							throw new Exception();
+						}
+					
+						
+						location ll = new location(off,"memory",0,false,false);
+						if(((value)((Vector<Object>)son.record).get(i)).typ.typename.equals("struct"))
+						{
+							if(first.infinity)
+							{
+								int k = ((value)((Vector<Object>)son.record).get(i)).typ.size;
+								for(int j=0;j<k/4;j++)
+								{
+									location t1 = new location(((value)((Vector<Object>)son.record).get(i)).loc.offset+j*4,"memory",0,false,false);
+									if(first.func==null)t1.global = true;
+									else t1.global = false;
+									location t2 = new location(ll.offset+j*4,"memory",0,false,false);
+									if(first.func==null)t2.global = true;
+									else t2.global = false;
+									location tmp = new temp();
+									tmp.offset = first.Off.lastElement();
+									tmp.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									code.add(new quad("ld",tmp,null,t1));
+									code.add(new quad("store",tmp,null,t2));
+								}
+							}
+							else
+							{
+								int k = ((value)((Vector<Object>)son.record).get(i)).typ.size;
+								for(int j=0;j<k/4;j++)
+								{
+									location t1 = new location(((value)((Vector<Object>)son.record).get(i)).loc.offset+j*4,"memory",0,false,false);
+									if(first.func==null)t1.global = true;
+									else t1.global = false;
+									location t2 = new location(ll.offset+j*4,"memory",0,false,false);
+									if(first.func==null)t2.global = true;
+									else t2.global = false;
+									location tmp = new temp(1);
+									code.add(new quad("ld",tmp,null,t1));
+									code.add(new quad("store",tmp,null,t2));
+								}
+							}
+							
+						}
+						else
+						{
+							if(first.infinity)
+							{
+								if(((value)((Vector<Object>)son.record).get(i)).loc.address)
+								{
+									location tmp = new temp();
+									tmp.offset = first.Off.lastElement();
+									tmp.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									code.add(new quad("lal",tmp,null,((value)((Vector<Object>)son.record).get(i)).loc));
+									code.add(new quad("store",tmp,null,ll));
+								}
+								else code.add(new quad("store",((value)((Vector<Object>)son.record).get(i)).loc,null,ll));
+							}
+							else
+							{
+								code.add(new quad("ld",new temp(1),null,((value)((Vector<Object>)son.record).get(i)).loc));
+								if(((value)((Vector<Object>)son.record).get(i)).loc.address)code.add(new quad("lal",new temp(1),null,new temp(1)));
+								code.add(new quad("store",new temp(1),null,ll));
+							}
+							
+						}			
+						
+						if(((value)((Vector<Object>)son.record).get(i)).typ.typename.equals("array"))off+=4;
+						else off+=((value)((Vector<Object>)son.record).get(i)).typ.size;
+					}
+					
 				}
+				
 				code.add(new quad("call",null,null,l));
+				code.add(new quad("restorera",null,null,p));
 				r.lvalue = false;
 				r.rtype = f.returnType;
-				r.loc = new location(0,"memory",0,false);
+				r.loc = new location(first.Off.lastElement(),"memory",0,false,false);
+				first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
+				if(r.rtype.typename.equals("struct"))
+				{
+					int k = r.rtype.size;
+					if(first.infinity)
+					{
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+						
+						for(int j=0;j<k/4;j++)
+						{
+							location t1 = new location(j*4,"return",0,false,false);
+							if(first.func==null)t1.global = true;
+							else t1.global = false;
+							location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
+							if(first.func==null)t2.global = true;
+							else t2.global = false;
+						
+							code.add(new quad("ld",tmp,null,t1));
+							code.add(new quad("store",tmp,null,t2));
+						}
+					}	
+					else
+					{
+						for(int j=0;j<k/4;j++)
+						{
+							location t1 = new location(j*4,"return",0,false,false);
+							if(first.func==null)t1.global = true;
+							else t1.global = false;
+							location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
+							if(first.func==null)t2.global = true;
+							else t2.global = false;
+							location tmp = new temp(1);
+							code.add(new quad("ld",tmp,null,t1));
+							code.add(new quad("store",tmp,null,t2));
+						}
+
+						
+					}
+				}
+				else
+				{
+					if(first.infinity)
+					{
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+						location re  = new location(0,"return",0,false,false);
+						code.add(new quad("move",tmp,null,re));
+						r.loc = tmp;
+					}
+					else
+					{
+						r.loc = new location(first.Off.lastElement(),"memory",0,false,false);
+						location re  = new location(0,"return",0,false,false);
+						code.add(new quad("load",new temp(1),null,re));
+						code.add(new quad("store",new temp(1),null,r.loc));
+					}
+					
+				}
+				
 				return r;
+				
 			}
 			else
 			{
@@ -131,9 +368,19 @@ public class postfix extends root
 				{
 					throw new Exception();
 				}
+				
+				location l = new location(0,"const",0,false,false);
+				l.contain = f.name;
+				location p = new location(first.Off.lastElement(),"memory",0,false,false);
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+				code.add(new quad("storera",null,null,p));
+				code.add(new quad("loc",null,null,l));
+				
+				code.add(new quad("call",null,null,l));
+				code.add(new quad("restorera",null,null,p));
 				r.lvalue = false;
 				r.rtype = f.returnType;
-				r.loc = new location(0,"memory",0,false);
+				r.loc = new location(0,"return",0,false,false);
 				return r;
 			}
 			
@@ -151,10 +398,132 @@ public class postfix extends root
 			{
 				if (name.equals(s.vs.get(i)))
 				{
-					r.rtype = s.vt.get(i).typ;
-					r.loc = v.loc;
-					r.loc.offset += s.vt.get(i).loc.offset;
-					return r;
+					if(v.loc.address)
+					{
+						r.rtype = s.vt.get(i).typ;
+						if(r.rtype.typename.equals("array"))
+						{
+							if(first.infinity)
+							{
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								tmp.address = true;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								location tmp2 = new temp();
+								tmp2.offset = first.Off.lastElement();
+								tmp2.global = false;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								code.add(new quad("move",tmp,null,v.loc));
+								location ll = new location(0,"const",0,false,false);
+								ll.contain = s.vt.get(i).loc.offset-r.rtype.size;
+								code.add(new quad("-",tmp2,tmp,ll));
+								location l = new location(0,"const",0,false,false);
+								l.contain = s.vt.get(i).loc.offset;
+								code.add(new quad("+",tmp,tmp,l));
+								code.add(new quad("sal",tmp2,null,tmp));
+								r.loc = tmp;
+							}
+							else
+							{
+								r.loc = v.loc;
+								code.add(new quad("load",new temp(1),null,r.loc));
+								location ll = new location(0,"const",0,false,false);
+								ll.contain = s.vt.get(i).loc.offset-r.rtype.size;
+								code.add(new quad("-",new temp(2),new temp(1),ll));
+								location l = new location(0,"const",0,false,false);
+								l.contain = s.vt.get(i).loc.offset;
+								code.add(new quad("+",new temp(1),new temp(1),l));
+								code.add(new quad("sal",new temp(2),null,new temp(1)));
+								code.add(new quad("store",new temp(1),null,r.loc));
+							}
+							
+						}
+						else
+						{
+							if(first.infinity)
+							{
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								tmp.address = true;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								code.add(new quad("move",tmp,null,v.loc));
+								location l = new location(0,"const",0,false,false);
+								l.contain = s.vt.get(i).loc.offset;
+								code.add(new quad("+",tmp,tmp,l));
+								r.loc = tmp;
+							}
+							else
+							{
+								r.loc = v.loc;
+								code.add(new quad("load",new temp(1),null,r.loc));
+								location l = new location(0,"const",0,false,false);
+								l.contain = s.vt.get(i).loc.offset;
+								code.add(new quad("+",new temp(1),new temp(1),l));
+								code.add(new quad("store",new temp(1),null,r.loc));
+							}
+							
+						}
+						
+						return r;
+					}
+					else
+					{
+						if(first.infinity)
+						{
+							r.rtype = s.vt.get(i).typ;
+							if(r.rtype.typename.equals("array"))
+							{
+								location a = new location(v.loc.offset+s.vt.get(i).loc.offset-r.rtype.size,"memory",0,false,false);
+								location b = new location(v.loc.offset+s.vt.get(i).loc.offset,"memory",0,false,false);
+								if(v.loc.global)
+								{
+									a.global = true;
+									b.global = true;
+								}
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								code.add(new quad("la",tmp,null,a));
+								code.add(new quad("sw",tmp,null,b));
+							}
+							location tmp = new temp();
+							tmp.offset = first.Off.lastElement();
+							tmp.global = false;
+							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							location l = new location(v.loc);
+							if(s.isunion)l.offset = 0;
+							else l.offset += s.vt.get(i).loc.offset;
+							code.add(new quad("la",tmp,null,l));
+							r.loc = tmp;
+							r.loc.address = true;
+							return r;
+						}
+						else
+						{
+							r.rtype = s.vt.get(i).typ;
+							if(r.rtype.typename.equals("array"))
+							{
+								location a = new location(v.loc.offset+s.vt.get(i).loc.offset-r.rtype.size,"memory",0,false,false);
+								location b = new location(v.loc.offset+s.vt.get(i).loc.offset,"memory",0,false,false);
+								if(v.loc.global)
+								{
+									a.global = true;
+									b.global = true;
+								}
+								code.add(new quad("la",new temp(1),null,a));
+								code.add(new quad("sw",new temp(1),null,b));
+							}
+							r.loc = v.loc;
+							if(s.isunion)r.loc.offset = 0;
+							else r.loc.offset += s.vt.get(i).loc.offset;
+							return r;
+						}
+						
+					}
+					
 				}
 			}
 				
@@ -179,18 +548,40 @@ public class postfix extends root
 			{
 				if (name.equals(s.vs.get(i)))
 				{
-					r.rtype = s.vt.get(i).typ;
-					if(p.loc!=null)
+					if(first.infinity)
 					{
-						r.loc = p.loc;
-						r.loc.offset += s.vt.get(i).loc.offset;
-					}		
+						r.rtype = s.vt.get(i).typ;
+						location l = new location(0,"const",0,false,false);
+						l.contain = s.vt.get(i).loc.offset;
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);	
+						code.add(new quad("move",tmp,null,v.loc));
+						if(v.loc.address)code.add(new quad("lal",tmp,null,tmp));
+						code.add(new quad("+",tmp,tmp,l));
+						r.loc = tmp;
+						r.loc.address = true;
+						
+						return r;
+					}
+					else
+					{
+						r.rtype = s.vt.get(i).typ;
+						location l = new location(0,"const",0,false,false);
+						l.contain = s.vt.get(i).loc.offset;
+						location temp = new location(first.Off.lastElement(),"memory",0,false,false);
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);	
+						code.add(new quad("load",new temp(1),null,v.loc));
+						if(v.loc.address)code.add(new quad("lal",new temp(1),null,new temp(1)));
+						code.add(new quad("+",new temp(1),new temp(1),l));
+						code.add(new quad("store",new temp(1),null,temp));
+						r.loc = temp;
+						r.loc.address = true;
+						
+						return r;
+					}
 					
-					//can't define null pointer...
-					int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
-					
-					
-					return r;
 				}
 			}
 			
@@ -198,42 +589,43 @@ public class postfix extends root
 		}
 		else
 		{
-			//maybe some bugs...
-			int aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
 			
-			if(v.typ instanceof pointer)
+			if(v.typ.typename.equals("pointer") )
 			{
-				pointer p = (pointer)v.typ;
-				
-				//...........
-				if(p.loc == null )return r;
-				//...........
-				
-				location save = new location(p.loc);
-				
-				if(p.loc.type.equals("dynamic"))
+				if(first.infinity)
 				{
-					if(((String)son.record).equals("++"))
-					{
-						location fl = new location(v.loc);
-						location l = new location(0,"const",0,false);
-						l.contain = p.elementType.size;
-						code.add(new quad("+",l,null,fl));
-					}
-					else
-					{
-						location fl = new location(v.loc);
-						location l = new location(0,"const",0,false);
-						l.contain = p.elementType.size;
-						code.add(new quad("-",l,null,fl));
-					}
+					pointer p = (pointer)v.typ;
+					location tmp = new temp();
+					tmp.offset = first.Off.lastElement();
+					tmp.global = false;
+					first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);				
+					code.add(new quad("move",tmp,null,v.loc));	
+					location ll = new location(0,"const",0,false,false);
+					ll.contain = p.size;
+					if(((String)son.record).equals("++"))code.add(new quad("+",v.loc,v.loc,ll));
+					else code.add(new quad("-",v.loc,v.loc,ll));
+					r.loc = tmp;
 				}
 				else
 				{
-					if(((String)son.record).equals("++")) p.loc.offset+=p.elementType.size; 
-					else p.loc.offset-=p.elementType.size; 
+					pointer p = (pointer)v.typ;
+					location fl = new location(v.loc);
+					location l = new location(first.Off.lastElement(),"memory",0,false,false);
+					first.Off.setElementAt(first.Off.lastElement()+p.size, first.Off.size()-1);						
+					l.address = true;
+					
+					code.add(new quad("load",new temp(1),null,fl));
+					code.add(new quad("store",new temp(1),null,l));
+					
+					location ll = new location(0,"const",0,false,false);
+					ll.contain = p.size;
+					if(((String)son.record).equals("++"))code.add(new quad("+",new temp(1),new temp(1),ll));
+					else code.add(new quad("-",new temp(1),new temp(1),ll));
+					code.add(new quad("store",new temp(1),null,fl));
+					r.loc = l;
 				}
-				v.typ = new pointer(p.elementType,save);
+
+				
 			}
 			else
 			{
@@ -241,18 +633,85 @@ public class postfix extends root
 				{
 					throw new Exception();
 				}
-				location l = new temp();
-				l.offset = first.Off.lastElement();
 				r.rtype = v.typ;
-				first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
-				if(first.func==null)l.global = true;
-				else l.global = false;
-				location ll = new location(0,"const",0,false);
-				ll.contain = 1;
-				location fl = new location(v.loc);
-				if(((String)son.record).equals("++"))code.add(new quad("+",ll,null,fl));
-				else code.add(new quad("-",ll,null,fl));
-				r.loc = l;
+				
+				if(v.loc.address)
+				{
+					if(first.infinity)
+					{
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+						location tmp2 = new temp();
+						tmp2.offset = first.Off.lastElement();
+						tmp2.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+						
+						code.add(new quad("move",tmp,null,v.loc));
+						code.add(new quad("lal",tmp2,null,v.loc));
+						
+						location ll = new location(0,"const",0,false,false);
+						ll.contain = 1;
+						if(((String)son.record).equals("++"))code.add(new quad("+",tmp2,tmp2,ll));
+						else code.add(new quad("-",tmp2,tmp2,ll));
+						code.add(new quad("sal",tmp2,null,v.loc));
+						r.loc = tmp;
+					}
+					else
+					{
+						location fl = new location(v.loc);
+						location l = new location(first.Off.lastElement(),"memory",0,false,false);
+						first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);						
+						
+						code.add(new quad("load",new temp(1),null,fl));
+						code.add(new quad("lal",new temp(2),null,new temp(1)));
+						code.add(new quad("store",new temp(2),null,l));
+						
+						location ll = new location(0,"const",0,false,false);
+						ll.contain = 1;
+						if(((String)son.record).equals("++"))code.add(new quad("+",new temp(2),new temp(2),ll));
+						else code.add(new quad("-",new temp(2),new temp(2),ll));
+						code.add(new quad("sal",new temp(2),null,new temp(1)));
+						r.loc = l;
+					}
+
+					
+				}
+				else
+				{
+					if(first.infinity)
+					{
+						location tmp = new temp();
+						tmp.offset = first.Off.lastElement();
+						tmp.global = false;
+						first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);				
+						code.add(new quad("move",tmp,null,v.loc));	
+						location ll = new location(0,"const",0,false,false);
+						ll.contain = 1;
+						if(((String)son.record).equals("++"))code.add(new quad("+",v.loc,v.loc,ll));
+						else code.add(new quad("-",v.loc,v.loc,ll));
+						r.loc = tmp;
+					}
+					else
+					{
+						location fl = new location(v.loc);
+						location l = new location(first.Off.lastElement(),"memory",0,false,false);
+						first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);						
+						
+						code.add(new quad("load",new temp(1),null,fl));
+						code.add(new quad("store",new temp(1),null,l));
+						
+						location ll = new location(0,"const",0,false,false);
+						ll.contain = 1;
+						if(((String)son.record).equals("++"))code.add(new quad("+",new temp(1),new temp(1),ll));
+						else code.add(new quad("-",new temp(1),new temp(1),ll));
+						code.add(new quad("store",new temp(1),null,fl));
+						r.loc = l;
+					}
+					
+				}
+				
 				
 			}
 			

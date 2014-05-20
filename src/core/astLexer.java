@@ -1,4 +1,4 @@
-// $ANTLR 3.5.1 D:\\JAVA\\first\\src\\core\\ast.g 2014-05-05 23:05:20
+// $ANTLR 3.5.1 D:\\JAVA\\first\\src\\core\\ast.g 2014-05-13 13:34:33
 
 package core;
 
@@ -1594,96 +1594,21 @@ public class astLexer extends Lexer {
 		try {
 			int _type = Nice_character_constant;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\ast.g:274:2: ( '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\'' )
-			// D:\\JAVA\\first\\src\\core\\ast.g:276:2: '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\''
-			{
-			match('\''); 
-			// D:\\JAVA\\first\\src\\core\\ast.g:276:6: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) )
-			int alt7=2;
-			int LA7_0 = input.LA(1);
-			if ( (LA7_0=='\\') ) {
-				alt7=1;
-			}
-			else if ( ((LA7_0 >= '\u0000' && LA7_0 <= '&')||(LA7_0 >= '(' && LA7_0 <= '[')||(LA7_0 >= ']' && LA7_0 <= '\uFFFF')) ) {
-				alt7=2;
-			}
-
-			else {
-				NoViableAltException nvae =
-					new NoViableAltException("", 7, 0, input);
-				throw nvae;
-			}
-
-			switch (alt7) {
-				case 1 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:276:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-					{
-					// D:\\JAVA\\first\\src\\core\\ast.g:276:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-					// D:\\JAVA\\first\\src\\core\\ast.g:276:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
-					{
-					match('\\'); 
-					if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
-						input.consume();
-					}
-					else {
-						MismatchedSetException mse = new MismatchedSetException(null,input);
-						recover(mse);
-						throw mse;
-					}
-					}
-
-					}
-					break;
-				case 2 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:276:54: ~ ( '\\'' | '\\\\' )
-					{
-					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
-						input.consume();
-					}
-					else {
-						MismatchedSetException mse = new MismatchedSetException(null,input);
-						recover(mse);
-						throw mse;
-					}
-					}
-					break;
-
-			}
-
-			match('\''); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "Nice_character_constant"
-
-	// $ANTLR start "Nice_string"
-	public final void mNice_string() throws RecognitionException {
-		try {
-			int _type = Nice_string;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\ast.g:284:2: ( '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"' | '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\'' | '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\'' )
-			int alt10=3;
-			int LA10_0 = input.LA(1);
-			if ( (LA10_0=='\"') ) {
-				alt10=1;
-			}
-			else if ( (LA10_0=='\'') ) {
-				int LA10_2 = input.LA(2);
-				if ( (LA10_2=='\\') ) {
-					int LA10_3 = input.LA(3);
-					if ( (LA10_3=='0') ) {
-						int LA10_4 = input.LA(4);
-						if ( ((LA10_4 >= '0' && LA10_4 <= '7')) ) {
-							alt10=2;
+			// D:\\JAVA\\first\\src\\core\\ast.g:274:2: ( '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\'' | '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\'' | '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\'' )
+			int alt9=3;
+			int LA9_0 = input.LA(1);
+			if ( (LA9_0=='\'') ) {
+				int LA9_1 = input.LA(2);
+				if ( (LA9_1=='\\') ) {
+					switch ( input.LA(3) ) {
+					case '0':
+						{
+						int LA9_4 = input.LA(4);
+						if ( ((LA9_4 >= '0' && LA9_4 <= '7')) ) {
+							alt9=2;
 						}
-						else if ( (LA10_4=='X'||LA10_4=='x') ) {
-							alt10=3;
+						else if ( (LA9_4=='X'||LA9_4=='x') ) {
+							alt9=3;
 						}
 
 						else {
@@ -1693,32 +1618,54 @@ public class astLexer extends Lexer {
 									input.consume();
 								}
 								NoViableAltException nvae =
-									new NoViableAltException("", 10, 4, input);
+									new NoViableAltException("", 9, 4, input);
 								throw nvae;
 							} finally {
 								input.rewind(nvaeMark);
 							}
 						}
 
-					}
-					else if ( ((LA10_3 >= '1' && LA10_3 <= '7')) ) {
-						alt10=2;
-					}
-
-					else {
+						}
+						break;
+					case '\"':
+					case '\'':
+					case '\\':
+					case 'b':
+					case 'f':
+					case 'n':
+					case 'r':
+					case 't':
+						{
+						alt9=1;
+						}
+						break;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+						{
+						alt9=2;
+						}
+						break;
+					default:
 						int nvaeMark = input.mark();
 						try {
 							for (int nvaeConsume = 0; nvaeConsume < 3 - 1; nvaeConsume++) {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 10, 3, input);
+								new NoViableAltException("", 9, 2, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
 						}
 					}
-
+				}
+				else if ( ((LA9_1 >= '\u0000' && LA9_1 <= '&')||(LA9_1 >= '(' && LA9_1 <= '[')||(LA9_1 >= ']' && LA9_1 <= '\uFFFF')) ) {
+					alt9=1;
 				}
 
 				else {
@@ -1726,7 +1673,7 @@ public class astLexer extends Lexer {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 10, 2, input);
+							new NoViableAltException("", 9, 1, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -1737,33 +1684,37 @@ public class astLexer extends Lexer {
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 10, 0, input);
+					new NoViableAltException("", 9, 0, input);
 				throw nvae;
 			}
 
-			switch (alt10) {
+			switch (alt9) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:284:6: '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"'
+					// D:\\JAVA\\first\\src\\core\\ast.g:276:2: '\\'' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) ) '\\''
 					{
-					match('\"'); 
-					// D:\\JAVA\\first\\src\\core\\ast.g:284:11: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )*
-					loop8:
-					while (true) {
-						int alt8=3;
-						int LA8_0 = input.LA(1);
-						if ( (LA8_0=='\\') ) {
-							alt8=1;
-						}
-						else if ( ((LA8_0 >= '\u0000' && LA8_0 <= '!')||(LA8_0 >= '#' && LA8_0 <= '[')||(LA8_0 >= ']' && LA8_0 <= '\uFFFF')) ) {
-							alt8=2;
-						}
+					match('\''); 
+					// D:\\JAVA\\first\\src\\core\\ast.g:276:6: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\'' | '\\\\' ) )
+					int alt7=2;
+					int LA7_0 = input.LA(1);
+					if ( (LA7_0=='\\') ) {
+						alt7=1;
+					}
+					else if ( ((LA7_0 >= '\u0000' && LA7_0 <= '&')||(LA7_0 >= '(' && LA7_0 <= '[')||(LA7_0 >= ']' && LA7_0 <= '\uFFFF')) ) {
+						alt7=2;
+					}
 
-						switch (alt8) {
+					else {
+						NoViableAltException nvae =
+							new NoViableAltException("", 7, 0, input);
+						throw nvae;
+					}
+
+					switch (alt7) {
 						case 1 :
-							// D:\\JAVA\\first\\src\\core\\ast.g:284:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+							// D:\\JAVA\\first\\src\\core\\ast.g:276:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
 							{
-							// D:\\JAVA\\first\\src\\core\\ast.g:284:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-							// D:\\JAVA\\first\\src\\core\\ast.g:284:14: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+							// D:\\JAVA\\first\\src\\core\\ast.g:276:8: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+							// D:\\JAVA\\first\\src\\core\\ast.g:276:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
 							{
 							match('\\'); 
 							if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1779,9 +1730,9 @@ public class astLexer extends Lexer {
 							}
 							break;
 						case 2 :
-							// D:\\JAVA\\first\\src\\core\\ast.g:284:59: ~ ( '\\\\' | '\\\"' )
+							// D:\\JAVA\\first\\src\\core\\ast.g:276:54: ~ ( '\\'' | '\\\\' )
 							{
-							if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
+							if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 								input.consume();
 							}
 							else {
@@ -1792,16 +1743,13 @@ public class astLexer extends Lexer {
 							}
 							break;
 
-						default :
-							break loop8;
-						}
 					}
 
-					match('\"'); 
+					match('\''); 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:285:3: '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\''
+					// D:\\JAVA\\first\\src\\core\\ast.g:277:3: '\\'' '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) ( '0' .. '7' ) '\\''
 					{
 					match('\''); 
 					match('\\'); 
@@ -1833,20 +1781,20 @@ public class astLexer extends Lexer {
 					}
 					break;
 				case 3 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:286:2: '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\''
+					// D:\\JAVA\\first\\src\\core\\ast.g:278:2: '\\'' '\\\\' ( '0x' | '0X' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' ) '\\''
 					{
 					match('\''); 
 					match('\\'); 
-					// D:\\JAVA\\first\\src\\core\\ast.g:286:12: ( '0x' | '0X' )
-					int alt9=2;
-					int LA9_0 = input.LA(1);
-					if ( (LA9_0=='0') ) {
-						int LA9_1 = input.LA(2);
-						if ( (LA9_1=='x') ) {
-							alt9=1;
+					// D:\\JAVA\\first\\src\\core\\ast.g:278:12: ( '0x' | '0X' )
+					int alt8=2;
+					int LA8_0 = input.LA(1);
+					if ( (LA8_0=='0') ) {
+						int LA8_1 = input.LA(2);
+						if ( (LA8_1=='x') ) {
+							alt8=1;
 						}
-						else if ( (LA9_1=='X') ) {
-							alt9=2;
+						else if ( (LA8_1=='X') ) {
+							alt8=2;
 						}
 
 						else {
@@ -1854,7 +1802,7 @@ public class astLexer extends Lexer {
 							try {
 								input.consume();
 								NoViableAltException nvae =
-									new NoViableAltException("", 9, 1, input);
+									new NoViableAltException("", 8, 1, input);
 								throw nvae;
 							} finally {
 								input.rewind(nvaeMark);
@@ -1865,20 +1813,20 @@ public class astLexer extends Lexer {
 
 					else {
 						NoViableAltException nvae =
-							new NoViableAltException("", 9, 0, input);
+							new NoViableAltException("", 8, 0, input);
 						throw nvae;
 					}
 
-					switch (alt9) {
+					switch (alt8) {
 						case 1 :
-							// D:\\JAVA\\first\\src\\core\\ast.g:286:13: '0x'
+							// D:\\JAVA\\first\\src\\core\\ast.g:278:13: '0x'
 							{
 							match("0x"); 
 
 							}
 							break;
 						case 2 :
-							// D:\\JAVA\\first\\src\\core\\ast.g:286:20: '0X'
+							// D:\\JAVA\\first\\src\\core\\ast.g:278:20: '0X'
 							{
 							match("0X"); 
 
@@ -1915,6 +1863,78 @@ public class astLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
+	// $ANTLR end "Nice_character_constant"
+
+	// $ANTLR start "Nice_string"
+	public final void mNice_string() throws RecognitionException {
+		try {
+			int _type = Nice_string;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// D:\\JAVA\\first\\src\\core\\ast.g:286:2: ( '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"' )
+			// D:\\JAVA\\first\\src\\core\\ast.g:286:6: '\\\"' ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )* '\\\"'
+			{
+			match('\"'); 
+			// D:\\JAVA\\first\\src\\core\\ast.g:286:11: ( ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) ) |~ ( '\\\\' | '\\\"' ) )*
+			loop10:
+			while (true) {
+				int alt10=3;
+				int LA10_0 = input.LA(1);
+				if ( (LA10_0=='\\') ) {
+					alt10=1;
+				}
+				else if ( ((LA10_0 >= '\u0000' && LA10_0 <= '!')||(LA10_0 >= '#' && LA10_0 <= '[')||(LA10_0 >= ']' && LA10_0 <= '\uFFFF')) ) {
+					alt10=2;
+				}
+
+				switch (alt10) {
+				case 1 :
+					// D:\\JAVA\\first\\src\\core\\ast.g:286:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+					{
+					// D:\\JAVA\\first\\src\\core\\ast.g:286:13: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+					// D:\\JAVA\\first\\src\\core\\ast.g:286:14: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+					{
+					match('\\'); 
+					if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
+						input.consume();
+					}
+					else {
+						MismatchedSetException mse = new MismatchedSetException(null,input);
+						recover(mse);
+						throw mse;
+					}
+					}
+
+					}
+					break;
+				case 2 :
+					// D:\\JAVA\\first\\src\\core\\ast.g:286:59: ~ ( '\\\\' | '\\\"' )
+					{
+					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
+						input.consume();
+					}
+					else {
+						MismatchedSetException mse = new MismatchedSetException(null,input);
+						recover(mse);
+						throw mse;
+					}
+					}
+					break;
+
+				default :
+					break loop10;
+				}
+			}
+
+			match('\"'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
 	// $ANTLR end "Nice_string"
 
 	// $ANTLR start "COMMENT"
@@ -1922,12 +1942,12 @@ public class astLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\ast.g:290:6: ( '/*' ( . )* '*/' )
-			// D:\\JAVA\\first\\src\\core\\ast.g:290:10: '/*' ( . )* '*/'
+			// D:\\JAVA\\first\\src\\core\\ast.g:291:6: ( '/*' ( . )* '*/' )
+			// D:\\JAVA\\first\\src\\core\\ast.g:291:10: '/*' ( . )* '*/'
 			{
 			match("/*"); 
 
-			// D:\\JAVA\\first\\src\\core\\ast.g:290:15: ( . )*
+			// D:\\JAVA\\first\\src\\core\\ast.g:291:15: ( . )*
 			loop11:
 			while (true) {
 				int alt11=2;
@@ -1948,7 +1968,7 @@ public class astLexer extends Lexer {
 
 				switch (alt11) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:290:15: .
+					// D:\\JAVA\\first\\src\\core\\ast.g:291:15: .
 					{
 					matchAny(); 
 					}
@@ -1978,12 +1998,12 @@ public class astLexer extends Lexer {
 		try {
 			int _type = LINE_COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\ast.g:294:2: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
-			// D:\\JAVA\\first\\src\\core\\ast.g:294:6: '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
+			// D:\\JAVA\\first\\src\\core\\ast.g:295:2: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
+			// D:\\JAVA\\first\\src\\core\\ast.g:295:6: '//' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
 			{
 			match("//"); 
 
-			// D:\\JAVA\\first\\src\\core\\ast.g:294:11: (~ ( '\\n' | '\\r' ) )*
+			// D:\\JAVA\\first\\src\\core\\ast.g:295:11: (~ ( '\\n' | '\\r' ) )*
 			loop12:
 			while (true) {
 				int alt12=2;
@@ -2012,7 +2032,7 @@ public class astLexer extends Lexer {
 				}
 			}
 
-			// D:\\JAVA\\first\\src\\core\\ast.g:294:29: ( '\\n' | '\\r' | '\\r\\n' )
+			// D:\\JAVA\\first\\src\\core\\ast.g:295:29: ( '\\n' | '\\r' | '\\r\\n' )
 			int alt13=3;
 			int LA13_0 = input.LA(1);
 			if ( (LA13_0=='\n') ) {
@@ -2038,19 +2058,19 @@ public class astLexer extends Lexer {
 
 			switch (alt13) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:294:30: '\\n'
+					// D:\\JAVA\\first\\src\\core\\ast.g:295:30: '\\n'
 					{
 					match('\n'); 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:294:37: '\\r'
+					// D:\\JAVA\\first\\src\\core\\ast.g:295:37: '\\r'
 					{
 					match('\r'); 
 					}
 					break;
 				case 3 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:294:44: '\\r\\n'
+					// D:\\JAVA\\first\\src\\core\\ast.g:295:44: '\\r\\n'
 					{
 					match("\r\n"); 
 
@@ -2076,11 +2096,11 @@ public class astLexer extends Lexer {
 		try {
 			int _type = Header;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\ast.g:298:2: ( '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
-			// D:\\JAVA\\first\\src\\core\\ast.g:298:6: '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
+			// D:\\JAVA\\first\\src\\core\\ast.g:299:2: ( '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' ) )
+			// D:\\JAVA\\first\\src\\core\\ast.g:299:6: '#' (~ ( '\\n' | '\\r' ) )* ( '\\n' | '\\r' | '\\r\\n' )
 			{
 			match('#'); 
-			// D:\\JAVA\\first\\src\\core\\ast.g:298:10: (~ ( '\\n' | '\\r' ) )*
+			// D:\\JAVA\\first\\src\\core\\ast.g:299:10: (~ ( '\\n' | '\\r' ) )*
 			loop14:
 			while (true) {
 				int alt14=2;
@@ -2109,7 +2129,7 @@ public class astLexer extends Lexer {
 				}
 			}
 
-			// D:\\JAVA\\first\\src\\core\\ast.g:298:28: ( '\\n' | '\\r' | '\\r\\n' )
+			// D:\\JAVA\\first\\src\\core\\ast.g:299:28: ( '\\n' | '\\r' | '\\r\\n' )
 			int alt15=3;
 			int LA15_0 = input.LA(1);
 			if ( (LA15_0=='\n') ) {
@@ -2135,19 +2155,19 @@ public class astLexer extends Lexer {
 
 			switch (alt15) {
 				case 1 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:298:29: '\\n'
+					// D:\\JAVA\\first\\src\\core\\ast.g:299:29: '\\n'
 					{
 					match('\n'); 
 					}
 					break;
 				case 2 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:298:36: '\\r'
+					// D:\\JAVA\\first\\src\\core\\ast.g:299:36: '\\r'
 					{
 					match('\r'); 
 					}
 					break;
 				case 3 :
-					// D:\\JAVA\\first\\src\\core\\ast.g:298:43: '\\r\\n'
+					// D:\\JAVA\\first\\src\\core\\ast.g:299:43: '\\r\\n'
 					{
 					match("\r\n"); 
 
@@ -2173,10 +2193,10 @@ public class astLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// D:\\JAVA\\first\\src\\core\\ast.g:302:4: ( ( ' ' | '\\t' | '\\n' | '\\r' )+ )
-			// D:\\JAVA\\first\\src\\core\\ast.g:302:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
+			// D:\\JAVA\\first\\src\\core\\ast.g:303:4: ( ( ' ' | '\\t' | '\\n' | '\\r' )+ )
+			// D:\\JAVA\\first\\src\\core\\ast.g:303:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
 			{
-			// D:\\JAVA\\first\\src\\core\\ast.g:302:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
+			// D:\\JAVA\\first\\src\\core\\ast.g:303:6: ( ' ' | '\\t' | '\\n' | '\\r' )+
 			int cnt16=0;
 			loop16:
 			while (true) {
@@ -2698,42 +2718,40 @@ public class astLexer extends Lexer {
 	static final String DFA17_eotS =
 		"\1\uffff\1\51\1\53\1\56\2\uffff\1\60\1\63\1\uffff\1\67\1\uffff\1\73\1"+
 		"\uffff\1\76\1\100\1\103\2\uffff\1\105\12\43\1\uffff\1\125\2\uffff\1\42"+
-		"\32\uffff\1\133\5\uffff\1\135\3\uffff\5\43\1\143\7\43\13\uffff\4\43\1"+
-		"\157\1\uffff\1\160\7\43\1\170\1\43\1\172\2\uffff\4\43\1\177\1\43\1\u0081"+
-		"\1\uffff\1\43\1\uffff\3\43\1\u0086\1\uffff\1\u0087\1\uffff\1\43\1\u0089"+
-		"\1\u008a\1\u008b\2\uffff\1\43\3\uffff\1\u008d\1\uffff";
+		"\32\uffff\1\131\5\uffff\1\133\3\uffff\5\43\1\141\7\43\11\uffff\4\43\1"+
+		"\155\1\uffff\1\156\7\43\1\166\1\43\1\170\2\uffff\4\43\1\175\1\43\1\177"+
+		"\1\uffff\1\43\1\uffff\3\43\1\u0084\1\uffff\1\u0085\1\uffff\1\43\1\u0087"+
+		"\1\u0088\1\u0089\2\uffff\1\43\3\uffff\1\u008b\1\uffff";
 	static final String DFA17_eofS =
-		"\u008e\uffff";
+		"\u008c\uffff";
 	static final String DFA17_minS =
 		"\1\11\2\75\1\46\2\uffff\1\75\1\53\1\uffff\1\55\1\uffff\1\52\1\uffff\1"+
 		"\74\2\75\2\uffff\1\75\1\162\1\150\1\154\1\157\1\146\1\145\1\151\1\156"+
-		"\1\157\1\150\1\uffff\1\75\2\uffff\1\60\2\uffff\1\0\27\uffff\1\75\5\uffff"+
-		"\1\75\3\uffff\1\145\1\141\1\156\1\163\1\162\1\44\2\164\1\172\1\162\3\151"+
-		"\5\uffff\1\42\5\uffff\1\141\1\162\1\164\1\145\1\44\1\uffff\1\44\1\165"+
-		"\1\145\1\165\1\157\1\144\1\154\1\153\1\44\1\151\1\44\2\uffff\1\162\1\157"+
-		"\1\143\1\156\1\44\1\145\1\44\1\uffff\1\156\1\uffff\1\156\1\146\1\164\1"+
-		"\44\1\uffff\1\44\1\uffff\1\165\3\44\2\uffff\1\145\3\uffff\1\44\1\uffff";
+		"\1\157\1\150\1\uffff\1\75\2\uffff\1\60\32\uffff\1\75\5\uffff\1\75\3\uffff"+
+		"\1\145\1\141\1\156\1\163\1\162\1\44\2\164\1\172\1\162\3\151\11\uffff\1"+
+		"\141\1\162\1\164\1\145\1\44\1\uffff\1\44\1\165\1\145\1\165\1\157\1\144"+
+		"\1\154\1\153\1\44\1\151\1\44\2\uffff\1\162\1\157\1\143\1\156\1\44\1\145"+
+		"\1\44\1\uffff\1\156\1\uffff\1\156\1\146\1\164\1\44\1\uffff\1\44\1\uffff"+
+		"\1\165\3\44\2\uffff\1\145\3\uffff\1\44\1\uffff";
 	static final String DFA17_maxS =
 		"\1\176\3\75\2\uffff\2\75\1\uffff\1\76\1\uffff\1\75\1\uffff\2\75\1\76\2"+
 		"\uffff\1\75\1\162\1\157\1\154\1\157\1\156\1\145\1\164\1\156\1\157\1\150"+
-		"\1\uffff\1\174\2\uffff\1\170\2\uffff\1\uffff\27\uffff\1\75\5\uffff\1\75"+
-		"\3\uffff\1\145\1\141\1\156\1\163\1\162\1\172\2\164\1\172\1\162\3\151\5"+
-		"\uffff\1\164\5\uffff\1\141\1\162\1\164\1\145\1\172\1\uffff\1\172\1\165"+
-		"\1\145\1\165\1\157\1\144\1\154\1\153\1\172\1\151\1\172\2\uffff\1\162\1"+
-		"\157\1\143\1\156\1\172\1\145\1\172\1\uffff\1\156\1\uffff\1\156\1\146\1"+
-		"\164\1\172\1\uffff\1\172\1\uffff\1\165\3\172\2\uffff\1\145\3\uffff\1\172"+
-		"\1\uffff";
+		"\1\uffff\1\174\2\uffff\1\170\32\uffff\1\75\5\uffff\1\75\3\uffff\1\145"+
+		"\1\141\1\156\1\163\1\162\1\172\2\164\1\172\1\162\3\151\11\uffff\1\141"+
+		"\1\162\1\164\1\145\1\172\1\uffff\1\172\1\165\1\145\1\165\1\157\1\144\1"+
+		"\154\1\153\1\172\1\151\1\172\2\uffff\1\162\1\157\1\143\1\156\1\172\1\145"+
+		"\1\172\1\uffff\1\156\1\uffff\1\156\1\146\1\164\1\172\1\uffff\1\172\1\uffff"+
+		"\1\165\3\172\2\uffff\1\145\3\uffff\1\172\1\uffff";
 	static final String DFA17_acceptS =
 		"\4\uffff\1\10\1\11\2\uffff\1\17\1\uffff\1\24\1\uffff\1\27\3\uffff\1\42"+
-		"\1\43\13\uffff\1\63\1\uffff\1\67\1\70\1\uffff\1\71\1\74\1\uffff\1\76\1"+
-		"\101\1\102\1\2\1\1\1\4\1\3\1\5\1\7\1\6\1\13\1\12\1\15\1\16\1\14\1\21\1"+
-		"\22\1\23\1\20\1\26\1\77\1\100\1\25\1\uffff\1\33\1\30\1\35\1\34\1\37\1"+
-		"\uffff\1\36\1\45\1\44\15\uffff\1\65\1\66\1\64\1\72\1\73\1\uffff\1\75\1"+
-		"\32\1\31\1\41\1\40\5\uffff\1\53\13\uffff\1\52\1\54\7\uffff\1\47\1\uffff"+
-		"\1\51\4\uffff\1\61\1\uffff\1\46\4\uffff\1\60\1\62\1\uffff\1\55\1\56\1"+
-		"\57\1\uffff\1\50";
+		"\1\43\13\uffff\1\63\1\uffff\1\67\1\70\1\uffff\1\71\1\74\1\75\1\76\1\101"+
+		"\1\102\1\2\1\1\1\4\1\3\1\5\1\7\1\6\1\13\1\12\1\15\1\16\1\14\1\21\1\22"+
+		"\1\23\1\20\1\26\1\77\1\100\1\25\1\uffff\1\33\1\30\1\35\1\34\1\37\1\uffff"+
+		"\1\36\1\45\1\44\15\uffff\1\65\1\66\1\64\1\72\1\73\1\32\1\31\1\41\1\40"+
+		"\5\uffff\1\53\13\uffff\1\52\1\54\7\uffff\1\47\1\uffff\1\51\4\uffff\1\61"+
+		"\1\uffff\1\46\4\uffff\1\60\1\62\1\uffff\1\55\1\56\1\57\1\uffff\1\50";
 	static final String DFA17_specialS =
-		"\44\uffff\1\0\151\uffff}>";
+		"\u008c\uffff}>";
 	static final String[] DFA17_transitionS = {
 			"\2\47\2\uffff\1\47\22\uffff\1\47\1\1\1\45\1\46\1\43\1\2\1\3\1\44\1\4"+
 			"\1\5\1\6\1\7\1\10\1\11\1\12\1\13\1\41\11\42\1\uffff\1\14\1\15\1\16\1"+
@@ -2775,7 +2793,6 @@ public class astLexer extends Lexer {
 			"\10\127\40\uffff\1\126\37\uffff\1\126",
 			"",
 			"",
-			"\47\131\1\uffff\64\131\1\130\uffa3\131",
 			"",
 			"",
 			"",
@@ -2794,6 +2811,13 @@ public class astLexer extends Lexer {
 			"",
 			"",
 			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"\1\130",
 			"",
 			"",
 			"",
@@ -2803,80 +2827,71 @@ public class astLexer extends Lexer {
 			"",
 			"",
 			"",
-			"",
-			"",
 			"\1\134",
-			"",
-			"",
-			"",
+			"\1\135",
 			"\1\136",
 			"\1\137",
 			"\1\140",
-			"\1\141",
-			"\1\142",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
+			"\1\142",
+			"\1\143",
 			"\1\144",
 			"\1\145",
 			"\1\146",
 			"\1\147",
 			"\1\150",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
 			"\1\151",
 			"\1\152",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"\1\131\4\uffff\1\131\10\uffff\10\45\44\uffff\1\131\5\uffff\1\131\3\uffff"+
-			"\1\131\7\uffff\1\131\3\uffff\1\131\1\uffff\1\131",
-			"",
-			"",
-			"",
-			"",
-			"",
 			"\1\153",
 			"\1\154",
-			"\1\155",
-			"\1\156",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
+			"\1\157",
+			"\1\160",
 			"\1\161",
 			"\1\162",
 			"\1\163",
 			"\1\164",
 			"\1\165",
-			"\1\166",
+			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"\1\167",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
+			"",
+			"",
 			"\1\171",
-			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
-			"",
-			"",
+			"\1\172",
 			"\1\173",
 			"\1\174",
-			"\1\175",
+			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"\1\176",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
+			"",
 			"\1\u0080",
-			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"",
+			"\1\u0081",
 			"\1\u0082",
-			"",
 			"\1\u0083",
-			"\1\u0084",
-			"\1\u0085",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"",
-			"\1\u0088",
+			"\1\u0086",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"\1\43\13\uffff\12\43\7\uffff\32\43\4\uffff\1\43\1\uffff\32\43",
 			"",
 			"",
-			"\1\u008c",
+			"\1\u008a",
 			"",
 			"",
 			"",
@@ -2916,24 +2931,6 @@ public class astLexer extends Lexer {
 		@Override
 		public String getDescription() {
 			return "1:1: Tokens : ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | Dec | Hex | Oct | Nice_identifier | Nice_character_constant | Nice_string | COMMENT | LINE_COMMENT | Header | WS );";
-		}
-		@Override
-		public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
-			IntStream input = _input;
-			int _s = s;
-			switch ( s ) {
-					case 0 : 
-						int LA17_36 = input.LA(1);
-						s = -1;
-						if ( (LA17_36=='\\') ) {s = 88;}
-						else if ( ((LA17_36 >= '\u0000' && LA17_36 <= '&')||(LA17_36 >= '(' && LA17_36 <= '[')||(LA17_36 >= ']' && LA17_36 <= '\uFFFF')) ) {s = 89;}
-						if ( s>=0 ) return s;
-						break;
-			}
-			NoViableAltException nvae =
-				new NoViableAltException(getDescription(), 17, _s, input);
-			error(nvae);
-			throw nvae;
 		}
 	}
 

@@ -34,7 +34,6 @@ public class function_definition extends root
 			if(returnType == null)throw new Exception();
 		}
 		
-		first.Off.setElementAt(first.Off.lastElement()+returnType.size, first.Off.size()-1);
 		
 		Vector<value> argument = new Vector<value>();
 		int scope = 0;
@@ -65,8 +64,10 @@ public class function_definition extends root
 		
 		first.func = null;
 		
-		t.size = first.Off.lastElement();
+		t.size = first.Off.lastElement()+4;  //for $ra
 		first.putfunc(functionName, new value(t,null),first.F.size()-1-scope);
+		//System.out.println(functionName);
+		//System.out.println(t.size);
 		if(!code.lastElement().operator.equals("return"))
 		{
 			location ll = new location();

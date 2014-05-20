@@ -1,4 +1,4 @@
-// $ANTLR 3.5.1 D:\\JAVA\\first\\src\\core\\ast.g 2014-05-05 23:05:19
+// $ANTLR 3.5.1 D:\\JAVA\\first\\src\\core\\ast.g 2014-05-13 13:34:32
   
 package core;
 
@@ -615,7 +615,7 @@ public class astParser extends Parser {
 			if (state.failed) return retval;
 			if ( state.backtracking==0 ) stream_compound_statement.add(compound_statement13.getTree());
 			// AST REWRITE
-			// elements: compound_statement, type_specifier, parameters, plain_declarator
+			// elements: type_specifier, plain_declarator, compound_statement, parameters
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -1650,7 +1650,7 @@ public class astParser extends Parser {
 					if ( state.backtracking==0 ) stream_118.add(char_literal41);
 
 					// AST REWRITE
-					// elements: type_specifier, identifier, struct_or_union, declarators
+					// elements: type_specifier, struct_or_union, identifier, declarators
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1709,7 +1709,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_identifier.add(identifier43.getTree());
 					// AST REWRITE
-					// elements: struct_or_union, identifier
+					// elements: identifier, struct_or_union
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1866,7 +1866,7 @@ public class astParser extends Parser {
 			if (state.failed) return retval;
 			if ( state.backtracking==0 ) stream_declarator.add(declarator46.getTree());
 			// AST REWRITE
-			// elements: declarator, type_specifier
+			// elements: type_specifier, declarator
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -1996,7 +1996,7 @@ public class astParser extends Parser {
 					if ( state.backtracking==0 ) stream_72.add(char_literal50);
 
 					// AST REWRITE
-					// elements: parameters, plain_declarator
+					// elements: plain_declarator, parameters
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2072,7 +2072,7 @@ public class astParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: plain_declarator, constant_expression
+					// elements: constant_expression, plain_declarator
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2189,7 +2189,7 @@ public class astParser extends Parser {
 			if (state.failed) return retval;
 			if ( state.backtracking==0 ) stream_identifier.add(identifier56.getTree());
 			// AST REWRITE
-			// elements: identifier, 73
+			// elements: 73, identifier
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -2744,7 +2744,7 @@ public class astParser extends Parser {
 			if ( state.backtracking==0 ) stream_118.add(char_literal67);
 
 			// AST REWRITE
-			// elements: statement, declaration
+			// elements: declaration, statement
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -2892,7 +2892,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: 106, e1, e3, e2
+			// elements: 106, e1, e2, e3
 			// token labels: 
 			// rule labels: e3, retval, e1, e2
 			// token list labels: 
@@ -3042,7 +3042,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_statement.add(e2.getTree());
 					// AST REWRITE
-					// elements: e2, 113, e1
+					// elements: e1, e2, 113
 					// token labels: 
 					// rule labels: retval, e1, e2
 					// token list labels: 
@@ -3159,7 +3159,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_statement.add(e4.getTree());
 					// AST REWRITE
-					// elements: e1, e2, e4, e3, 105
+					// elements: 105, e3, e4, e2, e1
 					// token labels: 
 					// rule labels: e3, e4, retval, e1, e2
 					// token list labels: 
@@ -3427,7 +3427,7 @@ public class astParser extends Parser {
 					if ( state.backtracking==0 ) stream_86.add(char_literal86);
 
 					// AST REWRITE
-					// elements: 108, expression
+					// elements: expression, 108
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3801,7 +3801,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_assignment_expression.add(assignment_expression92.getTree());
 					// AST REWRITE
-					// elements: assignment_expression, unary_expression, assignment_operator
+					// elements: unary_expression, assignment_operator, assignment_expression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -4231,7 +4231,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: inclusive_or_expression, 68, inclusive_or_expression
+			// elements: 68, inclusive_or_expression, inclusive_or_expression
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -4250,12 +4250,12 @@ public class astParser extends Parser {
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_logical_and_expression, "LEGEND_logical_and_expression"), root_1);
 				adaptor.addChild(root_1, stream_inclusive_or_expression.nextTree());
 				// D:\\JAVA\\first\\src\\core\\ast.g:152:119: ( '&&' inclusive_or_expression )*
-				while ( stream_inclusive_or_expression.hasNext()||stream_68.hasNext() ) {
+				while ( stream_68.hasNext()||stream_inclusive_or_expression.hasNext() ) {
 					adaptor.addChild(root_1, stream_68.nextNode());
 					adaptor.addChild(root_1, stream_inclusive_or_expression.nextTree());
 				}
-				stream_inclusive_or_expression.reset();
 				stream_68.reset();
+				stream_inclusive_or_expression.reset();
 
 				adaptor.addChild(root_0, root_1);
 				}
@@ -4355,7 +4355,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: exclusive_or_expression, 115, exclusive_or_expression
+			// elements: 115, exclusive_or_expression, exclusive_or_expression
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -4374,12 +4374,12 @@ public class astParser extends Parser {
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_inclusive_or_expression, "LEGEND_inclusive_or_expression"), root_1);
 				adaptor.addChild(root_1, stream_exclusive_or_expression.nextTree());
 				// D:\\JAVA\\first\\src\\core\\ast.g:155:119: ( '|' exclusive_or_expression )*
-				while ( stream_exclusive_or_expression.hasNext()||stream_115.hasNext() ) {
+				while ( stream_115.hasNext()||stream_exclusive_or_expression.hasNext() ) {
 					adaptor.addChild(root_1, stream_115.nextNode());
 					adaptor.addChild(root_1, stream_exclusive_or_expression.nextTree());
 				}
-				stream_exclusive_or_expression.reset();
 				stream_115.reset();
+				stream_exclusive_or_expression.reset();
 
 				adaptor.addChild(root_0, root_1);
 				}
@@ -4479,7 +4479,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: and_expression, and_expression, 99
+			// elements: 99, and_expression, and_expression
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -4498,12 +4498,12 @@ public class astParser extends Parser {
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_exclusive_or_expression, "LEGEND_exclusive_or_expression"), root_1);
 				adaptor.addChild(root_1, stream_and_expression.nextTree());
 				// D:\\JAVA\\first\\src\\core\\ast.g:158:92: ( '^' and_expression )*
-				while ( stream_and_expression.hasNext()||stream_99.hasNext() ) {
+				while ( stream_99.hasNext()||stream_and_expression.hasNext() ) {
 					adaptor.addChild(root_1, stream_99.nextNode());
 					adaptor.addChild(root_1, stream_and_expression.nextTree());
 				}
-				stream_and_expression.reset();
 				stream_99.reset();
+				stream_and_expression.reset();
 
 				adaptor.addChild(root_0, root_1);
 				}
@@ -4918,7 +4918,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: shift_expression, shift_expression, relational_operator
+			// elements: shift_expression, relational_operator, shift_expression
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -5108,7 +5108,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: shift_operator, additive_expression, additive_expression
+			// elements: additive_expression, shift_operator, additive_expression
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -5127,12 +5127,12 @@ public class astParser extends Parser {
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_shift_expression, "LEGEND_shift_expression"), root_1);
 				adaptor.addChild(root_1, stream_additive_expression.nextTree());
 				// D:\\JAVA\\first\\src\\core\\ast.g:180:111: ( shift_operator additive_expression )*
-				while ( stream_shift_operator.hasNext()||stream_additive_expression.hasNext() ) {
+				while ( stream_additive_expression.hasNext()||stream_shift_operator.hasNext() ) {
 					adaptor.addChild(root_1, stream_shift_operator.nextTree());
 					adaptor.addChild(root_1, stream_additive_expression.nextTree());
 				}
-				stream_shift_operator.reset();
 				stream_additive_expression.reset();
+				stream_shift_operator.reset();
 
 				adaptor.addChild(root_0, root_1);
 				}
@@ -5317,12 +5317,12 @@ public class astParser extends Parser {
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_additive_expression, "LEGEND_additive_expression"), root_1);
 				adaptor.addChild(root_1, stream_multiplicative_expression.nextTree());
 				// D:\\JAVA\\first\\src\\core\\ast.g:187:135: ( additive_operator multiplicative_expression )*
-				while ( stream_multiplicative_expression.hasNext()||stream_additive_operator.hasNext() ) {
+				while ( stream_additive_operator.hasNext()||stream_multiplicative_expression.hasNext() ) {
 					adaptor.addChild(root_1, stream_additive_operator.nextTree());
 					adaptor.addChild(root_1, stream_multiplicative_expression.nextTree());
 				}
-				stream_multiplicative_expression.reset();
 				stream_additive_operator.reset();
+				stream_multiplicative_expression.reset();
 
 				adaptor.addChild(root_0, root_1);
 				}
@@ -5488,7 +5488,7 @@ public class astParser extends Parser {
 			}
 
 			// AST REWRITE
-			// elements: multiplicative_operator, cast_expression, cast_expression
+			// elements: cast_expression, cast_expression, multiplicative_operator
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -5507,12 +5507,12 @@ public class astParser extends Parser {
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_multiplicative_expression, "LEGEND_multiplicative_expression"), root_1);
 				adaptor.addChild(root_1, stream_cast_expression.nextTree());
 				// D:\\JAVA\\first\\src\\core\\ast.g:194:117: ( multiplicative_operator cast_expression )*
-				while ( stream_multiplicative_operator.hasNext()||stream_cast_expression.hasNext() ) {
+				while ( stream_cast_expression.hasNext()||stream_multiplicative_operator.hasNext() ) {
 					adaptor.addChild(root_1, stream_multiplicative_operator.nextTree());
 					adaptor.addChild(root_1, stream_cast_expression.nextTree());
 				}
-				stream_multiplicative_operator.reset();
 				stream_cast_expression.reset();
+				stream_multiplicative_operator.reset();
 
 				adaptor.addChild(root_0, root_1);
 				}
@@ -5741,7 +5741,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_cast_expression.add(cast_expression134.getTree());
 					// AST REWRITE
-					// elements: cast_expression, type_name
+					// elements: type_name, cast_expression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -6097,7 +6097,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_unary_expression.add(unary_expression139.getTree());
 					// AST REWRITE
-					// elements: 76, unary_expression
+					// elements: unary_expression, 76
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -6183,7 +6183,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_cast_expression.add(cast_expression143.getTree());
 					// AST REWRITE
-					// elements: unary_operator, cast_expression
+					// elements: cast_expression, unary_operator
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -6225,7 +6225,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_unary_expression.add(unary_expression145.getTree());
 					// AST REWRITE
-					// elements: 109, unary_expression
+					// elements: unary_expression, 109
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -6273,7 +6273,7 @@ public class astParser extends Parser {
 					if ( state.backtracking==0 ) stream_72.add(char_literal149);
 
 					// AST REWRITE
-					// elements: 109, type_name
+					// elements: type_name, 109
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -6614,7 +6614,7 @@ public class astParser extends Parser {
 					if ( state.backtracking==0 ) stream_98.add(char_literal155);
 
 					// AST REWRITE
-					// elements: 97, expression, 98
+					// elements: expression, 98, 97
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -6764,7 +6764,7 @@ public class astParser extends Parser {
 					if (state.failed) return retval;
 					if ( state.backtracking==0 ) stream_identifier.add(identifier162.getTree());
 					// AST REWRITE
-					// elements: identifier, 82
+					// elements: 82, identifier
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -7757,7 +7757,7 @@ public class astParser extends Parser {
 
 
 	// $ANTLR start "string"
-	// D:\\JAVA\\first\\src\\core\\ast.g:279:1: string : Nice_string -> ^( LEGEND_string Nice_string ) ;
+	// D:\\JAVA\\first\\src\\core\\ast.g:281:1: string : Nice_string -> ^( LEGEND_string Nice_string ) ;
 	public final astParser.string_return string() throws RecognitionException {
 		astParser.string_return retval = new astParser.string_return();
 		retval.start = input.LT(1);
@@ -7773,10 +7773,10 @@ public class astParser extends Parser {
 		try {
 			if ( state.backtracking>0 && alreadyParsedRule(input, 52) ) { return retval; }
 
-			// D:\\JAVA\\first\\src\\core\\ast.g:279:8: ( Nice_string -> ^( LEGEND_string Nice_string ) )
-			// D:\\JAVA\\first\\src\\core\\ast.g:280:2: Nice_string
+			// D:\\JAVA\\first\\src\\core\\ast.g:281:8: ( Nice_string -> ^( LEGEND_string Nice_string ) )
+			// D:\\JAVA\\first\\src\\core\\ast.g:282:2: Nice_string
 			{
-			Nice_string181=(Token)match(input,Nice_string,FOLLOW_Nice_string_in_string2959); if (state.failed) return retval; 
+			Nice_string181=(Token)match(input,Nice_string,FOLLOW_Nice_string_in_string3030); if (state.failed) return retval; 
 			if ( state.backtracking==0 ) stream_Nice_string.add(Nice_string181);
 
 			// AST REWRITE
@@ -7791,9 +7791,9 @@ public class astParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 280:14: -> ^( LEGEND_string Nice_string )
+			// 282:14: -> ^( LEGEND_string Nice_string )
 			{
-				// D:\\JAVA\\first\\src\\core\\ast.g:280:17: ^( LEGEND_string Nice_string )
+				// D:\\JAVA\\first\\src\\core\\ast.g:282:17: ^( LEGEND_string Nice_string )
 				{
 				CommonTree root_1 = (CommonTree)adaptor.nil();
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LEGEND_string, "LEGEND_string"), root_1);
@@ -8202,7 +8202,7 @@ public class astParser extends Parser {
 	public static final BitSet FOLLOW_integer_constant_in_constant2819 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_character_constant_in_constant2841 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_Nice_character_constant_in_character_constant2883 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_Nice_string_in_string2959 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_Nice_string_in_string3030 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_declaration_in_synpred1_ast319 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_function_definition_in_synpred2_ast323 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_104_in_synpred29_ast1044 = new BitSet(new long[]{0x7800000000000120L,0x008636A000419AA1L});

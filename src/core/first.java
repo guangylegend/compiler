@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
@@ -33,6 +35,7 @@ public class first{
 	public static int noname = 0;
 	public static function func = null;
 	public static boolean idtest = false; 
+	public static boolean infinity = true;
 	
 	public static value getstruct(String s)
 	{
@@ -121,7 +124,8 @@ public class first{
 	    return files;
 	}
 	
-	static public int work(File file) throws Exception
+	@SuppressWarnings("unchecked")
+	static public String work(File file) throws Exception
 	{
 		try
 		{
@@ -130,14 +134,14 @@ public class first{
 			loop = 0;
 			noname = 0;
 			func = null; 
-		    InputStream in = new FileInputStream(file);
-		    ANTLRInputStream input = new ANTLRInputStream(in);   
+		    InputStream iin = new FileInputStream(file);
+		    ANTLRInputStream input = new ANTLRInputStream(iin);   
 		    astLexer lex = new astLexer(input);   
 		    CommonTokenStream tokens = new CommonTokenStream(lex);   
 		    astParser parser = new astParser(tokens);
 		    astParser.program_return r = parser.program();
 		    String s = ((BaseTree)r.getTree()).toStringTree();
-		    //System.out.println(s);
+		    //output+=ln(s);
 		    String[] res = s.split(" ");
 		    Vector<root> his = new Vector<root>();
 		    root rt = new root();
@@ -146,7 +150,7 @@ public class first{
 		    boolean todo = false;
 		    for (int i=0;i<res.length;i++)
 		    {
-		    	//System.out.println(res[i]);
+		    	//output+=ln(res[i]);
 		    	
 		    	root tmp = new root();
 		    	int last = -1;
@@ -159,7 +163,7 @@ public class first{
 	    	    		last = ii;
 	    	    	}
 	    	    }
-		    	
+
 		    	if(stringcnt%2==0)
 		    	{	
 		    		for (int ii =0;ii<res[i].length();ii++)
@@ -171,7 +175,6 @@ public class first{
 	    				}
 	    			}
 		    	}
-	    		
 	    		if(stringcnt%2!=0)
 	    		{
 	    			space+=(res[i]+' ');
@@ -289,594 +292,1228 @@ public class first{
 		    boolean flag = false;
 		    int funcoffset = 0;
 		    
-		    System.out.println(".data");
+		    
+		    String output = "";
+		    
+		    output+=(".data"+"\n");
 		    if(globalsize!=0)
 		    {
-		    	System.out.print("Legend_global:.space ");
-			    System.out.println(globalsize);
+		    	output+="Legend_global:.space ";
+		    	output+=(globalsize+"\n");
 		    }
-		    System.out.print("Legend_return:.space ");
-		    System.out.println(40000);
+		    output+="Legend_return:.space ";
+		    output+=(40000+"\n");
 		    
 		    for(int i=1;i<=ASCII.size();i++)
 		    {
-		    	System.out.print("Legend_");
-		    	System.out.print(i);
-		    	System.out.print(":.asciiz ");
-		    	System.out.println(ASCII.get(i-1));
-		    	System.out.println(".align 2");
+		    	output+=("Legend_");
+		    	output+=(i);
+		    	output+=(":.asciiz ");
+		    	output+=(ASCII.get(i-1)+"\n");
+		    	output+=(".align 2"+"\n");
 		    }
-		    System.out.println("printf_buf: .space 2");
-		    System.out.println(".text");
-		    System.out.println("main:");
+		    output+=("printf_buf: .space 2"+"\n");
+		    output+=(".text"+"\n");
+		    output+=("main:"+"\n");
 		    if(globalsize!=0)
 		    {
-		    	System.out.println("la"+"\t"+"$s0"+"\t\t"+"Legend_global");
+		    	output+=("la"+"\t"+"$s0"+"\t"+"Legend_global"+"\n");
 		    	
 		    }
-		    System.out.println("la"+"\t"+"$v1"+"\t\t"+"Legend_return");
+		    output+=("la"+"\t"+"$v1"+"\t"+"Legend_return"+"\n");
+		    
+		    Vector<Integer> reguse = new Vector<Integer>();
+		    Vector<String> funcsize = new Vector<String>();
+		    int regmax = 0;
+		    
+		    Vector<Vector<Integer>> succ = new Vector<Vector<Integer>>();
+		    Vector<Vector<Integer>> def = new Vector<Vector<Integer>>();
+		    Vector<Vector<Integer>> use = new Vector<Vector<Integer>>();
+
+			HashSet<Integer> in[] = new HashSet[10000];
+		    HashSet<Integer> inh[] = new HashSet[10000];
+			HashSet<Integer> out[] = new HashSet[10000];
+		    HashSet<Integer> outh[] = new HashSet[10000];
+		    int label[] = new int[1000];
+		    int left[] = new int[1000];
+		    int right[] = new int[1000];
+		    int reg[] = new int[15];
+		    int tab[] = new int[1000];
+		    Vector<Integer> lab = new Vector<Integer>();
+		    int infinitynumber = 0;
+		    
+		    for(int i=0;i<label.length;i++)
+		    {
+		    	label[i] = -1;
+		    	left[i] = -1;
+		    	right[i] = -1;
+		    	tab[i] = 0;
+		    }
+		    for(int i=0;i<reg.length;i++)
+		    {
+		    	reg[i] = 0;
+		    }
 		    
 		    
 		    for(int i=0;i<rt.code.size();i++)
 		    {
 		    	quad q = rt.code.get(i);
-		    	
-		    	
+		    	if(q.operator.equals("func"))
+		    	{
+		    		if(!flag)flag=true;
+		    	}
+		    	if(flag)
+		    	{
+		    		if(q.operator.equals("func"))
+		    		{
+		    			funcsize.add((String)q.arg3.contain);
+		    			continue;
+		    		}
+		    		else if(q.operator.equals("spill"))
+		    		{
+		    			if(q.arg3.type.equals("register"))tab[q.arg3.number] = 1000;
+		    			continue;
+		    		}
+		    		else if(q.operator.equals("call"))continue;
+		    		else if(q.operator.equals("return"))continue;
+		    		else if(q.operator.equals("jal"))continue;
+		    		else if(q.operator.equals("storereturn"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);    		
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		use.lastElement().add(q.arg1.number);
+
+		    		}
+		    		else if(q.operator.equals("loc"))continue;
+		    		else if(q.operator.equals("parameter"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    		if(q.arg1.number!=0)use.lastElement().add(q.arg1.number);
+			    		continue;
+		    		}
+		    		else if(q.operator.equals("parameterl"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    		use.lastElement().add(q.arg1.number);
+			    		continue;
+		    		}
+		    		else if(q.operator.equals("funcend"))
+		    		{
+		    			reguse.add(regmax);
+		    			continue;
+		    		}
+		    		else if(q.operator.equals("b"))
+		    		{
+		    			q.arg1 = new location(0,"const",succ.size()-1,false,false);
+		    			continue;
+		    		}
+		    		else if(q.operator.equals("string"))continue;
+		    		else if(q.operator.equals("storera"))continue;
+		    		else if(q.operator.equals("restorera"))continue;
+		    		else if(q.operator.equals("mallocli"))continue;
+		    		else if(q.operator.equals("malloc"))continue;
+		    		else if(q.operator.equals("syscall"))continue;
+		    		else if(q.operator.equals("malloclal"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    		use.lastElement().add(q.arg3.number);
+			    		continue;
+		    		}
+		    		else if(q.operator.equals("mallocload"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    		use.lastElement().add(q.arg3.number);
+			    		continue;
+		    		}
+		    		else if(q.operator.equals("getpointer"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    		use.lastElement().add(q.arg3.number);
+			    		continue;
+		    		}
+		    		else if(q.operator.equals("label"))
+		    		{
+		    			lab.add((int) q.arg3.contain);
+		    			continue;
+		    		}
+		    		else if(q.operator.equals("beqz"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    		use.lastElement().add(q.arg1.number);
+			    		q.arg2 = new location(0,"const",succ.size()-1,false,false);
+			    		continue;
+		    		}
+		    		else if(q.operator.equals("bnez"))
+		    		{
+		    			Vector<Integer> su = new Vector<Integer>();
+			    		su.add(succ.size()+1);
+			    		if(lab.size()>0)
+			    		{
+			    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+			    			lab.clear();
+			    		}
+			    		succ.add(su);
+			    		def.add(new Vector<Integer>());
+			    		use.add(new Vector<Integer>());
+			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    		use.lastElement().add(q.arg1.number);
+			    		q.arg2 = new location(0,"const",succ.size()-1,false,false);
+			    		continue;
+		    		}
+		    		
+		    		
+		    		Vector<Integer> su = new Vector<Integer>();
+		    		su.add(succ.size()+1);    		
+		    		if(lab.size()>0)
+		    		{
+		    			for(int j=0;j<lab.size();j++)label[lab.get(j)] = succ.size();
+		    			lab.clear();
+		    		}
+		    		succ.add(su);
+		    		def.add(new Vector<Integer>());
+		    		if(q.arg1.number > regmax) regmax = q.arg1.number;
+		    		def.lastElement().add(q.arg1.number);
+		    		use.add(new Vector<Integer>());
+		    		if(q.arg2!=null && q.arg2.number!=0)
+		    		{
+		    			if(q.arg2.number > regmax) regmax = q.arg2.number;
+		    			use.lastElement().add(q.arg2.number);
+		    		}
+		    		if(q.arg3!=null && q.arg3.number!=0)
+		    		{
+		    			if(q.arg3.number > regmax) regmax = q.arg3.number;
+		    			use.lastElement().add(q.arg3.number);
+		    		}
+		    		
+		    	}
+		    }
+		    
+		    succ.lastElement().clear();
+			for(int k=0;k<rt.code.size();k++)
+		    {
+		    	quad qq = rt.code.get(k);
+		    	if(qq.operator.equals("b"))
+		    	{
+		    		if(label[(int) qq.arg3.contain]!=-1)succ.get(qq.arg1.number).add(label[(int) qq.arg3.contain]);
+		    	}
+		    	else if(qq.operator.equals("bnez"))
+		    	{
+		    		if(label[(int) qq.arg3.contain]!=-1)succ.get(qq.arg2.number).add(label[(int) qq.arg3.contain]);
+		    	}
+		    	else if(qq.operator.equals("beqz"))
+		    	{
+		    		if(label[(int) qq.arg3.contain]!=-1)succ.get(qq.arg2.number).add(label[(int) qq.arg3.contain]);
+		    	}
+		    }
+			
+			for(int k=0;k<succ.size();k++)
+			{
+				in[k] = new HashSet<Integer>();
+				out[k] = new HashSet<Integer>();
+			}
+			
+			/*for(int j=0;j<succ.size();j++)
+			{
+				for(int k=0;k<succ.get(j).size();k++)System.out.print(succ.get(j).get(k)+1+" ");
+				System.out.print("~~");
+				for(int k=0;k<def.get(j).size();k++)System.out.print(def.get(j).get(k)+" ");
+				System.out.print("~~");
+				for(int k=0;k<use.get(j).size();k++)System.out.print(use.get(j).get(k)+" ");
+				System.out.println();
+			}*/
+			//System.out.flush();
+			
+			//int cnt = 0;
+			
+			//System.setOut(new PrintStream(new FileOutputStream("D:\\xxx.txt")));
+			
+			while(true)
+			{
+				for(int k=succ.size()-1;k>=0;k--)
+    			{
+    				inh[k] = new HashSet<Integer>(in[k]);
+    				outh[k] = new HashSet<Integer>(out[k]);
+    				out[k] = new HashSet<Integer>();
+    				for(int j=0;j<succ.get(k).size();j++)out[k].addAll(in[succ.get(k).get(j)]);
+    				out[k].removeAll(def.get(k));
+    				out[k].addAll(use.get(k));
+    				in[k] = new HashSet<Integer>(out[k]);
+
+    			}
+				
+				boolean f = true;
+				for(int k=succ.size()-1;k>=0;k--)
+				{
+					//TODO size
+					if(inh[k].size()!=in[k].size())f = false;
+					if(outh[k].size()!=out[k].size())f = false;
+				}
+				
+				
+				
+				//cnt++;
+				if(f)break;
+				
+			}
+			
+			//System.out.println(cnt);
+		
+			/*for(int k=0;k<succ.size();k++)
+			{
+				Iterator<Integer> iter = in[k].iterator();
+				while(iter.hasNext())System.out.print(iter.next().hashCode()+" ");
+				System.out.print("~~");
+				iter = out[k].iterator();
+				while(iter.hasNext())System.out.print(iter.next().hashCode()+" ");
+				System.out.println();
+			}*/
+
+			
+			
+			
+			for(int k=0;k<succ.size();k++)
+			{
+				Iterator<Integer> iter = out[k].iterator();
+				while(iter.hasNext())
+				{
+					int tmp = iter.next().hashCode();
+					if(tmp > infinitynumber)infinitynumber = tmp;
+					if(left[tmp]==-1)
+					{
+						left[tmp] = k;
+						right[tmp] = k;
+					}
+					if(right[tmp]<k)right[tmp] = k;
+				}
+				/*iter = in[k].iterator();
+				while(iter.hasNext())
+				{
+					int tmp = iter.next().hashCode();
+					if(tmp > infinitynumber)infinitynumber = tmp;
+					if(left[tmp]==-1)
+					{
+						left[tmp] = k;
+						right[tmp] = k;
+					}
+					if(right[tmp]<k)right[tmp] = k;
+				}*/
+				if(def.get(k).size()>0)
+				{
+					int tmp = def.get(k).get(0);
+					if(tmp > infinitynumber)infinitynumber = tmp;
+					if(left[tmp]==-1)
+					{
+						left[tmp] = k;
+						right[tmp] = k;
+					}
+					if(right[tmp]<k)right[tmp] = k;
+				}
+				
+			}
+			
+			for(int k=0;k<succ.size();k++)
+			{
+				Iterator<Integer> iter = out[k].iterator();
+				while(iter.hasNext())
+				{
+					int tmp = iter.next().hashCode();
+					if(tab[tmp]==0)
+					{
+						for(int j=1;j<reg.length;j++)
+						{
+							if(reg[j]==0)
+							{
+								reg[j] = tmp;
+								tab[tmp] = j;
+								break;
+							}
+						}
+						if(tab[tmp]==0)
+						{
+							tab[tmp] = 1000;
+						}
+					}		    					
+				}
+				
+				/*iter = in[k].iterator();
+				while(iter.hasNext())
+				{
+					int tmp = iter.next().hashCode();
+					if(tab[tmp]==0)
+					{
+						for(int j=0;j<reg.length;j++)
+						{
+							if(reg[j]==0)
+							{
+								reg[j] = tmp;
+								tab[tmp] = j;
+								break;
+							}
+						}
+						if(tab[tmp]==0)
+						{
+							//spill~
+						}
+					}		    					
+				}*/
+				
+				if(def.get(k).size()>0)
+				{
+					int tmp = def.get(k).get(0);
+					if(tab[tmp]==0)
+					{
+						for(int j=1;j<reg.length;j++)
+						{
+							if(reg[j]==0)
+							{
+								reg[j] = tmp;
+								tab[tmp] = j;
+								break;
+							}
+						}
+						if(tab[tmp]==0)
+						{
+							tab[tmp] = 1000;
+						}
+					}	
+				}
+				
+				
+				
+				Iterator<Integer> iteri = out[k].iterator();
+				while(iteri.hasNext())
+				{
+					int tmp = iteri.next().hashCode();
+					if(right[tmp]==k)
+					{
+						if(tab[tmp]!=1000)reg[tab[tmp]]=0;
+					}
+				}
+				
+				/*iteri = in[k].iterator();
+				while(iteri.hasNext())
+				{
+					int tmp = iteri.next().hashCode();
+					if(right[tmp]==k)
+					{
+						reg[tab[tmp]]=0;
+					}
+				}*/
+				
+				if(def.get(k).size()>0)
+				{
+					int tmp = def.get(k).get(0);
+					if(right[tmp]==k)
+					{
+						if(tab[tmp]!=1000)reg[tab[tmp]]=0;
+
+					}
+				}
+			}
+			//for(int k=1;k<=infinitynumber;k++)System.out.println(k+" "+tab[k]);
+			
+			
+			int last = 0;
+			int max = 0;
+			for(int k=0;k<reguse.size();k++)
+			{
+				for(int j=last;j<=reguse.get(k);j++)
+				{
+					if(tab[j] > max && tab[j]!=1000)max = tab[j];
+				}
+				last = reguse.get(k)+1;
+				reguse.set(k, max); 
+				value v = getfunc(funcsize.get(k));
+				v.typ.size+=max*4;
+				putfunc(funcsize.get(k),v);
+			}
+		    
+		    
+		    
+		    
+		    flag = false;
+		    int funccnt = -1;
+		    String funcname = "";
+		    
+		    
+		    for(int i=0;i<rt.code.size();i++)
+		    {
+		    	quad q = rt.code.get(i);
+
 		    	if(q.operator.equals("func"))
 		    	{
 		    		if(flag == false)
 		    		{
-		    			System.out.println("sw"+"\t"+"$ra"+"\t"+"0($sp)");
-		    			System.out.print("add");
-			    		System.out.print("\t");
-			    		System.out.print("$sp");
-			    		System.out.print("\t");
-			    		System.out.print("$sp");	    		
-			    		System.out.print("\t");
-			    		System.out.print("-");
-			    		int size = getfunc("main").typ.size;
-			    		System.out.print(size);
-			    		System.out.println();
-		    			System.out.println("jal"+"\t"+"Legend_main");
-		    			System.out.println("lw"+"\t"+"$ra"+"\t"+"0($sp)");
-		    			System.out.print("jr");
-			    		System.out.print("\t");
-			    		System.out.print("$ra");
-			    		System.out.println();
+		    			output+=("sw"+"\t"+"$ra"+"\t"+"0($sp)"+"\n");
+		    			output+=("add"+"\t"+"$sp"+"\t"+"$sp"+"\t-"+getfunc("main").typ.size+"\n");
+		    			output+=("jal"+"\t"+"Legend_main"+"\n");
+		    			output+=("lw"+"\t"+"$ra"+"\t"+"0($sp)"+"\n");
+		    			output+=("jr"+"\t"+"$ra"+"\n");
 			    		flag = true;
 		    		}
-		    		System.out.println();
-		    		System.out.print("Legend_"+q.arg3.contain+":");
-		    		
-		    		
+		    		output+=("\n");
+		    		output+=("Legend_"+q.arg3.contain+":");
+		    		funccnt++;
+		    		funcname = (String) q.arg3.contain;
 		    	}
 		    	else if(q.operator.equals("do"))
 		    	{
-		    		System.out.println("la"+"\t"+"$a0"+"\t"+"Legend_1");
-		    		System.out.println("li"+"\t"+"$a1"+"\t"+"10");
-		    		System.out.println("li"+"\t"+"$a2"+"\t"+"34");
-		    		System.out.println("la"+"\t"+"$a3"+"\t"+"Legend_1");
-		    		System.out.println("li"+"\t"+"$s1"+"\t"+"34");
-		    		System.out.println("sw"+"\t"+"$s1"+"\t"+"16($v1)");
-		    		System.out.println("li"+"\t"+"$s1"+"\t"+"10");
-		    		System.out.print("sw"+"\t"+"$s1"+"\t"+"20($v1)");
+		    		output+=("la"+"\t"+"$a0"+"\t"+"Legend_1"+"\n");
+		    		output+=("li"+"\t"+"$a1"+"\t"+"10");
+		    		output+=("li"+"\t"+"$a2"+"\t"+"34"+"\n");
+		    		output+=("la"+"\t"+"$a3"+"\t"+"Legend_1"+"\n");
+		    		output+=("li"+"\t"+"$s1"+"\t"+"34"+"\n");
+		    		output+=("sw"+"\t"+"$s1"+"\t"+"16($v1)"+"\n");
+		    		output+=("li"+"\t"+"$s1"+"\t"+"10"+"\n");
+		    		output+=("sw"+"\t"+"$s1"+"\t"+"20($v1)");
 		    	}
 		    	else if(q.operator.equals("storera"))
 		    	{
-		    		System.out.print("sw"+"\t"+"$ra"+"\t");
-		    		System.out.print(q.arg3.offset);
-		    		if(q.arg3.global)System.out.print("($s0)");
-		    		else System.out.print("($sp)");
+		    		output+=("sw"+"\t"+"$ra"+"\t");
+		    		output+=(q.arg3.offset);
+		    		if(q.arg3.global)output+=("($s0)");
+		    		else output+=("($sp)");
+		    		
 		    	}
 		    	else if(q.operator.equals("restorera"))
 		    	{
-		    		System.out.print("lw"+"\t"+"$ra"+"\t");
-		    		System.out.print(q.arg3.offset);
-		    		if(q.arg3.global)System.out.print("($s0)");
-		    		else System.out.print("($sp)");
+		    		output+=("lw"+"\t"+"$ra"+"\t");
+		    		output+=(q.arg3.offset);
+		    		if(q.arg3.global)output+=("($s0)");
+		    		else output+=("($sp)");
+		    		
 		    	}
 		    	else if(q.operator.equals("call"))
 			    {
 		    		funcoffset = 0;
-			    	System.out.print("jal");
-			    	System.out.print("\t");
-			    	if(!q.arg3.contain.equals("printf"))System.out.print("Legend_");
-			    	System.out.print(q.arg3.contain);
-			    }
-		    	else if(q.operator.equals("funcend"))
-		    	{
-		    		System.out.println();
-		    	}
-		    	else if(q.operator.equals("parameter"))
-		    	{
-		    		if(!q.arg1.type.equals("const"))
-		    		{
-		    			System.out.print("lw");
-			    		System.out.print("\t");
-			    		if((int)q.arg3.contain<4)
+		    		output+=("jal");
+		    		output+=("\t");
+			    	if(!q.arg3.contain.equals("printf"))output+=("Legend_");
+			    	output+=(q.arg3.contain);
+			    	if(!q.arg3.contain.equals("printf"))
+			    	{
+			    		int size = getfunc(funcname).typ.size-4;
+			    		if(reguse.get(funccnt)>14)
 			    		{
-			    			System.out.print("$a");
-				    		System.out.print(q.arg3.contain);
-				    		System.out.print("\t");
-				    		if(q.arg1 == null)
-					    		System.out.print("");
-					    	else if(q.arg1.type.equals("register"))
-					    	{
-					    		System.out.print("0($s");
-					    		System.out.print(q.arg1.number);
-					    		System.out.print(")");
-					    	}
-					    	else if(q.arg1.type.equals("memory"))
-					    	{
-					    		System.out.print(q.arg1.offset);
-					    		if(q.arg1.global)System.out.print("($s0)");
-					    		else System.out.print("($sp)");
-					    	}
-					    	else if(q.arg1.type.equals("return"))
-					    	{
-					    		System.out.print(q.arg1.offset);
-					    		System.out.print("($v1)");
-					    	}
+			    			for(int k=1;k<=14;k++)
+				    		{
+				    			output+=("\n"+"lw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
+				    			size-=4;
+				    		}
 			    		}
 			    		else
 			    		{
-			    			System.out.print("$s1");
-				    		System.out.print("\t");
-			    			if(q.arg1 == null)
-					    		System.out.print("");
-					    	else if(q.arg1.type.equals("register"))
-					    	{
-					    		System.out.print("0($s");
-					    		System.out.print(q.arg1.number);
-					    		System.out.print(")");
-					    	}
-					    	else if(q.arg1.type.equals("memory"))
-					    	{
-					    		System.out.print(q.arg1.offset);
-					    		if(q.arg1.global)System.out.print("($s0)");
-					    		else System.out.print("($sp)");
-					    	}
-					    	else if(q.arg1.type.equals("return"))
-					    	{
-					    		System.out.print(q.arg1.offset);
-					    		System.out.print("($v1)");
-					    	}
-			    			System.out.println();
-			    			System.out.print("sw"+"\t"+"$s1"+"\t"+"16($v1)");
-			    		}	
+			    			for(int k=1;k<=(int)reguse.get(funccnt);k++)
+				    		{
+				    			output+=("\n"+"lw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
+				    			size-=4;
+				    		}
+			    		}
 			    		
-			    		
+			    	}
+			    }
+		    	else if(q.operator.equals("funcend"))
+		    	{
+		    		output+=("\n");
+		    	}
+		    	else if(q.operator.equals("parameterl"))
+		    	{
+		    		if((int)q.arg3.contain<4)
+		    		{	
+		    			output+=("lw");
+	    				output+=("\t");
+		    			output+=("$a");
+			    		output+=(q.arg3.contain);
+			    		output+=("\t");
+				    	output+=("0($t");
+				    	output+=(q.arg1.number);
+				    	output+=(")");
+		    		}
+		    		else                                            //some bugs...
+		    		{
+		    			output+=("sw"+"\t"+"$t"+q.arg1.number+"\t"+"16($v1)");
+		    		}	
+		    	}
+		    	else if(q.operator.equals("parameter"))
+		    	{
+		    		if(first.infinity)
+		    		{
+		    			if(!q.arg1.type.equals("const"))
+			    		{	
+				    		if((int)q.arg3.contain<4)
+				    		{	
+				    			if(q.arg1.global)
+				    			{
+				    				output+=("lw");
+				    				output+=("\t");
+					    			output+=("$a");
+						    		output+=(q.arg3.contain);
+						    		output+=("\t");
+							    	output+=(q.arg1.offset);
+							    	output+=("($s0)");
+				    			}
+				    			else if(q.arg1.type.equals("return"))
+						    	{
+				    				output+=("lw");
+				    				output+=("\t");
+				    				output+=("$a");
+				    				output+=(q.arg3.contain);
+				    				output+=("\t");
+						    		output+=(q.arg1.offset);
+						    		output+=("($v1)");
+						    	}
+				    			else
+				    			{
+				    				if(tab[q.arg1.number]==1000)
+				    				{
+				    					output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg1.offset+"($sp)"+"\n");
+				    				}
+				    				output+=("move");
+				    				output+=("\t");
+					    			output+=("$a");
+						    		output+=(q.arg3.contain);
+						    		output+=("\t");
+						    		if(tab[q.arg1.number]==1000)
+				    				{
+						    			output+=("$tmp16");
+				    				}
+						    		else
+						    		{
+						    			output+=("$t");
+								    	output+=(q.arg1.number);
+						    		}
+							    	
+				    			}
+				    			
+				    		}
+				    		else
+				    		{
+				    			output+=("sw"+"\t"+"$t"+q.arg1.number+"\t"+"16($v1)");
+				    		}	
+
+			    		}
+			    		else
+			    		{
+			    			if((int)q.arg3.contain<4)
+				    		{
+			    				output+=("li");
+			    				output+=("\t");
+			    				output+=("$a");
+			    				output+=(q.arg3.contain);
+			    				output+=("\t");
+			    				output+=(q.arg1.contain);
+				    		}
+			    			else
+			    			{
+			    				output+=("li");
+			    				output+=("\t");
+			    				output+=("$s1");
+			    				output+=("\t");
+			    				output+=(q.arg1.contain);
+			    				output+=("\n");
+				    			output+=("sw"+"\t"+"$s1"+"\t"+"16($v1)");
+			    			}
+			    		}
 		    		}
 		    		else
 		    		{
-		    			if((int)q.arg3.contain<4)
+		    			if(!q.arg1.type.equals("const"))
 			    		{
-		    				System.out.print("li");
-		    				System.out.print("\t");
-		    				System.out.print("$a");
-		    				System.out.print(q.arg3.contain);
-		    				System.out.print("\t");
-		    				System.out.print(q.arg1.contain);
+			    			output+=("lw");
+			    			output+=("\t");
+				    		if((int)q.arg3.contain<4)
+				    		{
+				    			output+=("$a");
+					    		output+=(q.arg3.contain);
+					    		output+=("\t");
+					    		if(q.arg1 == null)
+						    		output+=("");
+						    	else if(q.arg1.type.equals("register"))
+						    	{
+						    		output+=("0($s");
+						    		output+=(q.arg1.number);
+						    		output+=(")");
+						    	}
+						    	else if(q.arg1.type.equals("memory"))
+						    	{
+						    		output+=(q.arg1.offset);
+						    		if(q.arg1.global)output+=("($s0)");
+						    		else output+=("($sp)");
+						    	}
+						    	else if(q.arg1.type.equals("return"))
+						    	{
+						    		output+=(q.arg1.offset);
+						    		output+=("($v1)");
+						    	}
+				    		}
+				    		else
+				    		{
+				    			output+=("$s1");
+					    		output+=("\t");
+				    			if(q.arg1 == null)
+						    		output+=("");
+						    	else if(q.arg1.type.equals("register"))
+						    	{
+						    		output+=("0($s");
+						    		output+=(q.arg1.number);
+						    		output+=(")");
+						    	}
+						    	else if(q.arg1.type.equals("memory"))
+						    	{
+						    		output+=(q.arg1.offset);
+						    		if(q.arg1.global)output+=("($s0)");
+						    		else output+=("($sp)");
+						    	}
+						    	else if(q.arg1.type.equals("return"))
+						    	{
+						    		output+=(q.arg1.offset);
+						    		output+=("($v1)");
+						    	}
+				    			output+=("\n");
+				    			output+=("sw"+"\t"+"$s1"+"\t"+"16($v1)");
+				    		}	
+				    		
+				    		
 			    		}
-		    			else
-		    			{
-		    				System.out.print("li");
-		    				System.out.print("\t");
-		    				System.out.print("$s1");
-		    				System.out.print("\t");
-		    				System.out.print(q.arg1.contain);
-		    				System.out.println();
-			    			System.out.print("sw"+"\t"+"$s1"+"\t"+"16($v1)");
-		    			}
+			    		else
+			    		{
+			    			if((int)q.arg3.contain<4)
+				    		{
+			    				output+=("li");
+			    				output+=("\t");
+			    				output+=("$a");
+			    				output+=(q.arg3.contain);
+			    				output+=("\t");
+			    				output+=(q.arg1.contain);
+				    		}
+			    			else
+			    			{
+			    				output+=("li");
+			    				output+=("\t");
+			    				output+=("$s1");
+			    				output+=("\t");
+			    				output+=(q.arg1.contain);
+			    				output+=("\n");
+				    			output+=("sw"+"\t"+"$s1"+"\t"+"16($v1)");
+			    			}
+			    		}
 		    		}
-		    		
-		    		
 		    		
 		    	}
 		    	else if(q.operator.equals("mallocload"))
 		    	{
-		    		System.out.print("lw");
-		    		System.out.print("\t");
-		    		System.out.print("$a0");
-		    		System.out.print("\t");
-			    	System.out.print(q.arg3.offset);
-			    	if(q.arg3.global)System.out.print("($s0)");
-			    	else System.out.print("($sp)");
+		    		if(first.infinity)
+		    		{
+		    			if(tab[q.arg3.number]==1000)
+		    			{
+		    				output+=("lw");
+				    		output+=("\t");
+				    		output+=("$a0");
+				    		output+=("\t");
+					    	output+=(q.arg3.offset);
+					    	output+=("($sp)");
+		    			}
+		    			else
+		    			{
+		    				output+=("move");
+				    		output+=("\t");
+				    		output+=("$a0");
+				    		output+=("\t");
+					    	output+=("$t");
+					    	output+=(q.arg3.number);
+		    			}
+		    			
+		    		}
+		    		else
+		    		{
+		    			output+=("lw");
+			    		output+=("\t");
+			    		output+=("$a0");
+			    		output+=("\t");
+				    	output+=(q.arg3.offset);
+				    	if(q.arg3.global)output+=("($s0)");
+				    	else output+=("($sp)");
+		    		}
+		    		
 		    	}
 		    	else if(q.operator.equals("mallocli"))
 		    	{
-		    		System.out.print("li");
-		    		System.out.print("\t");
-		    		System.out.print("$a0");
-		    		System.out.print("\t");
-			    	System.out.print(q.arg3.contain);
+		    		output+=("li");
+		    		output+=("\t");
+		    		output+=("$a0");
+		    		output+=("\t");
+			    	output+=(q.arg3.contain);
 		    	}
 		    	else if(q.operator.equals("malloclal"))
 		    	{
-		    		System.out.print("li");
-		    		System.out.print("\t");
-		    		System.out.print("$a0");
-		    		System.out.print("\t");
-		    		System.out.print("0($s");
-		    		System.out.print(q.arg3.number);
-		    		System.out.print(")");
+		    		output+=("li");
+		    		output+=("\t");
+		    		output+=("$a0");
+		    		output+=("\t");
+		    		output+=("0($t");
+		    		output+=(q.arg3.number);
+		    		output+=(")");
 		    	}
 		    	else if(q.operator.equals("malloc"))
 		    	{
-		    		System.out.print("li");
-		    		System.out.print("\t");
-		    		System.out.print("$v0");
-		    		System.out.print("\t");
-		    		System.out.print("9");
+		    		output+=("li");
+		    		output+=("\t");
+		    		output+=("$v0");
+		    		output+=("\t");
+		    		output+=("9");
 		    	}
 		    	else if(q.operator.equals("getpointer"))
 		    	{
-		    		System.out.print("sw");
-		    		System.out.print("\t");
-		    		System.out.print("$v0");
-		    		System.out.print("\t");
-		    		System.out.print(q.arg3.offset);
-			    	if(q.arg3.global)System.out.print("($s0)");
-			    	else System.out.print("($sp)");
+		    		if(first.infinity)
+		    		{
+		    			output+=("move");
+			    		output+=("\t");
+			    		output+=("$t");
+			    		output+=(q.arg3.number);
+			    		output+=("\t");
+			    		output+=("$v0");
+			    		
+		    		}
+		    		else
+		    		{
+		    			output+=("sw");
+			    		output+=("\t");
+			    		output+=("$v0");
+			    		output+=("\t");
+			    		output+=(q.arg3.offset);
+				    	if(q.arg3.global)output+=("($s0)");
+				    	else output+=("($sp)");
+		    		}
+		    		
 		    	}
 		    	else if(q.operator.equals("string"))
 		    	{
-		    		System.out.print("la");
-		    		System.out.print("\t");
-		    		System.out.print("$a0");
-		    		System.out.print("\t");
-		    		System.out.print(q.arg3.contain);
+		    		output+=("la");
+		    		output+=("\t");
+		    		output+=("$a0");
+		    		output+=("\t");
+		    		output+=(q.arg3.contain);
 		    		
-		    	}
-		    	else if(q.operator.equals("store"))
-		    	{
-		    		System.out.print("sw");
-		    		System.out.print("\t");
-		    		
-		    		if(q.arg1 == null)
-			    		System.out.print("");
-			    	else if(q.arg1.type.equals("const"))
-			    		System.out.print(q.arg1.contain);
-			    	else if(q.arg1.type.equals("memory"))
-			    	{
-			    		System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-			    	}
-			    	else if(q.arg1.type.equals("register"))
-			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg1.number);
-			    	}
-		    		System.out.print("\t");
-		    		System.out.print("\t");
-
-			    	System.out.print(q.arg3.offset);
-			    	if(q.arg3.global)System.out.print("($s0)");
-			    	else System.out.print("($sp)");
-
-
 		    	}
 		    	else if(q.operator.equals("storereturn"))
 		    	{
-		    		System.out.print("sw");
-		    		System.out.print("\t");
-		    		
-		    		if(q.arg1 == null)
-			    		System.out.print("");
-			    	else if(q.arg1.type.equals("const"))
-			    		System.out.print(q.arg1.contain);
-			    	else if(q.arg1.type.equals("memory"))
-			    	{
-			    		System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-			    	}
-			    	else if(q.arg1.type.equals("register"))
-			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg1.number);
-			    	}
-		    		
-		    		System.out.print("\t");
-		    		System.out.print("\t");
-		    		System.out.print(q.arg3.offset);
-		    		System.out.print("($v1)");
-		    		
+		    		output+=("sw");
+		    		output+=("\t");
+		    		if(q.arg1 != null)output+=(q.arg1.toString() + "\t");
+		    		output+=(q.arg3.offset);
+		    		output+=("($v1)");
 		    	}
 		    	else if(q.operator.equals("return"))
 		    	{ 		
-		    		int size = getfunc((String)q.arg3.contain).typ.size;
-		    		System.out.print("add");
-		    		System.out.print("\t");
-		    		System.out.print("$sp");
-		    		System.out.print("\t");
-		    		System.out.print("$sp"); 		
-		    		System.out.print("\t");
-		    		System.out.print(size);
-		    		System.out.println();
-		    		System.out.print("jr");
-		    		System.out.print("\t");
-		    		System.out.print("$ra");
+		    		output+=("add"+"\t"+"$sp"+"\t"+"$sp"+"\t"+ getfunc(funcname).typ.size + "\n");
+		    		output+=("jr"+"\t"+"$ra");
 		    	}
 		    	else if(q.operator.equals("label"))
 		    	{
-		    		System.out.print("L");
-		    		System.out.print(q.arg3.contain);
-		    		System.out.print(":");
+		    		output+=("L"+q.arg3.contain+":");
 		    	}
 		    	else if(q.operator.equals("jal"))
 		    	{
-		    		System.out.print("jal");
-		    		System.out.print("\t");
-		    		System.out.print("L");
-		    		System.out.print(q.arg3.contain);
+		    		output+=("jal"+"\t"+"L"+q.arg3.contain);
 		    	}
 		    	else if(q.operator.equals("b"))
 		    	{
-		    		System.out.print("b");
-		    		System.out.print("\t");
-		    		System.out.print("L");
-		    		System.out.print(q.arg3.contain);
+		    		output+=("b"+"\t"+"L"+q.arg3.contain);
 		    	}
 		    	else if(q.operator.equals("lal"))
 		    	{
-		    		System.out.print("lw");
-		    		System.out.print("\t");
-		    		System.out.print("$s");
-		    		System.out.print(q.arg1.number);
-		    		System.out.print("\t");
-		    		System.out.print("0($s");
-		    		System.out.print(q.arg3.number);
-		    		System.out.print(")");
-		    		
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		output+=("lw");
+		    		output+=("\t");
+		    		if(flag1)
+		    		{
+		    			output+=("$tmp15");
+		    		}
+		    		else
+		    		{
+		    			output+=("$t");
+			    		output+=(q.arg1.number);
+		    		}  		
+		    		output+=("\t");
+		    		if(tab[q.arg3.number]==1000)
+		    		{
+		    			output+=(q.arg3.offset);
+			    		output+=("($sp)");
+		    		}
+		    		else
+		    		{
+		    			output+=("0($t");
+			    		output+=(q.arg3.number);
+			    		output+=(")");
+		    		}
+		    		if(flag1)
+			    	{
+			    		output+=("\n"+"sw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)");
+			    	}
 		    	}
 		    	else if(q.operator.equals("ld"))
 		    	{
-		    		System.out.print("lw");
-		    		System.out.print("\t");
-		    		System.out.print("$s");
-		    		System.out.print(q.arg1.number);
-		    		System.out.print("\t");
-
-			    	if(q.arg3.type.equals("return"))
-			    	{
-				    	System.out.print(q.arg3.offset);
-				    	System.out.print("($v1)");
-			    	}
-			    	else
-			    	{
-			    		if(q.arg3.global)
+		    		if(q.arg3.type.equals("register"))
+		    		{
+		    			output+=("move");
+			    		output+=("\t");
+			    		output+=("$t");
+			    		output+=(q.arg1.number);
+			    		output+=("\t");
+			    		output+=("$t");
+			    		output+=(q.arg3.number);
+		    		}
+		    		else
+		    		{
+		    			output+=("lw");
+			    		output+=("\t");
+			    		output+=("$t");
+			    		output+=(q.arg1.number);
+			    		output+=("\t");
+			    		
+		    			if(q.arg3.type.equals("return"))
 				    	{
-				    		System.out.print(q.arg3.offset);
-				    		System.out.print("($s0)");
+					    	output+=(q.arg3.offset);
+					    	output+=("($v1)");
 				    	}
 				    	else
 				    	{
-				    		System.out.print(q.arg3.offset+funcoffset);
-				    		System.out.print("($sp)");
-				    	}
-			    	}
-			    	
-
-		    		
+				    		if(q.arg3.global)
+					    	{
+					    		output+=(q.arg3.offset);
+					    		output+=("($s0)");
+					    	}
+					    	else
+					    	{
+					    		output+=(q.arg3.offset+funcoffset);
+					    		output+=("($sp)");
+					    	}
+				    	}	
+		    		}
+		    			
 		    	}
+		    	else if (q.operator.equals("spill"))continue;
 		    	else if(q.operator.equals("sal"))
 		    	{
-		    		System.out.print("sw");
-		    		System.out.print("\t");
-		    		System.out.print("$s");
-		    		System.out.print(q.arg1.number);
-		    		System.out.print("\t");
-		    		System.out.print("0($s");
-		    		System.out.print(q.arg3.number);
-		    		System.out.print(")");
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		output+=("sw");
+		    		output+=("\t");
+		    		if(flag1)
+		    		{
+		    			output+=("$tmp15");
+		    		}
+		    		else
+		    		{
+		    			output+=("$t");
+			    		output+=(q.arg1.number);
+		    		}  		
+		    		output+=("\t");
+		    		if(tab[q.arg3.number]==1000)
+		    		{
+		    			output+=(q.arg3.offset);
+			    		output+=("($sp)");
+		    		}
+		    		else
+		    		{
+		    			output+=("0($t");
+			    		output+=(q.arg3.number);
+			    		output+=(")");
+		    		}
+		    		
+		    		
 		    		
 		    	}
 		    	else if(q.operator.equals("bnez"))
 		    	{
-		    		System.out.print("bnez");
-		    		System.out.print("\t");
-		    		if(q.arg1 == null)
-			    		System.out.print("");
-		    		else if(q.arg1.type==null)
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
 		    		{
-		    			System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
 		    		}
-			    	else if(q.arg1.type.equals("const"))
-			    		System.out.print(q.arg1.contain);
-			    	else if(q.arg1.type.equals("memory"))
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		output+=("bnez" + "\t");
+		    		if(q.arg1!=null)
 			    	{
-			    		System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
+			    		if(flag1)output+=("$tmp15"+"\t");
+			    		else output+=(q.arg1.toString()+"\t");
 			    	}
-			    	else if(q.arg1.type.equals("register"))
-			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg1.number);
-			    	}
-		    		System.out.print("\t");
-		    		System.out.print("\t");
-		    		System.out.print("L");
-		    		System.out.print(q.arg3.contain);
+		    		output+=("L" + q.arg3.contain);
 		    	}
 		    	else if(q.operator.equals("beqz"))
 		    	{
-		    		System.out.print("beqz");
-		    		System.out.print("\t");
-		    		if(q.arg1 == null)
-			    		System.out.print("");
-		    		else if(q.arg1.type==null)
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
 		    		{
-		    			System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		} 
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
 		    		}
-			    	else if(q.arg1.type.equals("const"))
-			    		System.out.print(q.arg1.contain);
-			    	else if(q.arg1.type.equals("memory"))
+		    		output+=("beqz" + "\t");
+		    		if(q.arg1!=null)
 			    	{
-			    		System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
+			    		if(flag1)output+=("$tmp15"+"\t");
+			    		else output+=(q.arg1.toString()+"\t");
 			    	}
-			    	else if(q.arg1.type.equals("register"))
-			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg1.number);
-			    	}
-		    		System.out.print("\t");
-		    		System.out.print("\t");
-		    		System.out.print("L");
-		    		System.out.print(q.arg3.contain);
+		    		output+=("L" + q.arg3.contain);
 		    	}
 		    	else if(q.operator.equals("loc"))
 		    	{
-		    		int size = getfunc((String)q.arg3.contain).typ.size;
-		    		System.out.print("add");
-		    		System.out.print("\t");
-		    		System.out.print("$sp");
-		    		System.out.print("\t");
-		    		System.out.print("$sp");
-		    		System.out.print("\t");
-		    		System.out.print("-");
-		    		System.out.print(size);
+		    		int size = getfunc(funcname).typ.size-4;
+		    		if(reguse.get(funccnt)>14)
+		    		{
+		    			for(int k=1;k<=14;k++)
+			    		{
+			    			output+=("\n"+"sw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
+			    			size-=4;
+			    		}
+		    		}
+		    		else
+		    		{
+		    			for(int k=1;k<=(int)reguse.get(funccnt);k++)
+			    		{
+			    			output+=("\n"+"sw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
+			    			size-=4;
+			    		}
+		    		}
+		    		output+="\n";
+		    		size = getfunc((String)q.arg3.contain).typ.size;
+		    		output+=("add\t$sp\t"+"$sp"+"\t"+"-"+size);
 		    		funcoffset = size;
 		    	}
-		    	else
+		    	else if(q.operator.equals("la"))
 		    	{
-		    		if(q.operator.equals("load"))System.out.print("lw");
-		    		else if(q.operator.equals("+="))System.out.print("add");
-		    		else if(q.operator.equals("-="))System.out.print("sub");
-		    		else if(q.operator.equals("!="))System.out.print("sne");
-		    		else if(q.operator.equals("<="))System.out.print("sle");
-		    		else if(q.operator.equals(">="))System.out.print("sge");
-		    		else if(q.operator.equals("^="))System.out.print("xor");
-		    		else if(q.operator.equals("^"))System.out.print("xor");
-		    		else if(q.operator.equals("=="))System.out.print("seq");
-		    		else if(q.operator.equals("+"))System.out.print("add");
-		    		else if(q.operator.equals("-"))System.out.print("sub");
-		    		else if(q.operator.equals("<<"))System.out.print("sll");
-		    		else if(q.operator.equals(">>"))System.out.print("srl");
-		    		else if(q.operator.equals("*"))System.out.print("mul");
-		    		else if(q.operator.equals("*="))System.out.print("mul");
-		    		else if(q.operator.equals("/"))System.out.print("div");
-		    		else if(q.operator.equals("/="))System.out.print("div");
-		    		else if(q.operator.equals("%"))System.out.print("rem");
-		    		else if(q.operator.equals("|"))System.out.print("or");
-		    		else if(q.operator.equals("<"))System.out.print("slt");
-		    		else if(q.operator.equals(">"))System.out.print("sgt");
-		    		else if(q.operator.equals("&"))System.out.print("and");
-		    		else System.out.print(q.operator);
-			    	System.out.print("\t");
-			    	if(q.arg1 == null)
-			    		System.out.print("");
-		    		else if(q.arg1.type==null)
+		    		boolean flag1 = false;
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
 		    		{
-		    			System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-		    		}
-			    	else if(q.arg1.type.equals("const"))
-			    		System.out.print(q.arg1.contain);
-			    	else if(q.arg1.type.equals("register"))
-			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg1.number);
-			    	}
-			    	else if(q.arg1.type.equals("memory"))
-			    	{
-			    		System.out.print(q.arg1.offset);
-			    		if(q.arg1.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-			    	}
-			    	else if(q.arg1.type.equals("return"))
-			    	{
-			    		System.out.print(q.arg1.offset);
-			    		System.out.print("($v1)");
-			    	}
-
-		    		System.out.print("\t");
-			    	
-			    	if(q.arg2 == null)
-			    		System.out.print("");
-			    	else if(q.arg2.type.equals("const"))
-			    		System.out.print(q.arg2.contain);
-			    	else if(q.arg2.type==null)
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		} 
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
 		    		{
-		    			System.out.print(q.arg2.offset);
-			    		if(q.arg2.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
 		    		}
-			    	else if(q.arg2.type.equals("register"))
+		    		output+=("la" + "\t");
+		    		if(q.arg1!=null)
 			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg2.number);
+			    		if(flag1)output+=("$tmp15"+"\t");
+			    		else output+=(q.arg1.toString()+"\t");
 			    	}
-			    	else if(q.arg2.type.equals("memory"))
-			    	{
-			    		System.out.print(q.arg2.offset);
-			    		if(q.arg2.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-			    	}
-			    	else if(q.arg2.type.equals("return"))
-			    	{
-			    		System.out.print(q.arg2.offset);
-			    		System.out.print("($v1)");
-			    	}
-			    	
-			    	System.out.print("\t");
-
-			    	
-			    	
-			    	if(q.arg3 == null)
-			    		System.out.print("");
-			    	else if(q.arg3.type==null)
-		    		{
-		    			System.out.print(q.arg3.offset);
-			    		if(q.arg3.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-		    		}
-			    	else if(q.arg3.type.equals("const"))
-			    		System.out.print(q.arg3.contain);
-			    	else if(q.arg3.type.equals("register"))
-			    	{
-			    		System.out.print("$s");
-			    		System.out.print(q.arg3.number);
-			    	}
-			    	else if(q.arg3.type.equals("memory"))
-			    	{
-			    		System.out.print(q.arg3.offset);
-			    		if(q.arg3.global)System.out.print("($s0)");
-			    		else System.out.print("($sp)");
-			    	}
-			    	else if(q.arg3.type.equals("return"))
-			    	{
-			    		System.out.print(q.arg3.offset);
-			    		System.out.print("($v1)");
-			    	}
+		    		if(q.arg3.global)output+=(q.arg3.offset + "($s0)");
+		    		else output+=(q.arg3.offset + "($sp)");
 		    	}
-		    	
-		    	System.out.println();
+		    	else
+		    	{		
+		    		boolean flag1 = false;
+		    		boolean flag2 = false;
+		    		boolean flag3 = false;
+		    		
+		    		if(flag)
+		    		{
+		    			if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
+			    		{
+			    			//output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($s0)"+"\n");
+			    			flag1 = true;
+			    		}
+		    			else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    			{
+		    				//output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+			    			flag1 = true;
+		    			}
+			    		if(q.arg2!=null && q.arg2.global && q.arg2.type.equals("memory") && !q.operator.equals("load"))
+			    		{
+			    			output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($s0)"+"\n");
+			    			flag2 = true;
+			    		}
+			    		else if(q.arg2!=null && q.arg2.type.equals("register") && tab[q.arg2.number]==1000)
+		    			{
+		    				output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($sp)"+"\n");
+			    			flag2 = true;
+		    			}
+			    		if(q.arg3!=null && q.arg3.global && q.arg3.type.equals("memory") && !q.operator.equals("load"))
+			    		{
+			    			output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($s0)"+"\n");
+			    			flag3 = true;
+			    		}
+			    		else if(q.arg3!=null && q.arg3.type.equals("register") && tab[q.arg3.number]==1000)
+		    			{
+		    				output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($sp)"+"\n");
+			    			flag3 = true;
+		    			}
+		    		}
+		    		
+
+		    		if(q.operator.equals("load"))output+=("lw");
+		    		else if(q.operator.equals("store"))output+=("sw");
+		    		else if(q.operator.equals("+="))output+=("add");
+		    		else if(q.operator.equals("-="))output+=("sub");
+		    		else if(q.operator.equals("!="))output+=("sne");
+		    		else if(q.operator.equals("<="))output+=("sle");
+		    		else if(q.operator.equals(">="))output+=("sge");
+		    		else if(q.operator.equals("^="))output+=("xor");
+		    		else if(q.operator.equals("^"))output+=("xor");
+		    		else if(q.operator.equals("=="))output+=("seq");
+		    		else if(q.operator.equals("+"))output+=("add");
+		    		else if(q.operator.equals("-"))output+=("sub");
+		    		else if(q.operator.equals("<<"))output+=("sll");
+		    		else if(q.operator.equals(">>"))output+=("srl");
+		    		else if(q.operator.equals("*"))output+=("mul");
+		    		else if(q.operator.equals("*="))output+=("mul");
+		    		else if(q.operator.equals("/"))output+=("div");
+		    		else if(q.operator.equals("/="))output+=("div");
+		    		else if(q.operator.equals("%"))output+=("rem");
+		    		else if(q.operator.equals("|"))output+=("or");
+		    		else if(q.operator.equals("<"))output+=("slt");
+		    		else if(q.operator.equals(">"))output+=("sgt");
+		    		else if(q.operator.equals("&"))output+=("and");
+		    		else if(q.operator.equals("move"))
+		    		{
+		    			if(q.arg3.type.equals("return"))output+=("lw");
+		    			else output+=("move");
+		    		}
+		    		else output+=(q.operator);
+		    		
+			    	output+=("\t");
+			    	
+			    	if(q.arg1!=null)
+			    	{
+			    		if(flag1)output+=("$tmp15"+"\t");
+			    		else output+=(q.arg1.toString()+"\t");
+			    	}
+			    	if(q.arg2!=null)
+			    	{
+			    		if(flag2)output+=("$tmp16"+"\t");
+			    		else output+=(q.arg2.toString()+"\t");
+			    	}
+			    	if(q.arg3!=null)
+			    	{
+			    		if(flag3)output+=("$k0"+"\t");
+			    		else output+=(q.arg3.toString());
+			    	}
+			    	if(flag1)
+			    	{
+			    		if(tab[q.arg1.number]==1000)output+=("\n"+"sw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)");
+			    		else output+=("\n"+"sw"+"\t"+"$tmp15"+"\t"+q.arg1.toString());
+			    	}
+			
+		    	}
+		    	output+=("\n");
 		    }
 		    
+		    for(int i=infinitynumber;i>=1;i--)
+		    {
+		    	if(tab[i]!=0)output = output.replace("$t"+i, "$tmp"+tab[i]);
+		    }
 		    
-		    FileReader fr = new FileReader(first.class.getResource("/print.txt").getFile());  
+		    for(int i=16;i>=8;i--)
+		    {
+		    	output = output.replace("$tmp"+i, "$t"+(i-7));
+		    }
+		    output = output.replace("$tmp", "$s");
+		    
+		    //System.out.print(output);
+		    
+		    FileReader fr = new FileReader(first.class.getResource("/print.txt").getFile()); 
+		    //FileReader fr = new FileReader("D:\\print.txt");  
 		    int ch = 0;    
 		    while((ch = fr.read())!=-1 ){    
-		        System.out.print( (char)ch );    
+		        output+=( (char)ch );    
 		    }  
 		    
-		    
-		    return ans;
-		    
-		    
-		}catch(RecognitionException a) {
-			return(1);
+		    return output;
+		        
+		}catch(Exception a) {
+			return "";
+			//return(1);
 		}
+		
 	}
 	
 public static void main(String[] args)throws Exception   
@@ -884,10 +1521,11 @@ public static void main(String[] args)throws Exception
 	/*String s = "D:\\compiler2014-testcases\\Normal";
     List<File> files = getFiles(s);
     for(File f : files){
-    	System.out.println(f.getName());
-    	System.out.println(work(f));
+    	output+=ln(f.getName());
+    	output+=ln(work(f));
     }*/
-	//System.out.println(work(new File("D:\\t.c")));
-	work(new File(args[0]));
+	//System.setOut(new PrintStream(new FileOutputStream("D:\\t.s")));
+	//System.out.print(work(new File("D:\\t.c")));
+	System.out.print(work(new File(args[0])));
 }
 }

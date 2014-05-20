@@ -46,23 +46,42 @@ public class additive_expression extends root
 						}
 						else
 						{
-							if(r.rtype instanceof pointer)
+							
+							if(first.infinity)
 							{
-								location l = new location(0,"const",0,false,false);
-								l.contain = (int)((returnrecord)child.get(i).record).value*((pointer)r.rtype).size;
-								location tmp = new temp(1);
-								code.add(new quad("load",tmp,null,r.loc));
-								code.add(new quad((String)child.get(i-1).record,tmp,tmp,l));
-								code.add(new quad("store",tmp,null,r.loc));
+								if(r.rtype instanceof pointer)
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = (int)((returnrecord)child.get(i).record).value*((pointer)r.rtype).size;
+									code.add(new quad((String)child.get(i-1).record,r.loc,r.loc,l));
+								}
+								else
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = ((returnrecord)child.get(i).record).value;
+									code.add(new quad((String)child.get(i-1).record,r.loc,r.loc,l));
+								}
 							}
 							else
 							{
-								location l = new location(0,"const",0,false,false);
-								l.contain = ((returnrecord)child.get(i).record).value;
-								location tmp = new temp(1);
-								code.add(new quad("load",tmp,null,r.loc));
-								code.add(new quad((String)child.get(i-1).record,tmp,tmp,l));
-								code.add(new quad("store",tmp,null,r.loc));
+								if(r.rtype instanceof pointer)
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = (int)((returnrecord)child.get(i).record).value*((pointer)r.rtype).size;
+									location tmp = new temp(1);
+									code.add(new quad("load",tmp,null,r.loc));
+									code.add(new quad((String)child.get(i-1).record,tmp,tmp,l));
+									code.add(new quad("store",tmp,null,r.loc));
+								}
+								else
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = ((returnrecord)child.get(i).record).value;
+									location tmp = new temp(1);
+									code.add(new quad("load",tmp,null,r.loc));
+									code.add(new quad((String)child.get(i-1).record,tmp,tmp,l));
+									code.add(new quad("store",tmp,null,r.loc));
+								}
 							}
 							
 						}
@@ -72,53 +91,128 @@ public class additive_expression extends root
 						code.addAll(child.get(i).code);
 						if(r.loc==null)
 						{
-							r.loc = new location();
-							r.loc.type = "memory";
-							r.loc.offset = first.Off.lastElement();
-							first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
-							if(first.func==null)r.loc.global = true;
-							else r.loc.global = false;
-							location tmp = new temp(1);
-							code.add(new quad("load",tmp,null,((returnrecord)child.get(i).record).loc));
-							if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",tmp,null,tmp));
-							code.add(new quad("store",tmp,null,r.loc));
-							r.rtype = ((returnrecord)child.get(i).record).rtype;
-							//if(r.rtype instanceof pointer)r.loc.address = true;
-							
-							if(i!=0)
+							if(first.infinity)
 							{
-								if(((returnrecord)child.get(i).record).rtype instanceof pointer)throw new Exception();
+								r.loc = new temp();
+								r.loc.offset = first.Off.lastElement();
+								first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
+								if(first.func==null)r.loc.global = true;
+								else r.loc.global = false;
+								if(((returnrecord)child.get(i).record).loc.address)
+								{
+									code.add(new quad("lal",r.loc,null,((returnrecord)child.get(i).record).loc));
+								}
+								else code.add(new quad("move",r.loc,null,((returnrecord)child.get(i).record).loc));
+								r.rtype = ((returnrecord)child.get(i).record).rtype;
+								
+								if(i!=0)
+								{
+									if(((returnrecord)child.get(i).record).rtype instanceof pointer)throw new Exception();
 
-								location l = new location(0,"const",0,false,false);
-								l.contain = r.value;
-								code.add(new quad("li",new temp(2),null,l));
-								location tmp1 = new temp(1);
-								code.add(new quad("load",tmp1,null,r.loc));
-								code.add(new quad((String)child.get(i-1).record,tmp1,new temp(2),tmp1));
-								code.add(new quad("store",tmp1,null,r.loc));
+									location l = new location(0,"const",0,false,false);
+									l.contain = r.value;
+									location ll = new temp();
+									code.add(new quad("li",ll,null,l));
+									code.add(new quad((String)child.get(i-1).record,r.loc,ll,r.loc));
+								}
 							}
+							else
+							{
+								r.loc = new location();
+								r.loc.type = "memory";
+								r.loc.offset = first.Off.lastElement();
+								first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
+								if(first.func==null)r.loc.global = true;
+								else r.loc.global = false;
+								location tmp = new temp(1);
+								code.add(new quad("load",tmp,null,((returnrecord)child.get(i).record).loc));
+								if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",tmp,null,tmp));
+								code.add(new quad("store",tmp,null,r.loc));
+								r.rtype = ((returnrecord)child.get(i).record).rtype;
+								//if(r.rtype instanceof pointer)r.loc.address = true;
+								
+								if(i!=0)
+								{
+									if(((returnrecord)child.get(i).record).rtype instanceof pointer)throw new Exception();
+
+									location l = new location(0,"const",0,false,false);
+									l.contain = r.value;
+									code.add(new quad("li",new temp(2),null,l));
+									location tmp1 = new temp(1);
+									code.add(new quad("load",tmp1,null,r.loc));
+									code.add(new quad((String)child.get(i-1).record,tmp1,new temp(2),tmp1));
+									code.add(new quad("store",tmp1,null,r.loc));
+								}
+							}
+							
 						}
 						else
 						{
 							if(((returnrecord)child.get(i).record).rtype instanceof pointer && r.rtype.equals("int") && child.get(i-1).record.equals("-"))throw new Exception();
 							if(((returnrecord)child.get(i).record).rtype instanceof pointer && r.rtype.equals("pointer") && child.get(i-1).record.equals("+"))throw new Exception();
 							if(((returnrecord)child.get(i).record).rtype instanceof pointer && r.rtype.equals("pointer") && child.get(i-1).record.equals("-"))r.rtype = new Tint();
-							if(r.rtype.typename.equals("pointer"))
+							
+							if(first.infinity)
 							{
-								if(((returnrecord)child.get(i).record).rtype instanceof pointer)
+								if(r.rtype.typename.equals("pointer"))
 								{
-									location tmp1 = new temp(1);
-									code.add(new quad("load",tmp1,null,r.loc));
-									location tmp2 = new temp(2);
-									code.add(new quad("load",tmp2,null,((returnrecord)child.get(i).record).loc));
-									code.add(new quad((String)child.get(i-1).record,tmp1,tmp1,tmp2));
-									if(((pointer)((returnrecord)child.get(i).record).rtype).elementType.typename.equals(((pointer)r.rtype).elementType.typename))
+									if(((returnrecord)child.get(i).record).rtype instanceof pointer)
 									{
-										location l = new location(0,"const",0,false,false);
-										l.contain = ((pointer)r.rtype).elementType.size;
-										code.add(new quad("/",tmp1,tmp1,l));
+										code.add(new quad((String)child.get(i-1).record,r.loc,r.loc,((returnrecord)child.get(i).record).loc));
+										if(((pointer)((returnrecord)child.get(i).record).rtype).elementType.typename.equals(((pointer)r.rtype).elementType.typename))
+										{
+											location l = new location(0,"const",0,false,false);
+											l.contain = ((pointer)r.rtype).elementType.size;
+											code.add(new quad("/",r.loc,r.loc,l));
+										}
 									}
-									code.add(new quad("store",tmp1,null,r.loc));
+									else
+									{
+										if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",((returnrecord)child.get(i).record).loc,null,((returnrecord)child.get(i).record).loc));
+										location l = new location(0,"const",0,false,false);
+										l.contain = r.rtype.size;
+										code.add(new quad("*",((returnrecord)child.get(i).record).loc,((returnrecord)child.get(i).record).loc,l));
+										code.add(new quad((String)child.get(i-1).record,r.loc,r.loc,((returnrecord)child.get(i).record).loc));
+									}
+								}
+								else
+								{
+									if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",((returnrecord)child.get(i).record).loc,null,((returnrecord)child.get(i).record).loc));
+									code.add(new quad((String)child.get(i-1).record,r.loc,r.loc,((returnrecord)child.get(i).record).loc));
+								}
+							}
+							else
+							{
+								if(r.rtype.typename.equals("pointer"))
+								{
+									if(((returnrecord)child.get(i).record).rtype instanceof pointer)
+									{
+										location tmp1 = new temp(1);
+										code.add(new quad("load",tmp1,null,r.loc));
+										location tmp2 = new temp(2);
+										code.add(new quad("load",tmp2,null,((returnrecord)child.get(i).record).loc));
+										code.add(new quad((String)child.get(i-1).record,tmp1,tmp1,tmp2));
+										if(((pointer)((returnrecord)child.get(i).record).rtype).elementType.typename.equals(((pointer)r.rtype).elementType.typename))
+										{
+											location l = new location(0,"const",0,false,false);
+											l.contain = ((pointer)r.rtype).elementType.size;
+											code.add(new quad("/",tmp1,tmp1,l));
+										}
+										code.add(new quad("store",tmp1,null,r.loc));
+									}
+									else
+									{
+										location tmp1 = new temp(1);
+										code.add(new quad("load",tmp1,null,r.loc));
+										location tmp2 = new temp(2);
+										code.add(new quad("load",tmp2,null,((returnrecord)child.get(i).record).loc));
+										if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",tmp2,null,tmp2));
+										location l = new location(0,"const",0,false,false);
+										l.contain = r.rtype.size;
+										code.add(new quad("*",tmp2,tmp2,l));
+										code.add(new quad((String)child.get(i-1).record,tmp1,tmp1,tmp2));
+										code.add(new quad("store",tmp1,null,r.loc));
+									}
 								}
 								else
 								{
@@ -127,23 +221,12 @@ public class additive_expression extends root
 									location tmp2 = new temp(2);
 									code.add(new quad("load",tmp2,null,((returnrecord)child.get(i).record).loc));
 									if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",tmp2,null,tmp2));
-									location l = new location(0,"const",0,false,false);
-									l.contain = r.rtype.size;
-									code.add(new quad("*",tmp2,tmp2,l));
 									code.add(new quad((String)child.get(i-1).record,tmp1,tmp1,tmp2));
 									code.add(new quad("store",tmp1,null,r.loc));
 								}
 							}
-							else
-							{
-								location tmp1 = new temp(1);
-								code.add(new quad("load",tmp1,null,r.loc));
-								location tmp2 = new temp(2);
-								code.add(new quad("load",tmp2,null,((returnrecord)child.get(i).record).loc));
-								if(((returnrecord)child.get(i).record).loc.address)code.add(new quad("lal",tmp2,null,tmp2));
-								code.add(new quad((String)child.get(i-1).record,tmp1,tmp1,tmp2));
-								code.add(new quad("store",tmp1,null,r.loc));
-							}
+							
+							
 							
 						}
 					}

@@ -28,50 +28,98 @@ public class logical_and_expression extends root
 			lfalse.contain = first.Label;
 			first.Label++;
 			
-			r.loc = new location(first.Off.lastElement(),"memory",0,false,false);
-			first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
-			
-			for(int i=0;i<child.size();i++)
+			if(first.infinity)
 			{
-				if(child.get(i) instanceof inclusive_or_expression)
+				location tmp = new temp();
+				tmp.offset = first.Off.lastElement();
+				tmp.global = false;
+				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+				r.loc = tmp;
+				
+				for(int i=0;i<child.size();i++)
 				{
-					if(child.get(i).check()!=0)throw new Exception();
-					if(checkconvert(((returnrecord)child.get(i).record).rtype,new Tint())!=0)throw new Exception();
-					if(((returnrecord)child.get(i).record).constant)
+					if(child.get(i) instanceof inclusive_or_expression)
 					{
-						code.addAll(child.get(i).code);		
-						if((int)((returnrecord)child.get(i).record).value==0)code.add(new quad("b",null,null,lfalse));	
-					}
-					else
-					{
-						code.addAll(child.get(i).code);	
-						if(((returnrecord)child.get(i).record).loc.address)
+						if(child.get(i).check()!=0)throw new Exception();
+						if(checkconvert(((returnrecord)child.get(i).record).rtype,new Tint())!=0)throw new Exception();
+						if(((returnrecord)child.get(i).record).constant)
 						{
-							code.add(new quad("load",new temp(1),null,((returnrecord)child.get(i).record).loc));
-							code.add(new quad("lal",new temp(1),null,new temp(1)));
+							code.addAll(child.get(i).code);		
+							if((int)((returnrecord)child.get(i).record).value==0)code.add(new quad("b",null,null,lfalse));	
 						}
 						else
 						{
-							code.add(new quad("load",new temp(1),null,((returnrecord)child.get(i).record).loc));
+							code.addAll(child.get(i).code);	
+							if(((returnrecord)child.get(i).record).loc.address)
+							{
+								code.add(new quad("lal",((returnrecord)child.get(i).record).loc,null,((returnrecord)child.get(i).record).loc));
+							}
+			
+							code.add(new quad("beqz",((returnrecord)child.get(i).record).loc,null,lfalse));
 						}
-		
-						code.add(new quad("beqz",new temp(1),null,lfalse));
 					}
 				}
+				
+				location l = new location(0,"const",0,false,false);
+				l.contain = 1;
+				code.add(new quad("li",tmp,null,l));
+				code.add(new quad("b",null,null,lend));
+				code.add(new quad("label",null,null,lfalse));
+				location ll = new location(0,"const",0,false,false);
+				ll.contain = 0;
+				code.add(new quad("li",tmp,null,ll));
+				code.add(new quad("label",null,null,lend));
+				
+				record = r;
 			}
-			location l = new location(0,"const",0,false,false);
-			l.contain = 1;
-			code.add(new quad("li",new temp(1),null,l));
-			code.add(new quad("store",new temp(1),null,r.loc));
-			code.add(new quad("b",null,null,lend));
-			code.add(new quad("label",null,null,lfalse));
-			location ll = new location(0,"const",0,false,false);
-			ll.contain = 0;
-			code.add(new quad("li",new temp(1),null,ll));
-			code.add(new quad("store",new temp(1),null,r.loc));
-			code.add(new quad("label",null,null,lend));
+			else
+			{
+				r.loc = new location(first.Off.lastElement(),"memory",0,false,false);
+				first.Off.setElementAt(first.Off.lastElement()+r.rtype.size, first.Off.size()-1);
+				
+				for(int i=0;i<child.size();i++)
+				{
+					if(child.get(i) instanceof inclusive_or_expression)
+					{
+						if(child.get(i).check()!=0)throw new Exception();
+						if(checkconvert(((returnrecord)child.get(i).record).rtype,new Tint())!=0)throw new Exception();
+						if(((returnrecord)child.get(i).record).constant)
+						{
+							code.addAll(child.get(i).code);		
+							if((int)((returnrecord)child.get(i).record).value==0)code.add(new quad("b",null,null,lfalse));	
+						}
+						else
+						{
+							code.addAll(child.get(i).code);	
+							if(((returnrecord)child.get(i).record).loc.address)
+							{
+								code.add(new quad("load",new temp(1),null,((returnrecord)child.get(i).record).loc));
+								code.add(new quad("lal",new temp(1),null,new temp(1)));
+							}
+							else
+							{
+								code.add(new quad("load",new temp(1),null,((returnrecord)child.get(i).record).loc));
+							}
 			
-			record = r;
+							code.add(new quad("beqz",new temp(1),null,lfalse));
+						}
+					}
+				}
+				location l = new location(0,"const",0,false,false);
+				l.contain = 1;
+				code.add(new quad("li",new temp(1),null,l));
+				code.add(new quad("store",new temp(1),null,r.loc));
+				code.add(new quad("b",null,null,lend));
+				code.add(new quad("label",null,null,lfalse));
+				location ll = new location(0,"const",0,false,false);
+				ll.contain = 0;
+				code.add(new quad("li",new temp(1),null,ll));
+				code.add(new quad("store",new temp(1),null,r.loc));
+				code.add(new quad("label",null,null,lend));
+				
+				record = r;
+			}
+			
 		}
 		
 		return 0;

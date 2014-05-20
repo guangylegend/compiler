@@ -52,7 +52,6 @@ public class postfix_expression extends root
 				if(child.size()>2)throw new Exception();
 				child = child.get(1).child.get(1).child;
 				if(child.get(0).check()!=0)throw new Exception();
-				//System.out.println(((returnrecord)child.get(0).record).rtype.typename);
 				if(checkconvert(((returnrecord)child.get(0).record).rtype,new Tint())!=0)throw new Exception();
 				
 				if(((returnrecord)child.get(0).record).constant)
@@ -64,20 +63,46 @@ public class postfix_expression extends root
 				}
 				else
 				{
-					code.addAll(child.get(0).code);
-					if(((returnrecord)child.get(0).record).loc.address)
+					if(first.infinity)
 					{
-						code.add(new quad("load",new temp(1),null,((returnrecord)child.get(0).record).loc));
-						code.add(new quad("malloclal",null,null,new temp(1)));
+						code.addAll(child.get(0).code);
+						if(((returnrecord)child.get(0).record).loc.address)
+						{
+							code.add(new quad("malloclal",null,null,((returnrecord)child.get(0).record).loc));
+						}
+						else code.add(new quad("mallocload",null,null,((returnrecord)child.get(0).record).loc));
 					}
-					else code.add(new quad("mallocload",null,null,((returnrecord)child.get(0).record).loc));
+					else
+					{
+						code.addAll(child.get(0).code);
+						if(((returnrecord)child.get(0).record).loc.address)
+						{
+							code.add(new quad("load",new temp(1),null,((returnrecord)child.get(0).record).loc));
+							code.add(new quad("malloclal",null,null,new temp(1)));
+						}
+						else code.add(new quad("mallocload",null,null,((returnrecord)child.get(0).record).loc));
+					}
+					
 				}
 				code.add(new quad("malloc",null,null,null));
 				code.add(new quad("syscall",null,null,null));
-				location p = new location(first.Off.lastElement(),"memory",0,false,false);
-				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
-				code.add(new quad("getpointer",null,null,p));
-				l = p;
+				if(first.infinity)
+				{
+					location tmp = new temp();
+					tmp.offset = first.Off.lastElement();
+					tmp.global = false;
+					first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+					code.add(new quad("getpointer",null,null,tmp));
+					l = tmp;
+				}
+				else
+				{
+					location p = new location(first.Off.lastElement(),"memory",0,false,false);
+					first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+					code.add(new quad("getpointer",null,null,p));
+					l = p;
+				}
+				
 				t = new pointer(new Tvoid());
 			}
 			else if(((String)((returnrecord)record).value).equals("printf"))
@@ -101,31 +126,62 @@ public class postfix_expression extends root
 						}
 						else
 						{
-							if(((returnrecord)child.get(i).record).constant)
+							if(first.infinity)
 							{
-								location tmp = new location();
-								tmp.contain = i;
-								code.addAll(child.get(i).code);
-								location con = new location(0,"const",0,false,false);
-								con.contain = ((returnrecord)child.get(i).record).value;
-								code.add(new quad("parameter",con,null,tmp));
-							}
-							else if(((returnrecord)child.get(i).record).loc.address)
-							{
-								
-								location tmp = new location();
-								tmp.contain = i;
-								code.addAll(child.get(i).code);
-								code.add(new quad("load",new temp(1),null,((returnrecord)child.get(i).record).loc));
-								code.add(new quad("parameter",new temp(1),null,tmp));
+								if(((returnrecord)child.get(i).record).constant)
+								{
+									location tmp = new location();
+									tmp.contain = i;
+									code.addAll(child.get(i).code);
+									location con = new location(0,"const",0,false,false);
+									con.contain = ((returnrecord)child.get(i).record).value;
+									code.add(new quad("parameter",con,null,tmp));
+								}
+								else if(((returnrecord)child.get(i).record).loc.address)
+								{
+									
+									location tmp = new location();
+									tmp.contain = i;
+									code.addAll(child.get(i).code);
+									code.add(new quad("parameterl",((returnrecord)child.get(i).record).loc,null,tmp));
+								}
+								else
+								{
+									location tmp = new location();
+									tmp.contain = i;
+									code.addAll(child.get(i).code);
+									code.add(new quad("parameter",((returnrecord)child.get(i).record).loc,null,tmp));
+								}
 							}
 							else
 							{
-								location tmp = new location();
-								tmp.contain = i;
-								code.addAll(child.get(i).code);
-								code.add(new quad("parameter",((returnrecord)child.get(i).record).loc,null,tmp));
+								if(((returnrecord)child.get(i).record).constant)
+								{
+									location tmp = new location();
+									tmp.contain = i;
+									code.addAll(child.get(i).code);
+									location con = new location(0,"const",0,false,false);
+									con.contain = ((returnrecord)child.get(i).record).value;
+									code.add(new quad("parameter",con,null,tmp));
+								}
+								else if(((returnrecord)child.get(i).record).loc.address)
+								{
+									
+									location tmp = new location();
+									tmp.contain = i;
+									code.addAll(child.get(i).code);
+									code.add(new quad("load",new temp(1),null,((returnrecord)child.get(i).record).loc));
+									code.add(new quad("parameter",new temp(1),null,tmp));
+								}
+								else
+								{
+									location tmp = new location();
+									tmp.contain = i;
+									code.addAll(child.get(i).code);
+									code.add(new quad("parameter",((returnrecord)child.get(i).record).loc,null,tmp));
+								}
 							}
+							
 							
 						}
 						

@@ -27,6 +27,24 @@ public class location
 	public int offset;
 	public String type;
 	public int number;
+	public int doublenumber;
 	public boolean global;
 	public boolean address;
+	public String toString()
+	{
+		/*else if(this.type==null)
+		{
+    		if(this.global)return this.offset + "($s0)";
+    		else return this.offset + "($sp)";
+		}*/
+    	if(this.type.equals("const"))return this.contain.toString();
+    	else if(this.type.equals("register"))return "$t"+this.number;
+    	else if(this.type.equals("memory"))
+    	{
+    		if(this.global)return this.offset + "($s0)";
+    		else return this.offset + "($sp)";
+    	}
+    	else if(this.type.equals("return"))return this.offset + "($v1)";
+    	else return "";
+	}
 }

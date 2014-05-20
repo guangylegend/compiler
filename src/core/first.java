@@ -1514,7 +1514,7 @@ public static void main(String[] args)throws Exception
     	output+=ln(f.getName());
     	output+=ln(work(f));
     }*/
-	System.out.print(work(new File("D:\\t.c")));
-	//System.out.print(work(new File(args[0])));
+	//System.out.print(work(new File("D:\\t.c")));
+	System.out.print(work(new File(args[0])));
 }
 }

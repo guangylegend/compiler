@@ -33,29 +33,17 @@ public class selection_statement extends root
 		}
 		else 
 		{
-			if(first.infinity)
+			if(((returnrecord)child.get(1).record).loc.address)
 			{
-				if(((returnrecord)child.get(1).record).loc.address)
-				{
-					code.add(new quad("lal",((returnrecord)child.get(1).record).loc,null,((returnrecord)child.get(1).record).loc));
-				}			
-				code.add(new quad("beqz",((returnrecord)child.get(1).record).loc,null,lend));
+				code.add(new quad("load",new temp(1),null,((returnrecord)child.get(1).record).loc));
+				code.add(new quad("lal",new temp(1),null,new temp(1)));
 			}
 			else
 			{
-				if(((returnrecord)child.get(1).record).loc.address)
-				{
-					code.add(new quad("load",new temp(1),null,((returnrecord)child.get(1).record).loc));
-					code.add(new quad("lal",new temp(1),null,new temp(1)));
-				}
-				else
-				{
-					code.add(new quad("load",new temp(1),null,((returnrecord)child.get(1).record).loc));
-				}
-				
-				code.add(new quad("beqz",new temp(1),null,lend));
+				code.add(new quad("load",new temp(1),null,((returnrecord)child.get(1).record).loc));
 			}
 			
+			code.add(new quad("beqz",new temp(1),null,lend));
 		}
 		code.addAll(child.get(2).code);
 		if(child.size()>3)code.add(new quad("b",null,null,lline));

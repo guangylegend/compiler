@@ -38,28 +38,16 @@ public class iteration_statement extends root
 			}
 			else
 			{
-				if(first.infinity)
+				if(((returnrecord)son.record).loc.address)
 				{
-					if(((returnrecord)son.record).loc.address)
-					{
-						code.add(new quad("lal",((returnrecord)son.record).loc,null,((returnrecord)son.record).loc));
-					}
-					code.add(new quad("beqz",((returnrecord)son.record).loc,null,lline));
+					code.add(new quad("load",new temp(1),null,((returnrecord)son.record).loc));
+					code.add(new quad("lal",new temp(1),null,new temp(1)));
 				}
 				else
 				{
-					if(((returnrecord)son.record).loc.address)
-					{
-						code.add(new quad("load",new temp(1),null,((returnrecord)son.record).loc));
-						code.add(new quad("lal",new temp(1),null,new temp(1)));
-					}
-					else
-					{
-						code.add(new quad("load",new temp(1),null,((returnrecord)son.record).loc));
-					}
-					code.add(new quad("beqz",new temp(1),null,lline));
+					code.add(new quad("load",new temp(1),null,((returnrecord)son.record).loc));
 				}
-				
+				code.add(new quad("beqz",new temp(1),null,lline));
 			}
 			
 			
@@ -108,28 +96,17 @@ public class iteration_statement extends root
 			}
 			else
 			{
-				if(first.infinity)
+				if(((returnrecord)child.get(2).record).loc.address)
 				{
-					if(((returnrecord)child.get(2).record).loc.address)
-					{
-						code.add(new quad("lal",((returnrecord)child.get(2).record).loc,null,((returnrecord)child.get(2).record).loc));
-					}					
-					code.add(new quad("beqz",((returnrecord)child.get(2).record).loc,null,lline));
+					code.add(new quad("load",new temp(1),null,((returnrecord)child.get(2).record).loc));
+					code.add(new quad("lal",new temp(1),null,new temp(1)));
 				}
 				else
 				{
-					if(((returnrecord)child.get(2).record).loc.address)
-					{
-						code.add(new quad("load",new temp(1),null,((returnrecord)child.get(2).record).loc));
-						code.add(new quad("lal",new temp(1),null,new temp(1)));
-					}
-					else
-					{
-						code.add(new quad("load",new temp(1),null,((returnrecord)child.get(2).record).loc));
-					}
-					
-					code.add(new quad("beqz",new temp(1),null,lline));
+					code.add(new quad("load",new temp(1),null,((returnrecord)child.get(2).record).loc));
 				}
+				
+				code.add(new quad("beqz",new temp(1),null,lline));
 			}
 			
 			if(child.size()==5)

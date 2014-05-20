@@ -23,54 +23,26 @@ public class plain_declaration extends root
 				
 					if(first.getfunc(s) == null)
 					{
-						if(first.infinity)
+						if(t.typ instanceof struct || t.typ instanceof union)
 						{
-							if(t.typ instanceof struct || t.typ instanceof union)
-							{
-								t.loc = new location();
-								t.loc.offset = first.Off.lastElement();
-								t.loc.type = "memory";
-								t.loc.global = false;
-								first.putfunc(s,t);
-								first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
-							}
-							else
-							{
-								location l = new temp();
-								l.global = false;
-								l.offset = first.Off.lastElement();
-								t.loc = l;
-								code.add(new quad("load",l,null,new location(first.Off.lastElement(),"memory",0,false,false)));
-								if(t.typ instanceof array) first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
-								else first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
-								first.putfunc(s,t);
-								
-							}
+							t.loc = new location();
+							t.loc.offset = first.Off.lastElement();
+							t.loc.type = "memory";
+							t.loc.global = false;
+							first.putfunc(s,t);
+							first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
 						}
 						else
 						{
-							if(t.typ instanceof struct || t.typ instanceof union)
-							{
-								t.loc = new location();
-								t.loc.offset = first.Off.lastElement();
-								t.loc.type = "memory";
-								t.loc.global = false;
-								first.putfunc(s,t);
-								first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
-							}
-							else
-							{
-								location l = new location();
-								l.global = false;
-								l.type = "memory";
-								l.offset = first.Off.lastElement();
-								t.loc = new location(l);
-								if(t.typ instanceof array) first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
-								else first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
-								first.putfunc(s,t);
-							}
+							location l = new location();
+							l.global = false;
+							l.type = "memory";
+							l.offset = first.Off.lastElement();
+							t.loc = new location(l);
+							if(t.typ instanceof array) first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+							else first.Off.setElementAt(first.Off.lastElement()+t.typ.size, first.Off.size()-1);
+							first.putfunc(s,t);
 						}
-						
 						
 					}
 					else throw new Exception();

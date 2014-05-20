@@ -6,8 +6,7 @@ public class temp extends location
 {
 	public temp(int n)
 	{
-		super(0,"register",0,false,false);
-		doublenumber = n;
+		super(0,"register",n,false,false);
 	}
 	public temp()
 	{

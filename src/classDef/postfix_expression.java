@@ -52,7 +52,7 @@ public class postfix_expression extends root
 				if(child.size()>2)throw new Exception();
 				child = child.get(1).child.get(1).child;
 				if(child.get(0).check()!=0)throw new Exception();
-				System.out.println(((returnrecord)child.get(0).record).rtype.typename);
+				//System.out.println(((returnrecord)child.get(0).record).rtype.typename);
 				if(checkconvert(((returnrecord)child.get(0).record).rtype,new Tint())!=0)throw new Exception();
 				
 				if(((returnrecord)child.get(0).record).constant)

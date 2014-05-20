@@ -6,8 +6,10 @@ import classDef.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -580,15 +582,18 @@ public class first{
 			
 			/*for(int j=0;j<succ.size();j++)
 			{
-				for(int k=0;k<succ.get(j).size();k++)output+=(succ.get(j).get(k)+1+" ");
-				output+=("~~");
-				for(int k=0;k<def.get(j).size();k++)output+=(def.get(j).get(k)+" ");
-				output+=("~~");
-				for(int k=0;k<use.get(j).size();k++)output+=(use.get(j).get(k)+" ");
-				output+=ln();
+				for(int k=0;k<succ.get(j).size();k++)System.out.print(succ.get(j).get(k)+1+" ");
+				System.out.print("~~");
+				for(int k=0;k<def.get(j).size();k++)System.out.print(def.get(j).get(k)+" ");
+				System.out.print("~~");
+				for(int k=0;k<use.get(j).size();k++)System.out.print(use.get(j).get(k)+" ");
+				System.out.println();
 			}*/
+			//System.out.flush();
 			
 			//int cnt = 0;
+			
+			//System.setOut(new PrintStream(new FileOutputStream("D:\\xxx.txt")));
 			
 			while(true)
 			{
@@ -596,19 +601,23 @@ public class first{
     			{
     				inh[k] = new HashSet<Integer>(in[k]);
     				outh[k] = new HashSet<Integer>(out[k]);
+    				out[k] = new HashSet<Integer>();
+    				for(int j=0;j<succ.get(k).size();j++)out[k].addAll(in[succ.get(k).get(j)]);
     				out[k].removeAll(def.get(k));
     				out[k].addAll(use.get(k));
     				in[k] = new HashSet<Integer>(out[k]);
-    				out[k] = new HashSet<Integer>();
-    				for(int j=0;j<succ.get(k).size();j++)out[k].addAll(in[succ.get(k).get(j)]);
+
     			}
 				
 				boolean f = true;
-				for(int k=0;k<succ.size()-1;k++)
+				for(int k=succ.size()-1;k>=0;k--)
 				{
+					//TODO size
 					if(inh[k].size()!=in[k].size())f = false;
 					if(outh[k].size()!=out[k].size())f = false;
 				}
+				
+				
 				
 				//cnt++;
 				if(f)break;
@@ -1491,7 +1500,7 @@ public class first{
 		    
 		    System.out.print(output);
 		    
-		    FileReader fr = new FileReader("print.txt");  
+		    FileReader fr = new FileReader(first.class.getResource("/print.txt").getFile());  
 		    int ch = 0;    
 		    while((ch = fr.read())!=-1 ){    
 		        output+=( (char)ch );    

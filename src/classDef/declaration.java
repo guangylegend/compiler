@@ -314,22 +314,39 @@ public class declaration extends root
 						else if(((value)t).typ instanceof struct)
 						{
 							int k = ((value)t).typ.size;
-							for(int j=1;j<=k/4;j++)
+							for(int j=0;j<=k/4;j++)
 							{
 								if(first.infinity)
 								{
-									location t1 = new location(((value)t).loc.offset+j*4,"memory",0,false,false);
-									if(first.func==null)t1.global = true;
-									else t1.global = false;
-									location t2 = new location(vl.get(i).offset+j*4,"memory",0,false,false);
-									if(first.func==null)t2.global = true;
-									else t2.global = false;
-									location tmp = new temp();
-									tmp.offset = first.Off.lastElement();
-									tmp.global = false;
-									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
-									r.add(new quad("load",tmp,null,t1));
-									r.add(new quad("store",tmp,null,t2));
+									if(((value)t).loc.address)
+									{
+										location l = new location(0,"const",0,false,false);
+										l.contain = j*4;
+										r.add(new quad("+",((value)t).loc,((value)t).loc,l));
+										location tmp = new temp();
+										tmp.offset = first.Off.lastElement();
+										tmp.global = false;
+										first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+										r.add(new quad("lal",tmp,null,((value)t).loc));
+										location t2 = new location(vl.get(i).offset+j*4,"memory",0,false,false);
+										r.add(new quad("store",tmp,null,t2));
+									}
+									else
+									{
+										location t1 = new location(((value)t).loc.offset+j*4,"memory",0,false,false);
+										if(first.func==null)t1.global = true;
+										else t1.global = false;
+										location t2 = new location(vl.get(i).offset+j*4,"memory",0,false,false);
+										if(first.func==null)t2.global = true;
+										else t2.global = false;
+										location tmp = new temp();
+										tmp.offset = first.Off.lastElement();
+										tmp.global = false;
+										first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+										r.add(new quad("load",tmp,null,t1));
+										r.add(new quad("store",tmp,null,t2));
+									}
+									
 								}
 								else
 								{

@@ -417,7 +417,7 @@ public class postfix extends root
 								code.add(new quad("move",tmp,null,v.loc));
 								location ll = new location(0,"const",0,false,false);
 								ll.contain = s.vt.get(i).loc.offset-r.rtype.size;
-								code.add(new quad("-",tmp2,tmp,ll));
+								code.add(new quad("+",tmp2,tmp,ll));
 								location l = new location(0,"const",0,false,false);
 								l.contain = s.vt.get(i).loc.offset;
 								code.add(new quad("+",tmp,tmp,l));
@@ -430,7 +430,7 @@ public class postfix extends root
 								code.add(new quad("load",new temp(1),null,r.loc));
 								location ll = new location(0,"const",0,false,false);
 								ll.contain = s.vt.get(i).loc.offset-r.rtype.size;
-								code.add(new quad("-",new temp(2),new temp(1),ll));
+								code.add(new quad("+",new temp(2),new temp(1),ll));
 								location l = new location(0,"const",0,false,false);
 								l.contain = s.vt.get(i).loc.offset;
 								code.add(new quad("+",new temp(1),new temp(1),l));

@@ -80,24 +80,81 @@ public class assignment_expression extends root
 					{
 						
 						//-------------------------------------------//
+						//TODO struct maybe an address?  still some bugs...
 						if(first.infinity)
 						{
 							int k = t.size;
-							for(int j=0;j<k/4;j++)
+							if(((returnrecord)child.get(2).record).loc.address && r.loc.address)
 							{
-								location t1 = new location(((returnrecord)child.get(2).record).loc.offset+j*4,"memory",0,false,false);
-								if(first.func==null)t1.global = true;
-								else t1.global = false;
-								location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
-								if(first.func==null)t2.global = true;
-								else t2.global = false;
-								location tmp = new temp();
-								tmp.offset = first.Off.lastElement();
-								tmp.global = false;
-								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
-								v.add(new quad("load",tmp,null,t1));
-								v.add(new quad("store",tmp,null,t2));
+								for(int j=0;j<k/4;j++)
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = j*4;
+									v.add(new quad("+",r.loc,r.loc,l));
+									v.add(new quad("+",((returnrecord)child.get(2).record).loc,((returnrecord)child.get(2).record).loc,l));
+									location tmp = new temp();
+									tmp.offset = first.Off.lastElement();
+									tmp.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									v.add(new quad("lal",tmp,null,((returnrecord)child.get(2).record).loc));							
+									v.add(new quad("sal",tmp,null,r.loc));
+								}
 							}
+							else if(((returnrecord)child.get(2).record).loc.address)
+							{
+								for(int j=0;j<k/4;j++)
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = j*4;
+									v.add(new quad("+",((returnrecord)child.get(2).record).loc,((returnrecord)child.get(2).record).loc,l));
+									location tmp = new temp();
+									tmp.offset = first.Off.lastElement();
+									tmp.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									v.add(new quad("lal",tmp,null,((returnrecord)child.get(2).record).loc));
+									location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
+									v.add(new quad("store",tmp,null,t2));
+								}
+							}
+							else if(r.loc.address)
+							{
+								for(int j=0;j<k/4;j++)
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = j*4;
+									location tmp1 = new temp();
+									tmp1.offset = first.Off.lastElement();
+									tmp1.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									v.add(new quad("+",tmp1,r.loc,l));
+									location tmp = new temp();
+									tmp.offset = first.Off.lastElement();
+									tmp.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									location t1 = new location(((returnrecord)child.get(2).record).loc.offset+j*4,"memory",0,false,false);
+									v.add(new quad("load",tmp,null,t1));							
+									v.add(new quad("sal",tmp,null,tmp1));
+								}
+							}
+							else
+							{
+								for(int j=0;j<k/4;j++)
+								{
+									location t1 = new location(((returnrecord)child.get(2).record).loc.offset+j*4,"memory",0,false,false);
+									if(first.func==null)t1.global = true;
+									else t1.global = false;
+									location t2 = new location(r.loc.offset+j*4,"memory",0,false,false);
+									if(first.func==null)t2.global = true;
+									else t2.global = false;
+									location tmp = new temp();
+									tmp.offset = first.Off.lastElement();
+									tmp.global = false;
+									first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+									v.add(new quad("load",tmp,null,t1));
+									v.add(new quad("store",tmp,null,t2));
+								}
+							}
+							
 						}
 						else
 						{

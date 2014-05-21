@@ -213,21 +213,39 @@ public class unary_expression extends root
 							{
 								r.loc.address = false;
 								code.add(new quad("lal",tmp,null,r.loc));
+								if(son.record.equals("~"))
+								{
+									code.add(new quad("not",tmp,null,tmp));
+								}
+								else if(((String)son.record).equals("-"))
+								{
+									code.add(new quad("neg",tmp,null,tmp));
+								}
+								else if(((String)son.record).equals("!"))
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = 0;
+									code.add(new quad("seq",tmp,tmp,l));
+								}
 							}
-							if(son.record.equals("~"))
+							else
 							{
-								code.add(new quad("not",tmp,null,r.loc));
+								if(son.record.equals("~"))
+								{
+									code.add(new quad("not",tmp,null,r.loc));
+								}
+								else if(((String)son.record).equals("-"))
+								{
+									code.add(new quad("neg",tmp,null,r.loc));
+								}
+								else if(((String)son.record).equals("!"))
+								{
+									location l = new location(0,"const",0,false,false);
+									l.contain = 0;
+									code.add(new quad("seq",tmp,r.loc,l));
+								}
 							}
-							else if(((String)son.record).equals("-"))
-							{
-								code.add(new quad("neg",tmp,null,r.loc));
-							}
-							else if(((String)son.record).equals("!"))
-							{
-								location l = new location(0,"const",0,false,false);
-								l.contain = 0;
-								code.add(new quad("seq",tmp,r.loc,l));
-							}
+							
 							r.loc = tmp;
 						}
 						else

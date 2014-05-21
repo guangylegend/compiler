@@ -6,8 +6,10 @@ import classDef.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -285,7 +287,7 @@ public class first{
 		    	
 		    	
 
-		    int ans = rt.check();
+		    rt.check();
 		    
 		    boolean flag = false;
 		    int funcoffset = 0;
@@ -387,7 +389,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		use.lastElement().add(q.arg1.number);
+			    		if(q.arg1!=null && q.arg1.number!=0)
+			    		{
+			    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    			use.lastElement().add(q.arg1.number);
+			    		}
 
 		    		}
 		    		else if(q.operator.equals("loc"))continue;
@@ -403,8 +409,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
-			    		if(q.arg1.number!=0)use.lastElement().add(q.arg1.number);
+			    		if(q.arg1!=null && q.arg1.number!=0)
+			    		{
+			    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    			use.lastElement().add(q.arg1.number);
+			    		}
 			    		continue;
 		    		}
 		    		else if(q.operator.equals("parameterl"))
@@ -419,8 +428,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
-			    		use.lastElement().add(q.arg1.number);
+			    		if(q.arg1!=null && q.arg1.number!=0)
+			    		{
+			    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    			use.lastElement().add(q.arg1.number);
+			    		}
 			    		continue;
 		    		}
 		    		else if(q.operator.equals("funcend"))
@@ -452,8 +464,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg3.number > regmax) regmax = q.arg3.number;
-			    		use.lastElement().add(q.arg3.number);
+			    		if(q.arg3!=null && q.arg3.number!=0)
+			    		{
+			    			if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    			use.lastElement().add(q.arg3.number);
+			    		}
 			    		continue;
 		    		}
 		    		else if(q.operator.equals("mallocload"))
@@ -468,8 +483,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg3.number > regmax) regmax = q.arg3.number;
-			    		use.lastElement().add(q.arg3.number);
+			    		if(q.arg3!=null && q.arg3.number!=0)
+			    		{
+			    			if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    			use.lastElement().add(q.arg3.number);
+			    		}
 			    		continue;
 		    		}
 		    		else if(q.operator.equals("getpointer"))
@@ -484,8 +502,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg3.number > regmax) regmax = q.arg3.number;
-			    		use.lastElement().add(q.arg3.number);
+			    		if(q.arg3!=null && q.arg3.number!=0)
+			    		{
+			    			if(q.arg3.number > regmax) regmax = q.arg3.number;
+			    			use.lastElement().add(q.arg3.number);
+			    		}
 			    		continue;
 		    		}
 		    		else if(q.operator.equals("label"))
@@ -529,8 +550,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
-			    		use.lastElement().add(q.arg1.number);
+			    		if(q.arg1!=null && q.arg1.number!=0)
+			    		{
+			    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    			use.lastElement().add(q.arg1.number);
+			    		}
 			    		q.arg2 = new location(0,"const",succ.size()-1,false,false);
 			    		continue;
 		    		}
@@ -546,8 +570,11 @@ public class first{
 			    		succ.add(su);
 			    		def.add(new Vector<Integer>());
 			    		use.add(new Vector<Integer>());
-			    		if(q.arg1.number > regmax) regmax = q.arg1.number;
-			    		use.lastElement().add(q.arg1.number);
+			    		if(q.arg1!=null && q.arg1.number!=0)
+			    		{
+			    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+			    			use.lastElement().add(q.arg1.number);
+			    		}
 			    		q.arg2 = new location(0,"const",succ.size()-1,false,false);
 			    		continue;
 		    		}
@@ -563,7 +590,11 @@ public class first{
 		    		succ.add(su);
 		    		def.add(new Vector<Integer>());
 		    		if(q.arg1.number > regmax) regmax = q.arg1.number;
-		    		def.lastElement().add(q.arg1.number);
+		    		if(q.arg1!=null && q.arg1.number!=0)
+		    		{
+		    			if(q.arg1.number > regmax) regmax = q.arg1.number;
+		    			def.lastElement().add(q.arg1.number);
+		    		}
 		    		use.add(new Vector<Integer>());
 		    		if(q.arg2!=null && q.arg2.number!=0)
 		    		{
@@ -651,10 +682,9 @@ public class first{
 		
 			/*for(int k=0;k<succ.size();k++)
 			{
-				Iterator<Integer> iter = in[k].iterator();
-				while(iter.hasNext())System.out.print(iter.next().hashCode()+" ");
+				Iterator<Integer> iter = out[k].iterator();
+				for(int j=0;j<def.get(k).size();j++)System.out.print(def.get(k).get(j)+" ");
 				System.out.print("~~");
-				iter = out[k].iterator();
 				while(iter.hasNext())System.out.print(iter.next().hashCode()+" ");
 				System.out.println();
 			}*/
@@ -802,7 +832,7 @@ public class first{
 				}
 			}
 			//for(int k=1;k<=infinitynumber;k++)System.out.println(k+" "+tab[k]);
-			
+
 			
 			int last = 0;
 			int max = 0;
@@ -920,9 +950,10 @@ public class first{
 				    	output+=(q.arg1.number);
 				    	output+=(")");
 		    		}
-		    		else                                            //some bugs...
+		    		else                                            
 		    		{
-		    			output+=("sw"+"\t"+"$t"+q.arg1.number+"\t"+"16($v1)");
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+"0($t"+q.arg1.number+")\n");
+		    			output+=("sw"+"\t"+"$tmp15"+"\t"+"16($v1)");
 		    		}	
 		    	}
 		    	else if(q.operator.equals("parameter"))
@@ -1229,6 +1260,7 @@ public class first{
 		    	else if(q.operator.equals("lal"))
 		    	{
 		    		boolean flag1 = false;
+		    		boolean flag3 = false;
 		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
 		    		{
 		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
@@ -1244,6 +1276,16 @@ public class first{
 		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($v1)"+"\n");
 		    			flag1 = true;
 		    		}
+		    		if(q.arg3!=null && q.arg3.global && q.arg3.type.equals("memory") && !q.operator.equals("load"))
+		    		{
+		    			output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($s0)"+"\n");
+		    			flag3 = true;
+		    		}
+		    		else if(q.arg3!=null && q.arg3.type.equals("register") && tab[q.arg3.number]==1000)
+	    			{
+	    				output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($sp)"+"\n");
+		    			flag3 = true;
+	    			}
 		    		output+=("lw");
 		    		output+=("\t");
 		    		if(flag1)
@@ -1256,10 +1298,9 @@ public class first{
 			    		output+=(q.arg1.number);
 		    		}  		
 		    		output+=("\t");
-		    		if(tab[q.arg3.number]==1000)
+		    		if(flag3)
 		    		{
-		    			output+=(q.arg3.offset);
-			    		output+=("($sp)");
+			    		output+=("0($k0)");
 		    		}
 		    		else
 		    		{
@@ -1317,6 +1358,7 @@ public class first{
 		    	else if(q.operator.equals("sal"))
 		    	{
 		    		boolean flag1 = false;
+		    		boolean flag3 = false;
 		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
 		    		{
 		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
@@ -1332,6 +1374,16 @@ public class first{
 		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($v1)"+"\n");
 		    			flag1 = true;
 		    		}
+		    		if(q.arg3!=null && q.arg3.global && q.arg3.type.equals("memory") && !q.operator.equals("load"))
+		    		{
+		    			output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($s0)"+"\n");
+		    			flag3 = true;
+		    		}
+		    		else if(q.arg3!=null && q.arg3.type.equals("register") && tab[q.arg3.number]==1000)
+	    			{
+	    				output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($sp)"+"\n");
+		    			flag3 = true;
+	    			}
 		    		output+=("sw");
 		    		output+=("\t");
 		    		if(flag1)
@@ -1345,10 +1397,9 @@ public class first{
 		    		}  		
 		    		output+=("\t");
 		    		//TODO arg3?
-		    		if(tab[q.arg3.number]==1000)
+		    		if(flag3)
 		    		{
-		    			output+=(q.arg3.offset);
-			    		output+=("($sp)");
+			    		output+=("0($k0)");
 		    		}
 		    		else
 		    		{
@@ -1458,7 +1509,7 @@ public class first{
 		    		} 
 		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
 		    		{
-		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+(q.arg1.offset+funcoffset)+"($sp)"+"\n");
 		    			flag1 = true;
 		    		}
 		    		else if(q.arg1!=null && q.arg1.type.equals("return"))
@@ -1596,7 +1647,8 @@ public class first{
 		    int ch = 0;    
 		    while((ch = fr.read())!=-1 ){    
 		        output+=( (char)ch );    
-		    }  
+		    } 
+		    fr.close();
 		    
 		    return output;
 		        

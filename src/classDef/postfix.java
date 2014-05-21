@@ -489,17 +489,29 @@ public class postfix extends root
 								code.add(new quad("la",tmp,null,a));
 								code.add(new quad("sw",tmp,null,b));
 							}
-							location tmp = new temp();
-							tmp.offset = first.Off.lastElement();
-							tmp.global = false;
-							first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
-							location l = new location(v.loc);
-							if(s.isunion)l.offset = 0;
-							else l.offset += s.vt.get(i).loc.offset;
-							code.add(new quad("la",tmp,null,l));
-							r.loc = tmp;
-							r.loc.address = true;
-							return r;
+							if(r.rtype.typename.equals("struct"))
+							{
+								location l = new location(v.loc);
+								if(s.isunion)l.offset = 0;
+								else l.offset += s.vt.get(i).loc.offset;
+								r.loc = l;
+								return r;	
+							}
+							else
+							{
+								location tmp = new temp();
+								tmp.offset = first.Off.lastElement();
+								tmp.global = false;
+								first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
+								location l = new location(v.loc);
+								if(s.isunion)l.offset = 0;
+								else l.offset += s.vt.get(i).loc.offset;
+								code.add(new quad("la",tmp,null,l));
+								r.loc = tmp;
+								r.loc.address = true;
+								return r;
+							}
+							
 						}
 						else
 						{

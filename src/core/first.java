@@ -923,16 +923,44 @@ public class first{
 			    		}
 			    	}
 			    	
-			    	/*if(q.operator.equals("move"))
+			    	if(q.operator.equals("==") && rt.code.get(i+1).operator.equals("beqz"))
+			    	{
+			    		if(q.arg1!=null && q.arg1.type!=null && q.arg1.type.equals("register") && q.arg3.contain!=null && (int)q.arg3.contain==0)
+			    		{
+			    			if(rt.code.get(i+1).arg1!=null && rt.code.get(i+1).arg1.type!=null && rt.code.get(i+1).arg1.type.equals("register"))
+				    		{
+			    				
+			    				if(tab[q.arg1.number]==tab[rt.code.get(i+1).arg1.number])
+			    				{
+			    					rt.code.get(i+1).operator = "bnez";
+			    					rt.code.get(i+1).arg1 = q.arg2;
+			    					continue;
+			    				}
+				    		}
+			    		}
+			    	}
+			    	
+			    	if(q.operator.equals("<=") && rt.code.get(i+1).operator.equals("beqz"))
 			    	{
 			    		if(q.arg1!=null && q.arg1.type!=null && q.arg1.type.equals("register"))
 			    		{
-			    			if(q.arg3!=null && q.arg3.type!=null && q.arg3.type.equals("register"))
+			    			if(q.arg2!=null && q.arg2.type!=null && q.arg2.type.equals("register"))
 				    		{
-			    				if(q.arg1.number==q.arg3.number)continue;
+			    				if(rt.code.get(i+1).arg1!=null && rt.code.get(i+1).arg1.type!=null && rt.code.get(i+1).arg1.type.equals("register"))
+					    		{
+				    				
+				    				if(tab[q.arg1.number]==tab[rt.code.get(i+1).arg1.number])
+				    				{
+				    					rt.code.get(i+1).operator = "bgt";
+				    					rt.code.get(i+1).arg1 = q.arg2;
+				    					rt.code.get(i+1).arg2 = q.arg3;
+				    					continue;
+				    				}
+					    		}
 				    		}
+			    			
 			    		}
-			    	}*/
+			    	}
 			    	
 		    	}
 		    	
@@ -1530,6 +1558,48 @@ public class first{
 			    	}
 		    		output+=("L" + q.arg3.contain);
 		    	}
+		    	else if(q.operator.equals("bgt"))
+		    	{
+		    		boolean flag1 = false;
+		    		boolean flag2 = false;
+		    		if(q.arg1!=null && q.arg1.global && q.arg1.type.equals("memory"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.toString()+"\n");
+		    			flag1 = true;
+		    		} 
+		    		else if(q.arg1!=null && q.arg1.type.equals("register") && tab[q.arg1.number]==1000)
+		    		{
+		    			output+=("lw"+"\t"+"$tmp15"+"\t"+q.arg1.offset+"($sp)"+"\n");
+		    			flag1 = true;
+		    		}
+		    		if(q.arg2!=null && q.arg2.global && q.arg2.type.equals("memory") && !q.operator.equals("load"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($s0)"+"\n");
+		    			flag2 = true;
+		    		}
+		    		else if(q.arg2!=null && q.arg2.type.equals("register") && tab[q.arg2.number]==1000)
+	    			{
+	    				output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($sp)"+"\n");
+		    			flag2 = true;
+	    			}
+		    		else if(q.arg2!=null && q.arg2.type.equals("return"))
+		    		{
+		    			output+=("lw"+"\t"+"$tmp16"+"\t"+q.arg2.offset+"($v1)"+"\n");
+		    			flag2 = true;
+		    		}
+		    		output+=("bgt" + "\t");
+		    		if(q.arg1!=null)
+			    	{
+			    		if(flag1)output+=("$tmp15"+"\t");
+			    		else output+=(q.arg1.toString()+"\t");
+			    	}
+		    		if(q.arg2!=null)
+			    	{
+			    		if(flag2)output+=("$tmp16"+"\t");
+			    		else output+=(q.arg2.toString()+"\t");
+			    	}
+		    		output+=("L" + q.arg3.contain);
+		    	}
 		    	else if(q.operator.equals("loc"))
 		    	{
 		    		int size = getfunc(funcname).typ.size-4;
@@ -1637,8 +1707,18 @@ public class first{
 			    		}
 			    		if(q.arg3!=null && q.arg3.global && q.arg3.type.equals("memory") && !q.operator.equals("load"))
 			    		{
-			    			output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($s0)"+"\n");
-			    			flag3 = true;
+			    			if(q.operator.equals("move"))
+			    			{
+			    				q.operator = "lw";
+			    				location l = new location(q.arg3.offset,"memory",0,true,false);
+			    				q.arg3 = l;
+			    			}
+			    			else
+			    			{
+			    				output+=("lw"+"\t"+"$k0"+"\t"+q.arg3.offset+"($s0)"+"\n");
+				    			flag3 = true;
+			    			}
+			    			
 			    		}
 			    		else if(q.arg3!=null && q.arg3.type.equals("register") && tab[q.arg3.number]==1000)
 		    			{

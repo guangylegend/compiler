@@ -35,7 +35,8 @@ public class first{
 	public static int noname = 0;
 	public static function func = null;
 	public static boolean idtest = false; 
-	public static boolean infinity = true;
+	public static boolean infinity = true;    //already fucked
+	public static boolean test = false;
 	
 	public static value getstruct(String s)
 	{
@@ -909,9 +910,9 @@ public class first{
 		    		funcoffset = 0;
 		    		output+=("jal");
 		    		output+=("\t");
-			    	if(!q.arg3.contain.equals("printf"))output+=("Legend_");
+			    	if(!q.arg3.contain.equals("printf") && !q.arg3.contain.equals("printf2"))output+=("Legend_");
 			    	output+=(q.arg3.contain);
-			    	if(!q.arg3.contain.equals("printf"))
+			    	if(!q.arg3.contain.equals("printf") && !q.arg3.contain.equals("printf2"))
 			    	{
 			    		int size = getfunc(funcname).typ.size-4;
 			    		if(reguse.get(funccnt)>14)
@@ -1642,8 +1643,13 @@ public class first{
 		    
 		    //System.out.print(output);
 		    
-		    FileReader fr = new FileReader(first.class.getResource("/print.txt").getFile()); 
-		    //FileReader fr = new FileReader("D:\\print.txt");  
+		    FileReader fr;
+		    if(test)
+		    {
+		    	fr = new FileReader("D:\\print.txt");  
+		    }
+		    else fr = new FileReader(first.class.getResource("/print.txt").getFile()); 
+		    
 		    int ch = 0;    
 		    while((ch = fr.read())!=-1 ){    
 		        output+=( (char)ch );    
@@ -1667,8 +1673,13 @@ public static void main(String[] args)throws Exception
     	output+=ln(f.getName());
     	output+=ln(work(f));
     }*/
-	//System.setOut(new PrintStream(new FileOutputStream("D:\\t.s")));
-	//System.out.print(work(new File("D:\\t.c")));
-	System.out.print(work(new File(args[0])));
+	if(test)
+	{
+		System.setOut(new PrintStream(new FileOutputStream("D:\\t.s")));
+		System.out.print(work(new File("D:\\t.c")));
+	}
+	else System.out.print(work(new File(args[0])));
+		
+	
 }
 }

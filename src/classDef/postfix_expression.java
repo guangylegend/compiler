@@ -108,7 +108,16 @@ public class postfix_expression extends root
 			else if(((String)((returnrecord)record).value).equals("printf"))
 			{
 				child = child.get(1).child.get(1).child;
-				if(child.size()==6)
+				boolean opt = false;
+				if(child.size()==1)
+				{
+					if(child.get(0).check()!=0)throw new Exception();
+					location tmp = new location();
+					tmp.contain = ((returnrecord)child.get(0).record).value;
+					code.add(new quad("string",null,null,tmp));
+					opt = true;
+				}
+				else if(child.size()==6)
 				{
 					code.add(new quad("do",null,null,null));
 				}
@@ -189,11 +198,19 @@ public class postfix_expression extends root
 					}
 				}
 				
-				location tmp = new location();
-				tmp.contain = "printf";
 				location p = new location(first.Off.lastElement(),"memory",0,false,false);
 				first.Off.setElementAt(first.Off.lastElement()+4, first.Off.size()-1);
 				code.add(new quad("storera",null,null,p));
+				location tmp = new location();
+				if(!opt)
+				{
+					tmp.contain = "printf";	
+				}
+				else
+				{
+					tmp.contain = "printf2";	
+				}
+					
 				code.add(new quad("call",null,null,tmp));
 				code.add(new quad("restorera",null,null,p));
 				

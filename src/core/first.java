@@ -324,6 +324,7 @@ public class first{
 		    output+=("la"+"\t"+"$v1"+"\t"+"Legend_return"+"\n");
 		    
 		    Vector<Integer> reguse = new Vector<Integer>();
+		    Vector<Integer> regdead = new Vector<Integer>();
 		    Vector<String> funcsize = new Vector<String>();
 		    int regmax = 0;
 		    
@@ -733,6 +734,15 @@ public class first{
 				
 			}
 			
+			for(int k=1;k<infinitynumber;k++)
+			{
+				if(left[k]==right[k])
+				{
+					//System.out.println(k);
+					regdead.add(k);
+				}
+			}
+			
 			for(int k=0;k<succ.size();k++)
 			{
 				Iterator<Integer> iter = out[k].iterator();
@@ -861,6 +871,37 @@ public class first{
 		    for(int i=0;i<rt.code.size();i++)
 		    {
 		    	quad q = rt.code.get(i);
+		    	
+		    	if(flag)
+		    	{
+		    		if(q.arg1!=null && q.arg1.type!=null && q.arg1.type.equals("register"))
+		    		{
+			    		if(regdead.contains(q.arg1.number))
+			    		{
+			    			continue;
+			    		}
+		    		}
+			    	if(q.arg2!=null && q.arg2.type!=null && q.arg2.type.equals("register"))
+		    		{
+			    		if(regdead.contains(q.arg2.number))
+			    		{
+			    			continue;
+			    		}
+		    		}
+			    	if(q.arg3!=null && q.arg3.type!=null && q.arg3.type.equals("register"))
+		    		{
+			    		if(regdead.contains(q.arg3.number))
+			    		{
+			    			continue;
+			    		}
+		    		}
+		    	}
+		    	
+		    	
+		    	
+		    	
+		    	
+		    	
 
 		    	if(q.operator.equals("func"))
 		    	{

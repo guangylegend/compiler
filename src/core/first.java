@@ -26,6 +26,7 @@ public class first{
 	public static Vector<String> ASCII = new Vector<String>();
 	public static Vector<table> F = new Vector<table>();
 	public static Vector<table> S = new Vector<table>();
+	public static table reg = new table();
 	public static Stack<Integer> Off = new Stack<Integer>();
 	public static int Register = 1;
 	public static int loop = 0;
@@ -846,17 +847,22 @@ public class first{
 
 			
 			int last = 0;
-			int max = 0;
 			for(int k=0;k<reguse.size();k++)
 			{
+				//System.out.println(funcsize.get(k));
+				HashSet<Integer> h = new HashSet<Integer>();
 				for(int j=last;j<=reguse.get(k);j++)
 				{
-					if(tab[j] > max && tab[j]!=1000)max = tab[j];
+					if(tab[j]!=1000 && tab[j]!=0)
+					{
+						//System.out.print(tab[j]+" ");
+						h.add(tab[j]);
+					}
 				}
 				last = reguse.get(k)+1;
-				reguse.set(k, max); 
+				first.reg.put(symbol.symbol(funcsize.get(k)),h);
 				value v = getfunc(funcsize.get(k));
-				v.typ.size+=max*4;
+				v.typ.size+=h.size()*4;
 				putfunc(funcsize.get(k),v);
 			}
 		    
@@ -978,21 +984,17 @@ public class first{
 			    	if(!q.arg3.contain.equals("printf") && !q.arg3.contain.equals("printf2"))
 			    	{
 			    		int size = getfunc(funcname).typ.size-4;
-			    		if(reguse.get(funccnt)>14)
+			    		HashSet<Integer> h = (HashSet<Integer>) first.reg.get(symbol.symbol(funcname));
+			    		HashSet<Integer> hh = (HashSet<Integer>) first.reg.get(symbol.symbol((String)q.arg3.contain));
+			    		Iterator<Integer> iter = h.iterator();
+			    		while(iter.hasNext())
 			    		{
-			    			for(int k=1;k<=14;k++)
-				    		{
-				    			output+=("\n"+"lw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
-				    			size-=4;
-				    		}
-			    		}
-			    		else
-			    		{
-			    			for(int k=1;k<=(int)reguse.get(funccnt);k++)
-				    		{
-				    			output+=("\n"+"lw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
-				    			size-=4;
-				    		}
+			    			int tmp = iter.next().hashCode();
+			    			if(hh.contains(tmp))
+			    			{
+			    				output+=("\n"+"lw"+"\t"+"$tmp"+tmp+"\t"+size+"($sp)");
+					    		size-=4;
+			    			}
 			    		}
 			    		
 			    	}
@@ -1520,22 +1522,21 @@ public class first{
 		    	else if(q.operator.equals("loc"))
 		    	{
 		    		int size = getfunc(funcname).typ.size-4;
-		    		if(reguse.get(funccnt)>14)
+		    		HashSet<Integer> h = (HashSet<Integer>) first.reg.get(symbol.symbol(funcname));
+		    		HashSet<Integer> hh = (HashSet<Integer>) first.reg.get(symbol.symbol((String)q.arg3.contain));
+		    		Iterator<Integer> iter = h.iterator();
+		    		while(iter.hasNext())
 		    		{
-		    			for(int k=1;k<=14;k++)
-			    		{
-			    			output+=("\n"+"sw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
-			    			size-=4;
-			    		}
+		    			int tmp = iter.next().hashCode();
+		    			if(hh.contains(tmp))
+		    			{
+		    				output+=("\n"+"sw"+"\t"+"$tmp"+tmp+"\t"+size+"($sp)");
+				    		size-=4;
+		    			}
 		    		}
-		    		else
-		    		{
-		    			for(int k=1;k<=(int)reguse.get(funccnt);k++)
-			    		{
-			    			output+=("\n"+"sw"+"\t"+"$tmp"+k+"\t"+size+"($sp)");
-			    			size-=4;
-			    		}
-		    		}
+			    		
+			    	
+
 		    		output+="\n";
 		    		size = getfunc((String)q.arg3.contain).typ.size;
 		    		output+=("add\t$sp\t"+"$sp"+"\t"+"-"+size);

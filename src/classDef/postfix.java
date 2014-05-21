@@ -80,14 +80,22 @@ public class postfix extends root
 					location cons = new location(0,"const",0,false,false);
 					cons.contain = ((returnrecord)son.record).value;
 					code.add(new quad("li",tmp1,null,cons));
+					code.add(new quad("*",tmp1,tmp1,l));
 				}
 				else
 				{
-					if(((returnrecord)son.record).loc.address)code.add(new quad("lal",tmp1,null,((returnrecord)son.record).loc));
-					else code.add(new quad("move",tmp1,null,((returnrecord)son.record).loc));
+					if(((returnrecord)son.record).loc.address)
+					{
+						code.add(new quad("lal",tmp1,null,((returnrecord)son.record).loc));
+						code.add(new quad("*",tmp1,tmp1,l));
+					}
+					else
+					{
+						code.add(new quad("*",tmp1,((returnrecord)son.record).loc,l));
+					}
 				}
 
-				code.add(new quad("*",tmp1,tmp1,l));
+				
 				
 				if(v.loc.address)
 				{

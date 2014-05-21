@@ -923,6 +923,17 @@ public class first{
 			    		}
 			    	}
 			    	
+			    	/*if(q.operator.equals("move"))
+			    	{
+			    		if(q.arg1!=null && q.arg1.type!=null && q.arg1.type.equals("register"))
+			    		{
+			    			if(q.arg3!=null && q.arg3.type!=null && q.arg3.type.equals("register"))
+				    		{
+			    				if(q.arg1.number==q.arg3.number)continue;
+				    		}
+			    		}
+			    	}*/
+			    	
 		    	}
 		    	
 		    	

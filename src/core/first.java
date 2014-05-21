@@ -895,6 +895,28 @@ public class first{
 			    			continue;
 			    		}
 		    		}
+			    	
+			    	if(q.operator.equals("load") && rt.code.get(i+1).operator.equals("load"))
+			    	{
+			    		if(q.arg1!=null && q.arg1.type!=null && q.arg1.type.equals("register"))
+			    		{
+			    			if(rt.code.get(i+1).arg1!=null && rt.code.get(i+1).arg1.type!=null && rt.code.get(i+1).arg1.type.equals("register"))
+				    		{
+					    		if(q.arg1.number==rt.code.get(i+1).arg1.number)continue;
+				    		}
+			    		}
+			    	}
+			    	if(q.operator.equals("move"))
+			    	{
+			    		if(q.arg1!=null && q.arg1.type!=null && q.arg1.type.equals("register"))
+			    		{
+			    			if(q.arg3!=null && q.arg3.type!=null && q.arg3.type.equals("register"))
+				    		{
+			    				if(q.arg1.number==q.arg3.number)continue;
+				    		}
+			    		}
+			    	}
+			    	
 		    	}
 		    	
 		    	
